@@ -304,8 +304,15 @@
       }
       let reader = new FileReader();
       reader.onload = function (ev) {
-        cropImage.src = ev.target.result;
-        showCropModal();
+        Cropro.show({
+          src: ev.target.result,
+          aspectRatio: 1,
+          onApply: function (croppedDataUrl) {
+            userImgObj = new window.Image();
+            userImgObj.onload = drawAll;
+            userImgObj.src = croppedDataUrl;
+          }
+        });
       };
       reader.readAsDataURL(file);
     });
