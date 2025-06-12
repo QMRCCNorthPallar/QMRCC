@@ -182,25 +182,30 @@
 
     @media (max-width: 600px) {
       .photo-frame-container {
-        padding: 0.6rem 0.1rem;
+        padding: 0.5rem 0.1rem;
         border-radius: 0.7rem;
         max-width: 99vw;
       }
       .photo-frame-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+      }
+      .photo-frame-subtitle {
+        font-size: 0.97rem;
       }
       .photo-frame-canvas-wrap {
-        min-height: 120px;
-        padding: 0.2rem;
+        min-height: 80px;
+        padding: 0.1rem;
+      }
+      .photo-frame-canvas {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        height: auto !important;
+        border-radius: 0.5rem;
       }
       .photo-frame-btn {
         font-size: 0.93rem;
         padding: 0.5rem 0.7rem;
         min-width: 70px;
-      }
-      #croppieModal .modal-content {
-        min-width: 120px;
-        padding: 0.4rem;
       }
       .photo-frame-controls label {
         font-size: 0.97rem;
@@ -225,7 +230,7 @@
     <div class="photo-frame-label">Upload your photo (JPG/PNG/HEIC):</div>
     <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg, image/heic">
     <div class="photo-frame-canvas-wrap">
-      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350"></canvas>
+      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350" style="max-width:100%;height:auto;display:block;margin:0 auto;"></canvas>
     </div>
     <div class="photo-frame-btn-group">
       <button class="photo-frame-btn" id="downloadBtn">Download Image</button>
