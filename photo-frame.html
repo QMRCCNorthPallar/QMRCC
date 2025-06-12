@@ -32,7 +32,7 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    .frame-tool-container {
+    .photo-frame-container {
       background: rgba(13, 45, 30, 0.97);
       border-radius: 1.5rem;
       box-shadow: 0 2px 24px rgba(0, 0, 0, 0.12);
@@ -40,9 +40,10 @@
       margin: 2rem auto;
       max-width: 540px;
       color: inherit;
+      position: relative;
     }
 
-    .frame-tool-title {
+    .photo-frame-title {
       font-size: 2rem;
       font-weight: 700;
       color: #1fa463;
@@ -51,15 +52,34 @@
       letter-spacing: 0.02em;
     }
 
-    .frame-tool-label {
+    .photo-frame-step {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    .photo-frame-step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .photo-frame-label {
       font-weight: 500;
       margin-bottom: 0.5rem;
       display: block;
       color: #1fa463;
     }
 
-    .frame-tool-input,
-    .frame-tool-text {
+    .photo-frame-input,
+    .photo-frame-text {
       width: 100%;
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
@@ -72,12 +92,32 @@
       transition: border 0.2s;
     }
 
-    .frame-tool-input:focus,
-    .frame-tool-text:focus {
+    .photo-frame-input:focus,
+    .photo-frame-text:focus {
       border-color: #2be08a;
     }
 
-    .frame-tool-canvas-wrap {
+    .photo-frame-btn {
+      background: #1fa463;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+
+    .photo-frame-btn:hover,
+    .photo-frame-btn:focus {
+      background: #2be08a;
+      color: #0d2d1e;
+    }
+
+    .photo-frame-canvas-wrap {
       background: #183c2a;
       border-radius: 1rem;
       padding: 1rem;
@@ -87,38 +127,21 @@
       align-items: center;
       position: relative;
       min-height: 320px;
+      max-width: 100%;
+      overflow: auto;
     }
 
-    .frame-tool-canvas {
+    .photo-frame-canvas {
       border-radius: 1rem;
       background: #222;
       max-width: 100%;
       height: auto;
       box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
       display: block;
+      touch-action: none;
     }
 
-    .frame-tool-btn {
-      background: #1fa463;
-      color: #fff;
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-      transition: background 0.2s;
-    }
-
-    .frame-tool-btn:hover,
-    .frame-tool-btn:focus {
-      background: #2be08a;
-      color: #0d2d1e;
-    }
-
-    .frame-tool-controls {
+    .photo-frame-controls {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -126,12 +149,12 @@
       margin-bottom: 1rem;
     }
 
-    .frame-tool-slider {
-      width: 100%;
+    .photo-frame-slider {
+      width: 90px;
       margin: 0.5rem 0;
     }
 
-    .frame-tool-dark-toggle {
+    .photo-frame-dark-toggle {
       position: absolute;
       top: 1.5rem;
       right: 2rem;
@@ -146,22 +169,22 @@
       z-index: 10;
     }
 
-    .frame-tool-dark-toggle:hover {
+    .photo-frame-dark-toggle:hover {
       background: #1fa463;
       color: #183c2a;
     }
 
     @media (max-width: 600px) {
-      .frame-tool-container {
+      .photo-frame-container {
         padding: 1rem 0.2rem;
         border-radius: 0.7rem;
       }
 
-      .frame-tool-title {
+      .photo-frame-title {
         font-size: 1.3rem;
       }
 
-      .frame-tool-canvas-wrap {
+      .photo-frame-canvas-wrap {
         min-height: 220px;
         padding: 0.5rem;
       }
@@ -173,40 +196,49 @@
       --qmrcc-text: #1a3d2b;
     }
 
-    body.light-mode .frame-tool-container {
+    body.light-mode .photo-frame-container {
       background: #f7faf7;
       color: #1a3d2b;
     }
 
-    body.light-mode .frame-tool-canvas-wrap {
+    body.light-mode .photo-frame-canvas-wrap {
       background: #e7f5e7;
     }
 
-    body.light-mode .frame-tool-input,
-    body.light-mode .frame-tool-text {
+    body.light-mode .photo-frame-input,
+    body.light-mode .photo-frame-text {
       background: #fff;
       color: #1a3d2b;
       border-color: #1fa463;
     }
 
-    body.light-mode .frame-tool-btn {
+    body.light-mode .photo-frame-btn {
       background: #1fa463;
       color: #fff;
     }
 
-    body.light-mode .frame-tool-btn:hover {
+    body.light-mode .photo-frame-btn:hover {
       background: #0d2d1e;
       color: #fff;
     }
 
-    body.light-mode .frame-tool-dark-toggle {
+    body.light-mode .photo-frame-dark-toggle {
       background: #e7f5e7;
       color: #1fa463;
     }
 
-    body.light-mode .frame-tool-dark-toggle:hover {
+    body.light-mode .photo-frame-dark-toggle:hover {
       background: #1fa463;
       color: #fff;
+    }
+
+    /* Crop overlay */
+    .crop-rect {
+      position: absolute;
+      border: 2px dashed #2be08a;
+      pointer-events: none;
+      z-index: 2;
+      border-radius: 1rem;
     }
   </style>
 </head>
@@ -252,38 +284,41 @@
   <!-- /navigation -->
 
   <main>
-    <button class="frame-tool-dark-toggle" id="darkToggle" title="Toggle light/dark mode">🌙</button>
-    <div class="frame-tool-container">
-      <div class="frame-tool-title">Photo Frame</div>
-      <label class="frame-tool-label" for="frameToolImage">Upload your photo (JPG/PNG):</label>
-      <input class="frame-tool-input" type="file" id="frameToolImage" accept="image/png, image/jpeg">
-      <div class="frame-tool-canvas-wrap">
-        <canvas id="frameToolCanvas" class="frame-tool-canvas" width="400" height="400"></canvas>
+    <button class="photo-frame-dark-toggle" id="darkToggle" title="Toggle light/dark mode">🌙</button>
+    <div class="photo-frame-container">
+      <div class="photo-frame-title">Photo Frame</div>
+      <!-- Step 1: Name input -->
+      <div class="photo-frame-step active" id="step1">
+        <label class="photo-frame-label" for="photoFrameName">Your Name (Malayalam):</label>
+        <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
+          style="font-family:'Anek Malayalam',sans-serif;">
+        <button class="photo-frame-btn" id="nextBtn">Next</button>
       </div>
-      <div class="frame-tool-controls">
-        <button class="frame-tool-btn" id="rotateLeft" title="Rotate Left 90°"><i class="fas fa-undo"></i>⟲</button>
-        <button class="frame-tool-btn" id="rotateRight" title="Rotate Right 90°"><i class="fas fa-redo"></i>⟳</button>
-        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Zoom</label>
-        <input type="range" min="0.5" max="2" step="0.01" value="1" id="zoomSlider" class="frame-tool-slider"
-          style="width:90px;">
-        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Crop</label>
-        <input type="range" min="0" max="1" step="0.01" value="0" id="cropSlider" class="frame-tool-slider"
-          style="width:90px;">
-      </div>
-      <label class="frame-tool-label" for="frameToolName">Your Name (Malayalam):</label>
-      <input class="frame-tool-text" type="text" id="frameToolName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
-        style="font-family:'Anek Malayalam',sans-serif;">
-      <div class="frame-tool-controls">
-        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
-        <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="frame-tool-slider"
-          style="width:90px;">
-        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Y</label>
-        <input type="range" min="0" max="1" step="0.01" value="0.85" id="textYSlider" class="frame-tool-slider"
-          style="width:90px;">
-      </div>
-      <button class="frame-tool-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
-      <div style="font-size:0.95em; color:#aaa; margin-top:1rem; text-align:center;">
-        All processing is done in your browser. No data is uploaded.
+      <!-- Step 2: Image upload and editor -->
+      <div class="photo-frame-step" id="step2">
+        <label class="photo-frame-label" for="photoFrameImage">Upload your photo (JPG/PNG):</label>
+        <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg">
+        <div class="photo-frame-canvas-wrap" id="canvasWrap" style="position:relative;">
+          <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="400" height="400"></canvas>
+          <div id="cropRect" class="crop-rect" style="display:none;"></div>
+        </div>
+        <div class="photo-frame-controls">
+          <button class="photo-frame-btn" id="cropBtn">Crop</button>
+          <button class="photo-frame-btn" id="rotateLeft" title="Rotate Left 90°"><i class="fas fa-undo"></i>⟲</button>
+          <button class="photo-frame-btn" id="rotateRight" title="Rotate Right 90°"><i class="fas fa-redo"></i>⟳</button>
+          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Zoom</label>
+          <input type="range" min="0.5" max="2" step="0.01" value="1" id="zoomSlider" class="photo-frame-slider">
+        </div>
+        <div class="photo-frame-controls">
+          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
+          <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
+          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Y</label>
+          <input type="range" min="0" max="1" step="0.01" value="0.85" id="textYSlider" class="photo-frame-slider">
+        </div>
+        <button class="photo-frame-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
+        <div style="font-size:0.95em; color:#aaa; margin-top:1rem; text-align:center;">
+          All processing is done in your browser. No data is uploaded.
+        </div>
       </div>
     </div>
   </main>
@@ -381,32 +416,52 @@
   <!-- Photo Frame Script -->
   <script>
     // --- State ---
-    let userImg = null,
-      userImgObj = null,
-      frameImg = null,
-      frameObj = null;
+    let userImgObj = null,
+      frameImg = null;
     let rotation = 0,
       zoom = 1,
-      crop = 0,
       textSize = 36,
       textY = 0.85;
     let canvas, ctx, frameW = 400,
       frameH = 400,
       frameAspect = 1;
     let nameText = '';
+    let cropMode = false,
+      cropStart = null,
+      cropRect = null,
+      cropData = null;
 
     // --- Elements ---
-    window.addEventListener('DOMContentLoaded', function () {
-      canvas = document.getElementById('frameToolCanvas');
+    document.addEventListener('DOMContentLoaded', function () {
+      // Steps
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const nextBtn = document.getElementById('nextBtn');
+      const nameInput = document.getElementById('photoFrameName');
+      // Step 1: Next
+      nextBtn.onclick = function () {
+        nameText = nameInput.value;
+        if (!nameText.trim()) {
+          nameInput.focus();
+          return;
+        }
+        step1.classList.remove('active');
+        step2.classList.add('active');
+        drawAll();
+      };
+      nameInput.addEventListener('input', function () {
+        nameText = nameInput.value;
+      });
+
+      // Canvas and frame
+      canvas = document.getElementById('photoFrameCanvas');
       ctx = canvas.getContext('2d');
-      // Load frame PNG
       frameImg = new window.Image();
       frameImg.src = 'images/frame/frame.png';
       frameImg.onload = function () {
         frameW = frameImg.width;
         frameH = frameImg.height;
         frameAspect = frameW / frameH;
-        // Set canvas size
         if (frameAspect > 1) {
           canvas.width = 400;
           canvas.height = Math.round(400 / frameAspect);
@@ -416,8 +471,9 @@
         }
         drawAll();
       };
+
       // Image upload
-      document.getElementById('frameToolImage').addEventListener('change', function (e) {
+      document.getElementById('photoFrameImage').addEventListener('change', function (e) {
         if (!e.target.files[0]) return;
         let file = e.target.files[0];
         if (!file.type.match(/^image\/(jpeg|png)$/)) {
@@ -428,12 +484,14 @@
         reader.onload = function (ev) {
           userImgObj = new window.Image();
           userImgObj.onload = function () {
+            cropData = null; // Reset crop
             drawAll();
           };
           userImgObj.src = ev.target.result;
         };
         reader.readAsDataURL(file);
       });
+
       // Controls
       document.getElementById('rotateLeft').onclick = function () {
         rotation = (rotation - 90) % 360;
@@ -445,14 +503,6 @@
       };
       document.getElementById('zoomSlider').oninput = function (e) {
         zoom = parseFloat(e.target.value);
-        drawAll();
-      };
-      document.getElementById('cropSlider').oninput = function (e) {
-        crop = parseFloat(e.target.value);
-        drawAll();
-      };
-      document.getElementById('frameToolName').oninput = function (e) {
-        nameText = e.target.value;
         drawAll();
       };
       document.getElementById('textSizeSlider').oninput = function (e) {
@@ -474,46 +524,152 @@
         document.body.classList.toggle('light-mode');
         this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
       };
-      // Initial draw
-      drawAll();
+
+      // Crop logic
+      const cropBtn = document.getElementById('cropBtn');
+      const cropRectDiv = document.getElementById('cropRect');
+      const canvasWrap = document.getElementById('canvasWrap');
+      cropBtn.onclick = function () {
+        cropMode = !cropMode;
+        cropBtn.textContent = cropMode ? 'Apply Crop' : 'Crop';
+        cropRectDiv.style.display = cropMode ? 'block' : 'none';
+        if (!cropMode && cropRect) {
+          // Apply crop
+          applyCrop();
+        }
+      };
+      // Mouse/touch crop events
+      let dragging = false;
+      canvasWrap.addEventListener('mousedown', function (e) {
+        if (!cropMode) return;
+        dragging = true;
+        const rect = canvas.getBoundingClientRect();
+        cropStart = {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+        cropRect = {
+          x: cropStart.x,
+          y: cropStart.y,
+          w: 0,
+          h: 0
+        };
+        updateCropRect();
+      });
+      canvasWrap.addEventListener('mousemove', function (e) {
+        if (!cropMode || !dragging) return;
+        const rect = canvas.getBoundingClientRect();
+        let x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
+        cropRect.w = x - cropStart.x;
+        cropRect.h = y - cropStart.y;
+        updateCropRect();
+      });
+      window.addEventListener('mouseup', function () {
+        if (!cropMode) return;
+        dragging = false;
+      });
+      // Touch events
+      canvasWrap.addEventListener('touchstart', function (e) {
+        if (!cropMode) return;
+        dragging = true;
+        const rect = canvas.getBoundingClientRect();
+        let t = e.touches[0];
+        cropStart = {
+          x: t.clientX - rect.left,
+          y: t.clientY - rect.top
+        };
+        cropRect = {
+          x: cropStart.x,
+          y: cropStart.y,
+          w: 0,
+          h: 0
+        };
+        updateCropRect();
+      });
+      canvasWrap.addEventListener('touchmove', function (e) {
+        if (!cropMode || !dragging) return;
+        const rect = canvas.getBoundingClientRect();
+        let t = e.touches[0];
+        let x = t.clientX - rect.left,
+          y = t.clientY - rect.top;
+        cropRect.w = x - cropStart.x;
+        cropRect.h = y - cropStart.y;
+        updateCropRect();
+      });
+      window.addEventListener('touchend', function () {
+        if (!cropMode) return;
+        dragging = false;
+      });
+
+      function updateCropRect() {
+        if (!cropRect) return;
+        let x = Math.min(cropRect.x, cropRect.x + cropRect.w);
+        let y = Math.min(cropRect.y, cropRect.y + cropRect.h);
+        let w = Math.abs(cropRect.w);
+        let h = Math.abs(cropRect.h);
+        cropRectDiv.style.left = x + 'px';
+        cropRectDiv.style.top = y + 'px';
+        cropRectDiv.style.width = w + 'px';
+        cropRectDiv.style.height = h + 'px';
+      }
+
+      function applyCrop() {
+        if (!cropRect) return;
+        // Convert cropRect to image coordinates
+        let cW = canvas.width,
+          cH = canvas.height;
+        let x = Math.min(cropRect.x, cropRect.x + cropRect.w);
+        let y = Math.min(cropRect.y, cropRect.y + cropRect.h);
+        let w = Math.abs(cropRect.w);
+        let h = Math.abs(cropRect.h);
+        if (w < 10 || h < 10) return; // too small
+        // Save cropData as [x/cW, y/cH, w/cW, h/cH]
+        cropData = [x / cW, y / cH, w / cW, h / cH];
+        cropRect = null;
+        cropRectDiv.style.display = 'none';
+        cropMode = false;
+        cropBtn.textContent = 'Crop';
+        drawAll();
+      }
+
+      // Redraw on resize
+      window.addEventListener('resize', drawAll);
+
+      // Redraw on name change (step 2)
+      nameInput.addEventListener('input', function () {
+        if (step2.classList.contains('active')) drawAll();
+      });
     });
 
     // --- Drawing Logic ---
     function drawAll() {
-      // Clear
+      if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Draw user image (if any)
       if (userImgObj && userImgObj.complete) {
-        // Calculate crop/zoom/rotation
         let iw = userImgObj.width,
           ih = userImgObj.height;
-        let angle = rotation * Math.PI / 180;
-        // Fit image to canvas, then apply zoom/crop
         let cW = canvas.width,
           cH = canvas.height;
-        // Crop: 0 = fit, 1 = center crop to square/rect
-        let frameRatio = cW / cH,
-          imgRatio = iw / ih;
-        let drawW, drawH, sx, sy, sw, sh;
-        if ((imgRatio > frameRatio && crop > 0) || (imgRatio < frameRatio && crop === 0)) {
-          // Crop width
+        let angle = rotation * Math.PI / 180;
+        // Crop
+        let sx = 0,
+          sy = 0,
+          sw = iw,
           sh = ih;
-          sw = ih * frameRatio * (1 - crop) + ih * (imgRatio - frameRatio) * crop;
-          sx = (iw - sw) / 2;
-          sy = 0;
-        } else {
-          // Crop height
-          sw = iw;
-          sh = iw / frameRatio * (1 - crop) + iw * (1 / imgRatio - 1 / frameRatio) * crop;
-          sx = 0;
-          sy = (ih - sh) / 2;
+        if (cropData) {
+          sx = cropData[0] * iw;
+          sy = cropData[1] * ih;
+          sw = cropData[2] * iw;
+          sh = cropData[3] * ih;
         }
         // Zoom
         sw /= zoom;
         sh /= zoom;
         sx += (iw - sw) / 2;
         sy += (ih - sh) / 2;
-        // Center
+        // Center and rotate
         ctx.save();
         ctx.translate(cW / 2, cH / 2);
         ctx.rotate(angle);
