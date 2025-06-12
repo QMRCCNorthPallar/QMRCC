@@ -14,31 +14,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap"
     rel="stylesheet">
-
-  <!-- CSS Plugins -->
-  <link rel="stylesheet" href="plugins/slick/slick.css">
-  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
-  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
-  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
-
+  <!-- Cropper.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
   <!-- Main Style Sheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <style>
     body {
-      background: var(--qmrcc-bg, #0d2d1e);
-      color: var(--qmrcc-text, #fff);
+      background: #f7faf7;
+      color: #1a3d2b;
       font-family: 'Rubik', sans-serif;
-      transition: background 0.3s, color 0.3s;
+      margin: 0;
+      padding: 0;
     }
 
     .photo-frame-container {
-      background: rgba(13, 45, 30, 0.97);
+      background: #fff;
       border-radius: 1.5rem;
-      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.10);
       padding: 2rem 1rem;
       margin: 2rem auto;
-      max-width: 540px;
+      max-width: 480px;
       color: inherit;
       position: relative;
     }
@@ -47,28 +43,9 @@
       font-size: 2rem;
       font-weight: 700;
       color: #1fa463;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       text-align: center;
       letter-spacing: 0.02em;
-    }
-
-    .photo-frame-step {
-      display: none;
-      animation: fadeIn 0.5s;
-    }
-
-    .photo-frame-step.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
     }
 
     .photo-frame-label {
@@ -84,8 +61,8 @@
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
       border: 1px solid #1fa463;
-      background: #183c2a;
-      color: #fff;
+      background: #f7faf7;
+      color: #1a3d2b;
       margin-bottom: 1rem;
       font-size: 1rem;
       outline: none;
@@ -118,7 +95,7 @@
     }
 
     .photo-frame-canvas-wrap {
-      background: #183c2a;
+      background: #e7f5e7;
       border-radius: 1rem;
       padding: 1rem;
       margin-bottom: 1rem;
@@ -133,10 +110,10 @@
 
     .photo-frame-canvas {
       border-radius: 1rem;
-      background: #222;
+      background: #fff;
       max-width: 100%;
       height: auto;
-      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.10);
       display: block;
       touch-action: none;
     }
@@ -158,7 +135,7 @@
       position: absolute;
       top: 1.5rem;
       right: 2rem;
-      background: #183c2a;
+      background: #e7f5e7;
       color: #1fa463;
       border: none;
       border-radius: 2rem;
@@ -171,7 +148,53 @@
 
     .photo-frame-dark-toggle:hover {
       background: #1fa463;
-      color: #183c2a;
+      color: #fff;
+    }
+
+    /* Cropper Modal */
+    #cropModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cropModal .modal-content {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1rem;
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow: auto;
+    }
+
+    #cropModal .modal-header,
+    #cropModal .modal-footer {
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #cropModal .modal-title {
+      color: #1fa463;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    #cropModal .close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
     }
 
     @media (max-width: 600px) {
@@ -189,499 +212,165 @@
         padding: 0.5rem;
       }
     }
-
-    /* Light mode */
-    body.light-mode {
-      --qmrcc-bg: #f7faf7;
-      --qmrcc-text: #1a3d2b;
-    }
-
-    body.light-mode .photo-frame-container {
-      background: #f7faf7;
-      color: #1a3d2b;
-    }
-
-    body.light-mode .photo-frame-canvas-wrap {
-      background: #e7f5e7;
-    }
-
-    body.light-mode .photo-frame-input,
-    body.light-mode .photo-frame-text {
-      background: #fff;
-      color: #1a3d2b;
-      border-color: #1fa463;
-    }
-
-    body.light-mode .photo-frame-btn {
-      background: #1fa463;
-      color: #fff;
-    }
-
-    body.light-mode .photo-frame-btn:hover {
-      background: #0d2d1e;
-      color: #fff;
-    }
-
-    body.light-mode .photo-frame-dark-toggle {
-      background: #e7f5e7;
-      color: #1fa463;
-    }
-
-    body.light-mode .photo-frame-dark-toggle:hover {
-      background: #1fa463;
-      color: #fff;
-    }
-
-    /* Crop overlay */
-    .crop-rect {
-      position: absolute;
-      border: 2px dashed #2be08a;
-      pointer-events: none;
-      z-index: 2;
-      border-radius: 1rem;
-    }
   </style>
 </head>
 
 <body>
-  <!-- navigation -->
-  <header class="navigation bg-tertiary">
-    <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span
-            class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li class="nav-item"> <a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item "> <a class="nav-link" href="about.html">About</a></li>
-            <li class="nav-item "> <a class="nav-link" href="how-it-works.html">How It Works</a></li>
-            <li class="nav-item "> <a class="nav-link" href="services.html">Services</a></li>
-            <li class="nav-item "> <a class="nav-link" href="contact.html">Contact</a></li>
-            <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item " href="blog.html">Blog</a></li>
-                <li><a class="dropdown-item " href="blog-details.html">Blog Details</a></li>
-                <li><a class="dropdown-item " href="service-details.html">Service Details</a></li>
-                <li><a class="dropdown-item " href="faq.html">FAQ&#39;s</a></li>
-                <li><a class="dropdown-item " href="legal.html">Legal</a></li>
-                <li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a></li>
-                <li><a class="dropdown-item " href="privacy-policy.html">Photo Frame</a></li>
-              </ul>
-            </li>
-          </ul>
-          <a href="#!" class="btn btn-outline-primary">Log In</a>
-          <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+  <div class="photo-frame-container">
+    <div class="photo-frame-title">Photo Frame</div>
+    <div class="photo-frame-label">Your Name (Malayalam):</div>
+    <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
+      style="font-family:'Anek Malayalam',sans-serif;">
+    <div class="photo-frame-controls">
+      <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
+      <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
+    </div>
+    <div class="photo-frame-label">Upload your photo (JPG/PNG):</div>
+    <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg">
+    <div class="photo-frame-canvas-wrap">
+      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="800" height="800"></canvas>
+    </div>
+    <button class="photo-frame-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
+    <div style="font-size:0.95em; color:#888; margin-top:1rem; text-align:center;">
+      All processing is done in your browser. No data is uploaded.
+    </div>
+  </div>
+  <!-- Cropper Modal -->
+  <div class="modal" tabindex="-1" role="dialog" id="cropModal">
+    <div class="modal-dialog" style="max-width:90vw;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="modal-title">Select and Crop the image</span>
+          <button type="button" class="close" id="closeModalBtn">&times;</button>
         </div>
-      </div>
-    </nav>
-  </header>
-  <!-- /navigation -->
-
-  <main>
-    <button class="photo-frame-dark-toggle" id="darkToggle" title="Toggle light/dark mode">🌙</button>
-    <div class="photo-frame-container">
-      <div class="photo-frame-title">Photo Frame</div>
-      <!-- Step 1: Name input -->
-      <div class="photo-frame-step active" id="step1">
-        <label class="photo-frame-label" for="photoFrameName">Your Name (Malayalam):</label>
-        <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
-          style="font-family:'Anek Malayalam',sans-serif;">
-        <button class="photo-frame-btn" id="nextBtn">Next</button>
-      </div>
-      <!-- Step 2: Image upload and editor -->
-      <div class="photo-frame-step" id="step2">
-        <label class="photo-frame-label" for="photoFrameImage">Upload your photo (JPG/PNG):</label>
-        <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg">
-        <div class="photo-frame-canvas-wrap" id="canvasWrap" style="position:relative;">
-          <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="400" height="400"></canvas>
-          <div id="cropRect" class="crop-rect" style="display:none;"></div>
+        <div class="modal-body">
+          <div class="img-container mt-3" style="text-align:center;">
+            <img id="cropImage" style="max-width:100%; max-height:60vh;">
+          </div>
         </div>
-        <div class="photo-frame-controls">
-          <button class="photo-frame-btn" id="cropBtn">Crop</button>
-          <button class="photo-frame-btn" id="rotateLeft" title="Rotate Left 90°"><i class="fas fa-undo"></i>⟲</button>
-          <button class="photo-frame-btn" id="rotateRight" title="Rotate Right 90°"><i class="fas fa-redo"></i>⟳</button>
-          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Zoom</label>
-          <input type="range" min="0.5" max="2" step="0.01" value="1" id="zoomSlider" class="photo-frame-slider">
-        </div>
-        <div class="photo-frame-controls">
-          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
-          <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
-          <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Y</label>
-          <input type="range" min="0" max="1" step="0.01" value="0.85" id="textYSlider" class="photo-frame-slider">
-        </div>
-        <button class="photo-frame-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
-        <div style="font-size:0.95em; color:#aaa; margin-top:1rem; text-align:center;">
-          All processing is done in your browser. No data is uploaded.
+        <div class="modal-footer" style="text-align:right;">
+          <button type="button" class="photo-frame-btn" id="cancelCropBtn">Cancel</button>
+          <button type="button" class="photo-frame-btn" id="applyCropBtn">Crop</button>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <footer class="section-sm bg-tertiary">
-    <div class="container">
-      <div class="row justify-content-between">
-        <div class="col-lg-2 col-md-4 col-6 mb-4">
-          <div class="footer-widget">
-            <h5 class="mb-4 text-primary font-secondary">Service</h5>
-            <ul class="list-unstyled">
-              <li class="mb-2"><a href="service-details.html">Personal loans</a></li>
-              <li class="mb-2"><a href="service-details.html">Home Equity Loans</a></li>
-              <li class="mb-2"><a href="service-details.html">Student Loans</a></li>
-              <li class="mb-2"><a href="service-details.html">Mortgage Loans</a></li>
-              <li class="mb-2"><a href="service-details.html">Payday Loans</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6 mb-4">
-          <div class="footer-widget">
-            <h5 class="mb-4 text-primary font-secondary">About</h5>
-            <ul class="list-unstyled">
-              <li class="mb-2"><a href="#!">Benefits</a></li>
-              <li class="mb-2"><a href="#!">Careers</a></li>
-              <li class="mb-2"><a href="#!">Our Story</a></li>
-              <li class="mb-2"><a href="#!">Team</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6 mb-4">
-          <div class="footer-widget">
-            <h5 class="mb-4 text-primary font-secondary">Help</h5>
-            <ul class="list-unstyled">
-              <li class="mb-2"><a href="contact.html">Contact Us</a></li>
-              <li class="mb-2"><a href="faq.html">FAQs</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-12 newsletter-form">
-          <div style="background-color: #F4F4F4; padding: 35px;">
-            <h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
-            <div class="pe-0 pe-xl-5">
-              <form action="#!" method="post" name="mc-embedded-subscribe-form" target="_blank">
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address">
-                  <span class="input-group-text border-0 p-0">
-                    <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
-                      aria-label="Subscribe for Newsletter"><i class="fas fa-arrow-right"></i></button>
-                  </span>
-                </div>
-                <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                  <input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
-                </div>
-              </form>
-            </div>
-            <p class="mb-0">Lorem ipsum dolor sit amet, rdghds consetetur sadipscing elitr, sed diam nonumy eirmod
-              tempor invidunt ut labore et dolore magna aliquyam erat</p>
-          </div>
-        </div>
-      </div>
-      <div class="row align-items-center mt-5 text-center text-md-start">
-        <div class="col-lg-4">
-          <a href="index.html">
-            <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
-          </a>
-        </div>
-        <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
-          <ul class="list-unstyled list-inline mb-0 text-lg-center">
-            <li class="list-inline-item me-4"><a class="text-black" href="privacy-policy.html">Photo Frame</a></li>
-            <li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp; Conditions</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
-          <ul class="list-unstyled list-inline mb-0 social-icons">
-            <li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black"
-                href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
-            <li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black"
-                href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
-            <li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black"
-                href="https://instagram.com/"><i class="fab fa-instagram"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- JS Plugins -->
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <script src="plugins/bootstrap/bootstrap.min.js"></script>
-  <script src="plugins/slick/slick.min.js"></script>
-  <script src="plugins/scrollmenu/scrollmenu.min.js"></script>
-  <script src="js/script.js"></script>
-
-  <!-- Photo Frame Script -->
+  <!-- Cropper.js -->
+  <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
   <script>
     // --- State ---
     let userImgObj = null,
-      frameImg = null;
-    let rotation = 0,
-      zoom = 1,
-      textSize = 36,
-      textY = 0.85;
-    let canvas, ctx, frameW = 400,
-      frameH = 400,
-      frameAspect = 1;
+      frameImg = null,
+      cropper = null;
+    let textSize = 36;
     let nameText = '';
-    let cropMode = false,
-      cropStart = null,
-      cropRect = null,
-      cropData = null;
+    const CANVAS_SIZE = 800; // Use high-res for better quality
 
     // --- Elements ---
-    document.addEventListener('DOMContentLoaded', function () {
-      // Steps
-      const step1 = document.getElementById('step1');
-      const step2 = document.getElementById('step2');
-      const nextBtn = document.getElementById('nextBtn');
-      const nameInput = document.getElementById('photoFrameName');
-      // Step 1: Next
-      nextBtn.onclick = function () {
-        nameText = nameInput.value;
-        if (!nameText.trim()) {
-          nameInput.focus();
-          return;
-        }
-        step1.classList.remove('active');
-        step2.classList.add('active');
-        drawAll();
-      };
-      nameInput.addEventListener('input', function () {
-        nameText = nameInput.value;
-      });
+    const canvas = document.getElementById('photoFrameCanvas');
+    const ctx = canvas.getContext('2d');
+    const nameInput = document.getElementById('photoFrameName');
+    const textSizeSlider = document.getElementById('textSizeSlider');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const photoFrameImage = document.getElementById('photoFrameImage');
+    // Cropper modal
+    const cropModal = document.getElementById('cropModal');
+    const cropImage = document.getElementById('cropImage');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelCropBtn = document.getElementById('cancelCropBtn');
+    const applyCropBtn = document.getElementById('applyCropBtn');
 
-      // Canvas and frame
-      canvas = document.getElementById('photoFrameCanvas');
-      ctx = canvas.getContext('2d');
-      frameImg = new window.Image();
-      frameImg.src = 'images/frame/frame.png';
-      frameImg.onload = function () {
-        frameW = frameImg.width;
-        frameH = frameImg.height;
-        frameAspect = frameW / frameH;
-        if (frameAspect > 1) {
-          canvas.width = 400;
-          canvas.height = Math.round(400 / frameAspect);
-        } else {
-          canvas.height = 400;
-          canvas.width = Math.round(400 * frameAspect);
-        }
-        drawAll();
-      };
+    // --- Load frame image ---
+    frameImg = new window.Image();
+    frameImg.src = 'images/frame/frame.png';
+    frameImg.onload = drawAll;
+    // Draw frame even before image upload
+    drawAll();
 
-      // Image upload
-      document.getElementById('photoFrameImage').addEventListener('change', function (e) {
-        if (!e.target.files[0]) return;
-        let file = e.target.files[0];
-        if (!file.type.match(/^image\/(jpeg|png)$/)) {
-          alert('Please upload a JPG or PNG image.');
-          return;
-        }
-        let reader = new FileReader();
-        reader.onload = function (ev) {
-          userImgObj = new window.Image();
-          userImgObj.onload = function () {
-            cropData = null; // Reset crop
-            drawAll();
-          };
-          userImgObj.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-
-      // Controls
-      document.getElementById('rotateLeft').onclick = function () {
-        rotation = (rotation - 90) % 360;
-        drawAll();
-      };
-      document.getElementById('rotateRight').onclick = function () {
-        rotation = (rotation + 90) % 360;
-        drawAll();
-      };
-      document.getElementById('zoomSlider').oninput = function (e) {
-        zoom = parseFloat(e.target.value);
-        drawAll();
-      };
-      document.getElementById('textSizeSlider').oninput = function (e) {
-        textSize = parseInt(e.target.value, 10);
-        drawAll();
-      };
-      document.getElementById('textYSlider').oninput = function (e) {
-        textY = parseFloat(e.target.value);
-        drawAll();
-      };
-      document.getElementById('downloadBtn').onclick = function () {
-        let link = document.createElement('a');
-        link.download = 'photo-frame.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      };
-      // Dark mode toggle
-      document.getElementById('darkToggle').onclick = function () {
-        document.body.classList.toggle('light-mode');
-        this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-      };
-
-      // Crop logic
-      const cropBtn = document.getElementById('cropBtn');
-      const cropRectDiv = document.getElementById('cropRect');
-      const canvasWrap = document.getElementById('canvasWrap');
-      cropBtn.onclick = function () {
-        cropMode = !cropMode;
-        cropBtn.textContent = cropMode ? 'Apply Crop' : 'Crop';
-        cropRectDiv.style.display = cropMode ? 'block' : 'none';
-        if (!cropMode && cropRect) {
-          // Apply crop
-          applyCrop();
-        }
-      };
-      // Mouse/touch crop events
-      let dragging = false;
-      canvasWrap.addEventListener('mousedown', function (e) {
-        if (!cropMode) return;
-        dragging = true;
-        const rect = canvas.getBoundingClientRect();
-        cropStart = {
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
-        };
-        cropRect = {
-          x: cropStart.x,
-          y: cropStart.y,
-          w: 0,
-          h: 0
-        };
-        updateCropRect();
-      });
-      canvasWrap.addEventListener('mousemove', function (e) {
-        if (!cropMode || !dragging) return;
-        const rect = canvas.getBoundingClientRect();
-        let x = e.clientX - rect.left,
-          y = e.clientY - rect.top;
-        cropRect.w = x - cropStart.x;
-        cropRect.h = y - cropStart.y;
-        updateCropRect();
-      });
-      window.addEventListener('mouseup', function () {
-        if (!cropMode) return;
-        dragging = false;
-      });
-      // Touch events
-      canvasWrap.addEventListener('touchstart', function (e) {
-        if (!cropMode) return;
-        dragging = true;
-        const rect = canvas.getBoundingClientRect();
-        let t = e.touches[0];
-        cropStart = {
-          x: t.clientX - rect.left,
-          y: t.clientY - rect.top
-        };
-        cropRect = {
-          x: cropStart.x,
-          y: cropStart.y,
-          w: 0,
-          h: 0
-        };
-        updateCropRect();
-      });
-      canvasWrap.addEventListener('touchmove', function (e) {
-        if (!cropMode || !dragging) return;
-        const rect = canvas.getBoundingClientRect();
-        let t = e.touches[0];
-        let x = t.clientX - rect.left,
-          y = t.clientY - rect.top;
-        cropRect.w = x - cropStart.x;
-        cropRect.h = y - cropStart.y;
-        updateCropRect();
-      });
-      window.addEventListener('touchend', function () {
-        if (!cropMode) return;
-        dragging = false;
-      });
-
-      function updateCropRect() {
-        if (!cropRect) return;
-        let x = Math.min(cropRect.x, cropRect.x + cropRect.w);
-        let y = Math.min(cropRect.y, cropRect.y + cropRect.h);
-        let w = Math.abs(cropRect.w);
-        let h = Math.abs(cropRect.h);
-        cropRectDiv.style.left = x + 'px';
-        cropRectDiv.style.top = y + 'px';
-        cropRectDiv.style.width = w + 'px';
-        cropRectDiv.style.height = h + 'px';
-      }
-
-      function applyCrop() {
-        if (!cropRect) return;
-        // Convert cropRect to image coordinates
-        let cW = canvas.width,
-          cH = canvas.height;
-        let x = Math.min(cropRect.x, cropRect.x + cropRect.w);
-        let y = Math.min(cropRect.y, cropRect.y + cropRect.h);
-        let w = Math.abs(cropRect.w);
-        let h = Math.abs(cropRect.h);
-        if (w < 10 || h < 10) return; // too small
-        // Save cropData as [x/cW, y/cH, w/cW, h/cH]
-        cropData = [x / cW, y / cH, w / cW, h / cH];
-        cropRect = null;
-        cropRectDiv.style.display = 'none';
-        cropMode = false;
-        cropBtn.textContent = 'Crop';
-        drawAll();
-      }
-
-      // Redraw on resize
-      window.addEventListener('resize', drawAll);
-
-      // Redraw on name change (step 2)
-      nameInput.addEventListener('input', function () {
-        if (step2.classList.contains('active')) drawAll();
-      });
+    // --- Name input ---
+    nameInput.addEventListener('input', function () {
+      nameText = nameInput.value;
+      drawAll();
     });
+
+    textSizeSlider.addEventListener('input', function () {
+      textSize = parseInt(this.value, 10);
+      drawAll();
+    });
+
+    // --- Image upload & Cropper.js ---
+    photoFrameImage.addEventListener('change', function (e) {
+      if (!e.target.files[0]) return;
+      let file = e.target.files[0];
+      if (!file.type.match(/^image\/(jpeg|png)$/)) {
+        alert('Please upload a JPG or PNG image.');
+        return;
+      }
+      let reader = new FileReader();
+      reader.onload = function (ev) {
+        cropImage.src = ev.target.result;
+        showCropModal();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function showCropModal() {
+      cropModal.style.display = 'flex';
+      setTimeout(() => {
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(cropImage, {
+          aspectRatio: 1, // Square crop for frame
+          viewMode: 1,
+          movable: true,
+          zoomable: true,
+          rotatable: true,
+          scalable: false,
+          autoCropArea: 1,
+          responsive: true,
+          background: false
+        });
+      }, 100);
+    }
+
+    function hideCropModal() {
+      cropModal.style.display = 'none';
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
+    }
+    closeModalBtn.onclick = cancelCropBtn.onclick = function () {
+      hideCropModal();
+    };
+    applyCropBtn.onclick = function () {
+      if (!cropper) return;
+      const croppedCanvas = cropper.getCroppedCanvas({
+        width: CANVAS_SIZE,
+        height: CANVAS_SIZE,
+        imageSmoothingQuality: 'high'
+      });
+      userImgObj = new window.Image();
+      userImgObj.onload = function () {
+        hideCropModal();
+        drawAll();
+      };
+      userImgObj.src = croppedCanvas.toDataURL('image/png');
+    };
 
     // --- Drawing Logic ---
     function drawAll() {
-      if (!canvas || !ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
       // Draw user image (if any)
       if (userImgObj && userImgObj.complete) {
-        let iw = userImgObj.width,
-          ih = userImgObj.height;
-        let cW = canvas.width,
-          cH = canvas.height;
-        let angle = rotation * Math.PI / 180;
-        // Crop
-        let sx = 0,
-          sy = 0,
-          sw = iw,
-          sh = ih;
-        if (cropData) {
-          sx = cropData[0] * iw;
-          sy = cropData[1] * ih;
-          sw = cropData[2] * iw;
-          sh = cropData[3] * ih;
-        }
-        // Zoom
-        sw /= zoom;
-        sh /= zoom;
-        sx += (iw - sw) / 2;
-        sy += (ih - sh) / 2;
-        // Center and rotate
-        ctx.save();
-        ctx.translate(cW / 2, cH / 2);
-        ctx.rotate(angle);
-        ctx.drawImage(userImgObj, sx, sy, sw, sh, -cW / 2, -cH / 2, cW, cH);
-        ctx.restore();
+        ctx.drawImage(userImgObj, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
       }
-      // Draw frame
+      // Draw frame (always)
       if (frameImg && frameImg.complete) {
-        ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(frameImg, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
       }
-      // Draw name text
-      if (nameText && nameText.trim().length > 0) {
+      // Draw name text (always)
+      if (nameInput.value.trim().length > 0) {
         ctx.save();
         ctx.font = `bold ${textSize}px 'Anek Malayalam', sans-serif`;
         ctx.textAlign = 'center';
@@ -689,11 +378,19 @@
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
         ctx.shadowBlur = 4;
         ctx.fillStyle = '#fff';
-        let y = canvas.height * textY;
-        ctx.fillText(nameText, canvas.width / 2, y);
+        // Fixed position: bottom center, above frame border
+        ctx.fillText(nameInput.value, CANVAS_SIZE / 2, CANVAS_SIZE - textSize * 1.2);
         ctx.restore();
       }
     }
+
+    // --- Download ---
+    downloadBtn.onclick = function () {
+      let link = document.createElement('a');
+      link.download = 'photo-frame.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
   </script>
 </body>
 
