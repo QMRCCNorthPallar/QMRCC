@@ -14,10 +14,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap"
     rel="stylesheet">
-  <!-- Cropper.js CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
   <!-- Main Style Sheet -->
   <link rel="stylesheet" href="css/style.css">
+  <!-- CROPRO CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropro@2.0.1/dist/cropro.min.css">
 
   <style>
     body {
@@ -139,59 +139,6 @@
       accent-color: #1fa463;
     }
 
-    /* Cropper Modal */
-    #cropModal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
-      align-items: center;
-      justify-content: center;
-    }
-
-    #cropModal .modal-content {
-      background: #fff;
-      border-radius: 1.2rem;
-      padding: 1.2rem;
-      max-width: 98vw;
-      max-height: 98vh;
-      overflow: auto;
-      box-shadow: 0 8px 32px rgba(31, 164, 99, 0.18);
-      border: 2px solid #1fa463;
-    }
-
-    #cropModal .modal-header,
-    #cropModal .modal-footer {
-      border: none;
-      background: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    #cropModal .modal-title {
-      color: #1fa463;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    #cropModal .close {
-      background: none;
-      border: none;
-      font-size: 2rem;
-      color: #888;
-      cursor: pointer;
-    }
-
-    #cropModal .photo-frame-btn {
-      margin: 0 0.5rem;
-      min-width: 100px;
-    }
-
     @media (max-width: 600px) {
       .photo-frame-container {
         padding: 1rem 0.2rem;
@@ -230,34 +177,13 @@
       All processing is done in your browser. No data is uploaded.
     </div>
   </div>
-  <!-- Cropper Modal -->
-  <div class="modal" tabindex="-1" role="dialog" id="cropModal">
-    <div class="modal-dialog" style="max-width:90vw;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="modal-title">Select and Crop the image</span>
-          <button type="button" class="close" id="closeModalBtn">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="img-container mt-3" style="text-align:center;">
-            <img id="cropImage" style="max-width:100%; max-height:60vh; border-radius:1rem; box-shadow:0 2px 12px rgba(31,164,99,0.12);">
-          </div>
-        </div>
-        <div class="modal-footer" style="text-align:right;">
-          <button type="button" class="photo-frame-btn" id="cancelCropBtn">Cancel</button>
-          <button type="button" class="photo-frame-btn" id="applyCropBtn">Crop</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Cropper.js -->
-  <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+  <!-- CROPRO JS -->
+  <script src="https://cdn.jsdelivr.net/npm/cropro@2.0.1/dist/cropro.min.js"></script>
   <script>
     // --- State ---
     let userImgObj = null,
-      frameImg = null,
-      cropper = null;
+      frameImg = null;
     let textSize = 36;
     let nameText = '';
     const CANVAS_SIZE = 800; // Use high-res for better quality
@@ -269,12 +195,6 @@
     const textSizeSlider = document.getElementById('textSizeSlider');
     const downloadBtn = document.getElementById('downloadBtn');
     const photoFrameImage = document.getElementById('photoFrameImage');
-    // Cropper modal
-    const cropModal = document.getElementById('cropModal');
-    const cropImage = document.getElementById('cropImage');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const cancelCropBtn = document.getElementById('cancelCropBtn');
-    const applyCropBtn = document.getElementById('applyCropBtn');
 
     // --- Load frame image ---
     frameImg = new window.Image();
@@ -294,7 +214,7 @@
       drawAll();
     });
 
-    // --- Image upload & Cropper.js ---
+    // --- Image upload & CROPRO ---
     photoFrameImage.addEventListener('change', function (e) {
       if (!e.target.files[0]) return;
       let file = e.target.files[0];
@@ -317,58 +237,6 @@
       reader.readAsDataURL(file);
     });
 
-    function showCropModal() {
-      cropModal.style.display = 'flex';
-      setTimeout(() => {
-        if (cropper) cropper.destroy();
-        cropper = new Cropper(cropImage, {
-          aspectRatio: 1, // Square crop for frame
-          viewMode: 2, // Restrict the crop box to not exceed the size of the canvas
-          movable: true,
-          zoomable: true,
-          rotatable: true,
-          scalable: false,
-          autoCropArea: 1,
-          responsive: true,
-          background: false,
-          minContainerWidth: 350,
-          minContainerHeight: 350,
-          minCropBoxWidth: 200,
-          minCropBoxHeight: 200,
-          dragMode: 'move',
-          guides: true,
-          highlight: true,
-          cropBoxResizable: true,
-          cropBoxMovable: true,
-        });
-      }, 100);
-    }
-
-    function hideCropModal() {
-      cropModal.style.display = 'none';
-      if (cropper) {
-        cropper.destroy();
-        cropper = null;
-      }
-    }
-    closeModalBtn.onclick = cancelCropBtn.onclick = function () {
-      hideCropModal();
-    };
-    applyCropBtn.onclick = function () {
-      if (!cropper) return;
-      const croppedCanvas = cropper.getCroppedCanvas({
-        width: CANVAS_SIZE,
-        height: CANVAS_SIZE,
-        imageSmoothingQuality: 'high'
-      });
-      userImgObj = new window.Image();
-      userImgObj.onload = function () {
-        hideCropModal();
-        drawAll();
-      };
-      userImgObj.src = croppedCanvas.toDataURL('image/png');
-    };
-
     // --- Drawing Logic ---
     function drawAll() {
       ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
@@ -389,7 +257,7 @@
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
         ctx.shadowBlur = 4;
         ctx.fillStyle = '#fff';
-        // Fixed position: bottom center, 25px higher than before
+        // Fixed position: bottom center, 70px above the border
         ctx.fillText(
           nameInput.value,
           CANVAS_SIZE / 2,
