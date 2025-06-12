@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <title>Photo Frame | QMRCC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="description" content="Create your custom photo frame with Malayalam name overlay.">
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- Google Fonts: Rubik + Anek Malayalam -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS Plugins -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
+  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
+  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+
+  <!-- Main Style Sheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body {
+      background: var(--qmrcc-bg, #0d2d1e);
+      color: var(--qmrcc-text, #fff);
+      font-family: 'Rubik', sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .frame-tool-container {
+      background: rgba(13, 45, 30, 0.97);
+      border-radius: 1.5rem;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.12);
+      padding: 2rem 1rem;
+      margin: 2rem auto;
+      max-width: 540px;
+      color: inherit;
+    }
+
+    .frame-tool-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1fa463;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .frame-tool-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      display: block;
+      color: #1fa463;
+    }
+
+    .frame-tool-input,
+    .frame-tool-text {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #1fa463;
+      background: #183c2a;
+      color: #fff;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .frame-tool-input:focus,
+    .frame-tool-text:focus {
+      border-color: #2be08a;
+    }
+
+    .frame-tool-canvas-wrap {
+      background: #183c2a;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 320px;
+    }
+
+    .frame-tool-canvas {
+      border-radius: 1rem;
+      background: #222;
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+      display: block;
+    }
+
+    .frame-tool-btn {
+      background: #1fa463;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .frame-tool-btn:hover,
+    .frame-tool-btn:focus {
+      background: #2be08a;
+      color: #0d2d1e;
+    }
+
+    .frame-tool-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .frame-tool-slider {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .frame-tool-dark-toggle {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: #183c2a;
+      color: #1fa463;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.4rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .frame-tool-dark-toggle:hover {
+      background: #1fa463;
+      color: #183c2a;
+    }
+
+    @media (max-width: 600px) {
+      .frame-tool-container {
+        padding: 1rem 0.2rem;
+        border-radius: 0.7rem;
+      }
+
+      .frame-tool-title {
+        font-size: 1.3rem;
+      }
+
+      .frame-tool-canvas-wrap {
+        min-height: 220px;
+        padding: 0.5rem;
+      }
+    }
+
+    /* Light mode */
+    body.light-mode {
+      --qmrcc-bg: #f7faf7;
+      --qmrcc-text: #1a3d2b;
+    }
+
+    body.light-mode .frame-tool-container {
+      background: #f7faf7;
+      color: #1a3d2b;
+    }
+
+    body.light-mode .frame-tool-canvas-wrap {
+      background: #e7f5e7;
+    }
+
+    body.light-mode .frame-tool-input,
+    body.light-mode .frame-tool-text {
+      background: #fff;
+      color: #1a3d2b;
+      border-color: #1fa463;
+    }
+
+    body.light-mode .frame-tool-btn {
+      background: #1fa463;
+      color: #fff;
+    }
+
+    body.light-mode .frame-tool-btn:hover {
+      background: #0d2d1e;
+      color: #fff;
+    }
+
+    body.light-mode .frame-tool-dark-toggle {
+      background: #e7f5e7;
+      color: #1fa463;
+    }
+
+    body.light-mode .frame-tool-dark-toggle:hover {
+      background: #1fa463;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- navigation -->
+  <header class="navigation bg-tertiary">
+    <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span
+            class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item"> <a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item "> <a class="nav-link" href="about.html">About</a></li>
+            <li class="nav-item "> <a class="nav-link" href="how-it-works.html">How It Works</a></li>
+            <li class="nav-item "> <a class="nav-link" href="services.html">Services</a></li>
+            <li class="nav-item "> <a class="nav-link" href="contact.html">Contact</a></li>
+            <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item " href="blog.html">Blog</a></li>
+                <li><a class="dropdown-item " href="blog-details.html">Blog Details</a></li>
+                <li><a class="dropdown-item " href="service-details.html">Service Details</a></li>
+                <li><a class="dropdown-item " href="faq.html">FAQ&#39;s</a></li>
+                <li><a class="dropdown-item " href="legal.html">Legal</a></li>
+                <li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a></li>
+                <li><a class="dropdown-item " href="privacy-policy.html">Photo Frame</a></li>
+              </ul>
+            </li>
+          </ul>
+          <a href="#!" class="btn btn-outline-primary">Log In</a>
+          <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- /navigation -->
+
+  <main>
+    <button class="frame-tool-dark-toggle" id="darkToggle" title="Toggle light/dark mode">🌙</button>
+    <div class="frame-tool-container">
+      <div class="frame-tool-title">Photo Frame</div>
+      <label class="frame-tool-label" for="frameToolImage">Upload your photo (JPG/PNG):</label>
+      <input class="frame-tool-input" type="file" id="frameToolImage" accept="image/png, image/jpeg">
+      <div class="frame-tool-canvas-wrap">
+        <canvas id="frameToolCanvas" class="frame-tool-canvas" width="400" height="400"></canvas>
+      </div>
+      <div class="frame-tool-controls">
+        <button class="frame-tool-btn" id="rotateLeft" title="Rotate Left 90°"><i class="fas fa-undo"></i>⟲</button>
+        <button class="frame-tool-btn" id="rotateRight" title="Rotate Right 90°"><i class="fas fa-redo"></i>⟳</button>
+        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Zoom</label>
+        <input type="range" min="0.5" max="2" step="0.01" value="1" id="zoomSlider" class="frame-tool-slider"
+          style="width:90px;">
+        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Crop</label>
+        <input type="range" min="0" max="1" step="0.01" value="0" id="cropSlider" class="frame-tool-slider"
+          style="width:90px;">
+      </div>
+      <label class="frame-tool-label" for="frameToolName">Your Name (Malayalam):</label>
+      <input class="frame-tool-text" type="text" id="frameToolName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
+        style="font-family:'Anek Malayalam',sans-serif;">
+      <div class="frame-tool-controls">
+        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
+        <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="frame-tool-slider"
+          style="width:90px;">
+        <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Y</label>
+        <input type="range" min="0" max="1" step="0.01" value="0.85" id="textYSlider" class="frame-tool-slider"
+          style="width:90px;">
+      </div>
+      <button class="frame-tool-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
+      <div style="font-size:0.95em; color:#aaa; margin-top:1rem; text-align:center;">
+        All processing is done in your browser. No data is uploaded.
+      </div>
+    </div>
+  </main>
+
+  <footer class="section-sm bg-tertiary">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-lg-2 col-md-4 col-6 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">Service</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="service-details.html">Personal loans</a></li>
+              <li class="mb-2"><a href="service-details.html">Home Equity Loans</a></li>
+              <li class="mb-2"><a href="service-details.html">Student Loans</a></li>
+              <li class="mb-2"><a href="service-details.html">Mortgage Loans</a></li>
+              <li class="mb-2"><a href="service-details.html">Payday Loans</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">About</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#!">Benefits</a></li>
+              <li class="mb-2"><a href="#!">Careers</a></li>
+              <li class="mb-2"><a href="#!">Our Story</a></li>
+              <li class="mb-2"><a href="#!">Team</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">Help</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="contact.html">Contact Us</a></li>
+              <li class="mb-2"><a href="faq.html">FAQs</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12 newsletter-form">
+          <div style="background-color: #F4F4F4; padding: 35px;">
+            <h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
+            <div class="pe-0 pe-xl-5">
+              <form action="#!" method="post" name="mc-embedded-subscribe-form" target="_blank">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address">
+                  <span class="input-group-text border-0 p-0">
+                    <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
+                      aria-label="Subscribe for Newsletter"><i class="fas fa-arrow-right"></i></button>
+                  </span>
+                </div>
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                  <input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
+                </div>
+              </form>
+            </div>
+            <p class="mb-0">Lorem ipsum dolor sit amet, rdghds consetetur sadipscing elitr, sed diam nonumy eirmod
+              tempor invidunt ut labore et dolore magna aliquyam erat</p>
+          </div>
+        </div>
+      </div>
+      <div class="row align-items-center mt-5 text-center text-md-start">
+        <div class="col-lg-4">
+          <a href="index.html">
+            <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+          <ul class="list-unstyled list-inline mb-0 text-lg-center">
+            <li class="list-inline-item me-4"><a class="text-black" href="privacy-policy.html">Photo Frame</a></li>
+            <li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp; Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
+          <ul class="list-unstyled list-inline mb-0 social-icons">
+            <li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black"
+                href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
+            <li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black"
+                href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
+            <li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black"
+                href="https://instagram.com/"><i class="fab fa-instagram"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Plugins -->
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="plugins/slick/slick.min.js"></script>
+  <script src="plugins/scrollmenu/scrollmenu.min.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- Photo Frame Script -->
+  <script>
+    // --- State ---
+    let userImg = null,
+      userImgObj = null,
+      frameImg = null,
+      frameObj = null;
+    let rotation = 0,
+      zoom = 1,
+      crop = 0,
+      textSize = 36,
+      textY = 0.85;
+    let canvas, ctx, frameW = 400,
+      frameH = 400,
+      frameAspect = 1;
+    let nameText = '';
+
+    // --- Elements ---
+    window.addEventListener('DOMContentLoaded', function () {
+      canvas = document.getElementById('frameToolCanvas');
+      ctx = canvas.getContext('2d');
+      // Load frame PNG
+      frameImg = new window.Image();
+      frameImg.src = 'images/frame/frame.png';
+      frameImg.onload = function () {
+        frameW = frameImg.width;
+        frameH = frameImg.height;
+        frameAspect = frameW / frameH;
+        // Set canvas size
+        if (frameAspect > 1) {
+          canvas.width = 400;
+          canvas.height = Math.round(400 / frameAspect);
+        } else {
+          canvas.height = 400;
+          canvas.width = Math.round(400 * frameAspect);
+        }
+        drawAll();
+      };
+      // Image upload
+      document.getElementById('frameToolImage').addEventListener('change', function (e) {
+        if (!e.target.files[0]) return;
+        let file = e.target.files[0];
+        if (!file.type.match(/^image\/(jpeg|png)$/)) {
+          alert('Please upload a JPG or PNG image.');
+          return;
+        }
+        let reader = new FileReader();
+        reader.onload = function (ev) {
+          userImgObj = new window.Image();
+          userImgObj.onload = function () {
+            drawAll();
+          };
+          userImgObj.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      // Controls
+      document.getElementById('rotateLeft').onclick = function () {
+        rotation = (rotation - 90) % 360;
+        drawAll();
+      };
+      document.getElementById('rotateRight').onclick = function () {
+        rotation = (rotation + 90) % 360;
+        drawAll();
+      };
+      document.getElementById('zoomSlider').oninput = function (e) {
+        zoom = parseFloat(e.target.value);
+        drawAll();
+      };
+      document.getElementById('cropSlider').oninput = function (e) {
+        crop = parseFloat(e.target.value);
+        drawAll();
+      };
+      document.getElementById('frameToolName').oninput = function (e) {
+        nameText = e.target.value;
+        drawAll();
+      };
+      document.getElementById('textSizeSlider').oninput = function (e) {
+        textSize = parseInt(e.target.value, 10);
+        drawAll();
+      };
+      document.getElementById('textYSlider').oninput = function (e) {
+        textY = parseFloat(e.target.value);
+        drawAll();
+      };
+      document.getElementById('downloadBtn').onclick = function () {
+        let link = document.createElement('a');
+        link.download = 'photo-frame.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+      // Dark mode toggle
+      document.getElementById('darkToggle').onclick = function () {
+        document.body.classList.toggle('light-mode');
+        this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+      };
+      // Initial draw
+      drawAll();
+    });
+
+    // --- Drawing Logic ---
+    function drawAll() {
+      // Clear
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Draw user image (if any)
+      if (userImgObj && userImgObj.complete) {
+        // Calculate crop/zoom/rotation
+        let iw = userImgObj.width,
+          ih = userImgObj.height;
+        let angle = rotation * Math.PI / 180;
+        // Fit image to canvas, then apply zoom/crop
+        let cW = canvas.width,
+          cH = canvas.height;
+        // Crop: 0 = fit, 1 = center crop to square/rect
+        let frameRatio = cW / cH,
+          imgRatio = iw / ih;
+        let drawW, drawH, sx, sy, sw, sh;
+        if ((imgRatio > frameRatio && crop > 0) || (imgRatio < frameRatio && crop === 0)) {
+          // Crop width
+          sh = ih;
+          sw = ih * frameRatio * (1 - crop) + ih * (imgRatio - frameRatio) * crop;
+          sx = (iw - sw) / 2;
+          sy = 0;
+        } else {
+          // Crop height
+          sw = iw;
+          sh = iw / frameRatio * (1 - crop) + iw * (1 / imgRatio - 1 / frameRatio) * crop;
+          sx = 0;
+          sy = (ih - sh) / 2;
+        }
+        // Zoom
+        sw /= zoom;
+        sh /= zoom;
+        sx += (iw - sw) / 2;
+        sy += (ih - sh) / 2;
+        // Center
+        ctx.save();
+        ctx.translate(cW / 2, cH / 2);
+        ctx.rotate(angle);
+        ctx.drawImage(userImgObj, sx, sy, sw, sh, -cW / 2, -cH / 2, cW, cH);
+        ctx.restore();
+      }
+      // Draw frame
+      if (frameImg && frameImg.complete) {
+        ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+      }
+      // Draw name text
+      if (nameText && nameText.trim().length > 0) {
+        ctx.save();
+        ctx.font = `bold ${textSize}px 'Anek Malayalam', sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 4;
+        ctx.fillStyle = '#fff';
+        let y = canvas.height * textY;
+        ctx.fillText(nameText, canvas.width / 2, y);
+        ctx.restore();
+      }
+    }
+  </script>
+</body>
+
+</html>
