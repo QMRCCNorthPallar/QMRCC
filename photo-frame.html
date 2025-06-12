@@ -3,69 +3,73 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Photo Frame | QMRCC</title>
+  <title>Malayali Moments: Instant Photo Frame Maker | QMRCC</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <meta name="description" content="Create your custom photo frame with Malayalam name overlay.">
-  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-  <link rel="icon" href="images/favicon.png" type="image/x-icon">
-
-  <!-- Google Fonts: Rubik + Anek Malayalam -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap"
-    rel="stylesheet">
-  <!-- Main Style Sheet -->
-  <link rel="stylesheet" href="css/style.css">
-  <!-- CROPRO CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropro@2.0.1/dist/cropro.min.css">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
   <style>
     body {
-      background: #f7faf7;
-      color: #1a3d2b;
+      background: linear-gradient(135deg, #e7f5e7 0%, #f7faf7 100%);
       font-family: 'Rubik', sans-serif;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
 
     .photo-frame-container {
       background: #fff;
-      border-radius: 1.5rem;
-      box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12);
-      padding: 2.5rem 1.5rem 2rem 1.5rem;
-      margin: 2.5rem auto;
-      max-width: 500px;
-      color: inherit;
+      border-radius: 1.2rem;
+      box-shadow: 0 6px 32px rgba(31, 164, 99, 0.10), 0 1.5px 8px rgba(0,0,0,0.04);
+      padding: 2rem 1.2rem 1.5rem 1.2rem;
+      margin: 2.5rem auto 1.5rem auto;
+      max-width: 420px;
+      color: #1a3d2b;
       position: relative;
+      transition: box-shadow 0.2s;
     }
 
     .photo-frame-title {
-      font-size: 2.2rem;
-      font-weight: 700;
+      font-size: 2.1rem;
+      font-weight: 800;
       color: #1fa463;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.7rem;
       text-align: center;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
+      font-family: 'Rubik', sans-serif;
+      text-shadow: 0 2px 8px #e7f5e7;
+    }
+
+    .photo-frame-subtitle {
+      font-size: 1.08rem;
+      color: #1a3d2b;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-family: 'Anek Malayalam', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     .photo-frame-label {
       font-weight: 500;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       display: block;
       color: #1fa463;
-      font-size: 1.08rem;
+      font-size: 1.03rem;
+      margin-top: 0.7rem;
     }
 
     .photo-frame-input,
     .photo-frame-text {
       width: 100%;
-      padding: 0.65rem 1.1rem;
-      border-radius: 0.7rem;
-      border: 1.5px solid #1fa463;
+      padding: 0.45rem 0.9rem;
+      border-radius: 0.5rem;
+      border: 1.2px solid #1fa463;
       background: #f7faf7;
       color: #1a3d2b;
-      margin-bottom: 1.2rem;
-      font-size: 1.08rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.02rem;
       outline: none;
       transition: border 0.2s;
     }
@@ -79,79 +83,127 @@
       background: linear-gradient(90deg, #1fa463 60%, #2be08a 100%);
       color: #fff;
       border: none;
-      border-radius: 0.7rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.15rem;
-      font-weight: 600;
+      border-radius: 0.5rem;
+      padding: 0.55rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-      margin-bottom: 0.5rem;
-      margin-top: 0.5rem;
-      box-shadow: 0 2px 8px rgba(31, 164, 99, 0.08);
-      transition: background 0.2s, color 0.2s;
+      margin: 1.1rem auto 0 auto;
       display: inline-block;
+      min-width: 110px;
+      text-align: center;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 8px rgba(31, 164, 99, 0.08);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     }
 
     .photo-frame-btn:hover,
     .photo-frame-btn:focus {
       background: linear-gradient(90deg, #2be08a 60%, #1fa463 100%);
       color: #0d2d1e;
+      box-shadow: 0 4px 16px rgba(31, 164, 99, 0.13);
+    }
+
+    .photo-frame-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.7rem;
     }
 
     .photo-frame-canvas-wrap {
       background: #e7f5e7;
-      border-radius: 1.2rem;
-      padding: 1.2rem;
-      margin-bottom: 1.3rem;
+      border-radius: 1rem;
+      padding: 0.7rem;
+      margin-bottom: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-      min-height: 320px;
-      max-width: 100%;
-      overflow: auto;
-      border: 1.5px solid #1fa463;
-      box-shadow: 0 2px 12px rgba(31, 164, 99, 0.07);
+      border: 1.2px solid #1fa463;
+      min-height: 220px;
     }
 
     .photo-frame-canvas {
-      border-radius: 1rem;
+      border-radius: 0.7rem;
       background: #fff;
       max-width: 100%;
       height: auto;
-      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.10);
+      border: 1px solid #e0e0e0;
       display: block;
       touch-action: none;
-      border: 1px solid #e0e0e0;
     }
 
     .photo-frame-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.7rem;
+      gap: 0.5rem;
       justify-content: center;
-      margin-bottom: 1.1rem;
+      margin-bottom: 0.7rem;
       align-items: center;
     }
 
     .photo-frame-slider {
-      width: 110px;
-      margin: 0.5rem 0;
+      width: 80px;
+      margin: 0.2rem 0;
       accent-color: #1fa463;
+    }
+
+    #croppieModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #croppieModal.active {
+      display: flex;
+    }
+
+    #croppieModal .modal-content {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1rem;
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow: auto;
+      min-width: 220px;
+    }
+
+    #croppieModal .modal-footer {
+      text-align: center;
+      margin-top: 0.7rem;
     }
 
     @media (max-width: 600px) {
       .photo-frame-container {
-        padding: 1rem 0.2rem;
+        padding: 0.6rem 0.1rem;
         border-radius: 0.7rem;
+        max-width: 99vw;
       }
-
       .photo-frame-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
       }
-
       .photo-frame-canvas-wrap {
-        min-height: 220px;
-        padding: 0.5rem;
+        min-height: 120px;
+        padding: 0.2rem;
+      }
+      .photo-frame-btn {
+        font-size: 0.93rem;
+        padding: 0.5rem 0.7rem;
+        min-width: 70px;
+      }
+      #croppieModal .modal-content {
+        min-width: 120px;
+        padding: 0.4rem;
+      }
+      .photo-frame-controls label {
+        font-size: 0.97rem;
       }
     }
   </style>
@@ -159,94 +211,159 @@
 
 <body>
   <div class="photo-frame-container">
-    <div class="photo-frame-title">Photo Frame</div>
+    <div class="photo-frame-title">Malayali Moments</div>
+    <div class="photo-frame-subtitle">Create your own Kerala-style photo frame in seconds!</div>
     <div class="photo-frame-label">Your Name (Malayalam):</div>
     <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
       style="font-family:'Anek Malayalam',sans-serif;">
     <div class="photo-frame-controls">
-      <label style="margin:0 0.5rem 0 0.5rem; color:#1fa463;">Text Size</label>
+      <label style="margin:0 0.3rem 0 0.3rem; color:#1fa463;">Text Size</label>
       <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
+      <label style="margin:0 0.3rem 0 1rem; color:#1fa463;">Text Y</label>
+      <input type="range" min="0.7" max="1" step="0.01" value="0.94" id="textYSlider" class="photo-frame-slider">
     </div>
-    <div class="photo-frame-label">Upload your photo (JPG/PNG):</div>
-    <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg">
+    <div class="photo-frame-label">Upload your photo (JPG/PNG/HEIC):</div>
+    <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg, image/heic">
     <div class="photo-frame-canvas-wrap">
-      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="800" height="800"></canvas>
+      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350"></canvas>
     </div>
-    <button class="photo-frame-btn" id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
-    <div style="font-size:0.95em; color:#888; margin-top:1rem; text-align:center;">
+    <div class="photo-frame-btn-group">
+      <button class="photo-frame-btn" id="downloadBtn">Download Image</button>
+    </div>
+    <div style="font-size:0.93em; color:#888; margin-top:1rem; text-align:center;">
       All processing is done in your browser. No data is uploaded.
     </div>
   </div>
 
-  <!-- CROPRO JS -->
-  <script src="https://cdn.jsdelivr.net/npm/cropro@2.0.1/dist/cropro.min.js"></script>
-  <script>
-    // --- State ---
-    let userImgObj = null,
-      frameImg = null;
-    let textSize = 36;
-    let nameText = '';
-    const CANVAS_SIZE = 800; // Use high-res for better quality
+  <!-- Croppie Modal -->
+  <div id="croppieModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+    <div class="modal-content">
+      <div id="croppieContainer"></div>
+      <div class="photo-frame-btn-group modal-footer">
+        <button class="photo-frame-btn" id="croppieCancelBtn">Cancel</button>
+        <button class="photo-frame-btn" id="croppieApplyBtn">Crop</button>
+      </div>
+    </div>
+  </div>
 
-    // --- Elements ---
+  <script>
+    let userImgObj = null,
+      frameImg = null,
+      croppie = null;
+    let textSize = 36,
+      textY = 0.94;
+    const CANVAS_W = 1080,
+      CANVAS_H = 1350;
+
     const canvas = document.getElementById('photoFrameCanvas');
     const ctx = canvas.getContext('2d');
     const nameInput = document.getElementById('photoFrameName');
     const textSizeSlider = document.getElementById('textSizeSlider');
+    const textYSlider = document.getElementById('textYSlider');
     const downloadBtn = document.getElementById('downloadBtn');
     const photoFrameImage = document.getElementById('photoFrameImage');
+    const croppieModal = document.getElementById('croppieModal');
+    const croppieContainer = document.getElementById('croppieContainer');
+    const croppieCancelBtn = document.getElementById('croppieCancelBtn');
+    const croppieApplyBtn = document.getElementById('croppieApplyBtn');
 
-    // --- Load frame image ---
+    // Load frame image
     frameImg = new window.Image();
     frameImg.src = 'images/frame/frame.png';
     frameImg.onload = drawAll;
-    // Draw frame even before image upload
     drawAll();
 
-    // --- Name input ---
-    nameInput.addEventListener('input', function () {
-      nameText = nameInput.value;
-      drawAll();
-    });
-
+    nameInput.addEventListener('input', drawAll);
     textSizeSlider.addEventListener('input', function () {
       textSize = parseInt(this.value, 10);
       drawAll();
     });
+    textYSlider.addEventListener('input', function () {
+      textY = parseFloat(this.value);
+      drawAll();
+    });
 
-    // --- Image upload & CROPRO ---
+    // --- Image upload & Croppie ---
     photoFrameImage.addEventListener('change', function (e) {
       if (!e.target.files[0]) return;
       let file = e.target.files[0];
-      if (!file.type.match(/^image\/(jpeg|png)$/)) {
-        alert('Please upload a JPG or PNG image.');
+      // Accept HEIC, JPEG, PNG
+      if (!file.type.match(/^image\/(heic|jpeg|png)$/) && !file.name.match(/\.heic$/i)) {
+        alert('Please upload a JPG, PNG, or HEIC image.');
         return;
       }
+
+      // Handle HEIC
+      if (file.type === "image/heic" || file.name.match(/\.heic$/i)) {
+        heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.95
+        }).then(function (convertedBlob) {
+          let reader = new FileReader();
+          reader.onload = function (ev) {
+            openCroppie(ev.target.result);
+          };
+          reader.readAsDataURL(convertedBlob);
+        }).catch(function (e) {
+          alert("Failed to convert HEIC image. Please try a different image.");
+        });
+        return;
+      }
+
+      // Handle JPEG/PNG as before
       let reader = new FileReader();
       reader.onload = function (ev) {
-        Cropro.show({
-          src: ev.target.result,
-          aspectRatio: 1,
-          onApply: function (croppedDataUrl) {
-            userImgObj = new window.Image();
-            userImgObj.onload = drawAll;
-            userImgObj.src = croppedDataUrl;
-          }
-        });
+        openCroppie(ev.target.result);
       };
       reader.readAsDataURL(file);
     });
 
-    // --- Drawing Logic ---
+    function openCroppie(src) {
+      croppieModal.style.display = 'flex';
+      if (croppie) { croppie.destroy(); croppie = null; }
+      croppie = new Croppie(croppieContainer, {
+        viewport: { width: 324, height: 405, type: 'square' }, // 1080:1350 ratio
+        boundary: { width: 350, height: 430 },
+        enableOrientation: true,
+        enableZoom: true
+      });
+      croppie.bind({ url: src });
+    }
+
+    croppieCancelBtn.onclick = function () {
+      croppieModal.style.display = 'none';
+      if (croppie) { croppie.destroy(); croppie = null; }
+    };
+
+    croppieApplyBtn.onclick = function () {
+      if (!croppie) return;
+      croppie.result({
+        type: 'base64',
+        size: { width: CANVAS_W, height: CANVAS_H },
+        format: 'png',
+        quality: 1
+      }).then(function (croppedDataUrl) {
+        userImgObj = new window.Image();
+        userImgObj.onload = function () {
+          croppieModal.style.display = 'none';
+          croppie.destroy();
+          croppie = null;
+          drawAll();
+        };
+        userImgObj.src = croppedDataUrl;
+      });
+    };
+
     function drawAll() {
-      ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
       // Draw user image (if any)
       if (userImgObj && userImgObj.complete) {
-        ctx.drawImage(userImgObj, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        ctx.drawImage(userImgObj, 0, 0, CANVAS_W, CANVAS_H);
       }
       // Draw frame (always)
       if (frameImg && frameImg.complete) {
-        ctx.drawImage(frameImg, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        ctx.drawImage(frameImg, 0, 0, CANVAS_W, CANVAS_H);
       }
       // Draw name text (always)
       if (nameInput.value.trim().length > 0) {
@@ -257,17 +374,15 @@
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
         ctx.shadowBlur = 4;
         ctx.fillStyle = '#fff';
-        // Fixed position: bottom center, 70px above the border
         ctx.fillText(
           nameInput.value,
-          CANVAS_SIZE / 2,
-          CANVAS_SIZE - textSize * 1.2 - 70
+          CANVAS_W / 2,
+          CANVAS_H * textY
         );
         ctx.restore();
       }
     }
 
-    // --- Download ---
     downloadBtn.onclick = function () {
       let link = document.createElement('a');
       link.download = 'photo-frame.png';
@@ -276,5 +391,4 @@
     };
   </script>
 </body>
-
 </html>
