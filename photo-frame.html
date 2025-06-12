@@ -3,94 +3,110 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Malayali Moments: Instant Photo Frame Maker | QMRCC</title>
+  <title>QMRCC Frame: Celebrate Unity!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
   <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
   <style>
+    html,
     body {
       background: linear-gradient(135deg, #e7f5e7 0%, #f7faf7 100%);
       font-family: 'Rubik', sans-serif;
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
     }
 
-    .photo-frame-container {
-      background: #fff;
-      border-radius: 1.2rem;
-      box-shadow: 0 6px 32px rgba(31, 164, 99, 0.10), 0 1.5px 8px rgba(0,0,0,0.04);
-      padding: 2rem 1.2rem 1.5rem 1.2rem;
+    .main-content {
+      max-width: 480px;
       margin: 2.5rem auto 1.5rem auto;
-      max-width: 420px;
-      color: #1a3d2b;
-      position: relative;
-      transition: box-shadow 0.2s;
+      padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 8px 32px rgba(31, 164, 99, 0.13), 0 1.5px 8px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .photo-frame-title {
       font-size: 2.1rem;
-      font-weight: 800;
+      font-weight: 900;
       color: #1fa463;
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.5rem;
       text-align: center;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       font-family: 'Rubik', sans-serif;
-      text-shadow: 0 2px 8px #e7f5e7;
+      text-shadow: 0 2px 12px #e7f5e7, 0 1px 0 #fff;
     }
 
     .photo-frame-subtitle {
-      font-size: 1.08rem;
+      font-size: 1.13rem;
       color: #1a3d2b;
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.4rem;
       font-family: 'Anek Malayalam', sans-serif;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.01em;
+      background: linear-gradient(90deg, #e7f5e7 60%, #f7faf7 100%);
+      border-radius: 0.7rem;
+      padding: 0.7rem 0.7rem 0.6rem 0.7rem;
+      box-shadow: 0 2px 8px rgba(31, 164, 99, 0.04);
     }
 
     .photo-frame-label {
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-      display: block;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
       color: #1fa463;
-      font-size: 1.03rem;
+      font-size: 1.08rem;
       margin-top: 0.7rem;
+      text-align: center;
+      letter-spacing: 0.01em;
     }
 
     .photo-frame-input,
     .photo-frame-text {
-      width: 100%;
+      width: 96vw;
+      max-width: 340px;
       padding: 0.45rem 0.9rem;
-      border-radius: 0.5rem;
-      border: 1.2px solid #1fa463;
+      border-radius: 0.7rem;
+      border: 1.5px solid #1fa463;
       background: #f7faf7;
       color: #1a3d2b;
-      margin-bottom: 0.8rem;
-      font-size: 1.02rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.09rem;
       outline: none;
       transition: border 0.2s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+      text-align: center;
+      font-family: 'Anek Malayalam', sans-serif;
     }
 
     .photo-frame-input:focus,
     .photo-frame-text:focus {
       border-color: #2be08a;
+      background: #f0fff0;
     }
 
     .photo-frame-btn {
       background: linear-gradient(90deg, #1fa463 60%, #2be08a 100%);
       color: #fff;
       border: none;
-      border-radius: 0.5rem;
-      padding: 0.55rem 1.2rem;
-      font-size: 1rem;
+      border-radius: 0.7rem;
+      padding: 0.55rem 1.3rem;
+      font-size: 1.08rem;
       font-weight: 700;
       cursor: pointer;
       margin: 1.1rem auto 0 auto;
       display: inline-block;
-      min-width: 110px;
+      min-width: 120px;
       text-align: center;
       letter-spacing: 0.01em;
       box-shadow: 0 2px 8px rgba(31, 164, 99, 0.08);
@@ -119,18 +135,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1.2px solid #1fa463;
-      min-height: 220px;
+      border: 1.5px solid #1fa463;
+      min-height: 120px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .photo-frame-canvas {
       border-radius: 0.7rem;
       background: #fff;
-      max-width: 100%;
+      max-width: 340px;
+      width: 100%;
       height: auto;
       border: 1px solid #e0e0e0;
       display: block;
       touch-action: none;
+      box-sizing: border-box;
+      margin: 0 auto;
     }
 
     .photo-frame-controls {
@@ -143,7 +164,7 @@
     }
 
     .photo-frame-slider {
-      width: 80px;
+      width: 70px;
       margin: 0.2rem 0;
       accent-color: #1fa463;
     }
@@ -172,7 +193,7 @@
       max-width: 95vw;
       max-height: 95vh;
       overflow: auto;
-      min-width: 220px;
+      min-width: 180px;
     }
 
     #croppieModal .modal-footer {
@@ -181,46 +202,59 @@
     }
 
     @media (max-width: 600px) {
-      .photo-frame-container {
-        padding: 0.5rem 0.1rem;
+      .main-content {
+        padding: 0.7rem 0.1rem;
         border-radius: 0.7rem;
         max-width: 99vw;
       }
+
       .photo-frame-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
       }
+
       .photo-frame-subtitle {
         font-size: 0.97rem;
+        padding: 0.5rem 0.3rem 0.4rem 0.3rem;
       }
+
       .photo-frame-canvas-wrap {
         min-height: 80px;
-        padding: 0.1rem;
+        padding: 0.2rem;
       }
+
       .photo-frame-canvas {
         max-width: 95vw !important;
         width: 95vw !important;
-        height: auto !important;
-        border-radius: 0.5rem;
+        border-radius: 0.4rem;
       }
+
       .photo-frame-btn {
         font-size: 0.93rem;
         padding: 0.5rem 0.7rem;
         min-width: 70px;
       }
+
       .photo-frame-controls label {
         font-size: 0.97rem;
+      }
+
+      .photo-frame-input,
+      .photo-frame-text {
+        font-size: 1rem;
+        padding: 0.35rem 0.5rem;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="photo-frame-container">
-    <div class="photo-frame-title">Malayali Moments</div>
-    <div class="photo-frame-subtitle">Create your own Kerala-style photo frame in seconds!</div>
+  <div class="main-content">
+    <div class="photo-frame-title">QMRCC Frame</div>
+    <div class="photo-frame-subtitle">
+      Show your support for QMRCC! Instantly add a vibrant frame to your photo and celebrate our unity.
+    </div>
     <div class="photo-frame-label">Your Name (Malayalam):</div>
-    <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32"
-      style="font-family:'Anek Malayalam',sans-serif;">
+    <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32">
     <div class="photo-frame-controls">
       <label style="margin:0 0.3rem 0 0.3rem; color:#1fa463;">Text Size</label>
       <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
@@ -230,7 +264,7 @@
     <div class="photo-frame-label">Upload your photo (JPG/PNG/HEIC):</div>
     <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg, image/heic">
     <div class="photo-frame-canvas-wrap">
-      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350" style="max-width:100%;height:auto;display:block;margin:0 auto;"></canvas>
+      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350"></canvas>
     </div>
     <div class="photo-frame-btn-group">
       <button class="photo-frame-btn" id="downloadBtn">Download Image</button>
@@ -396,4 +430,5 @@
     };
   </script>
 </body>
+
 </html>
