@@ -115,6 +115,8 @@
   </style>
 </head>
 <body>
+  <img src="images/blood_banner.png" alt="Blood Donation Banner"
+    style="width:100%;max-width:500px;display:block;margin:24px auto 0 auto;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.08);" />
   <div class="center-wrap">
     <div class="main-card">
       <img src="images/logo2.png" alt="QMRCC Logo" class="logo-img">
@@ -145,21 +147,65 @@
     © 2025 QMRCC.
   </div>
   <script>
-    const form = document.getElementById('donorForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+const form = document.getElementById('donorForm');
+const resultDiv = document.getElementById('result');
 
-      const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
 
-      const result = await res.json();
-      document.getElementById("result").innerText = result.message || result.error || "Something went wrong.";
+  // Validate phone number
+  if (!/^\d{10}$/.test(data.phone)) {
+    resultDiv.style.display = "block";
+    resultDiv.style.background = "#ffebee";
+    resultDiv.style.border = "1px solid #ef9a9a";
+    resultDiv.style.color = "#b71c1c";
+    resultDiv.innerText = "മൊബൈൽ നമ്പർ 10 അക്കമുള്ളതായിരിക്കണം.";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
     });
-  </script>
+
+    const result = await res.json();
+    resultDiv.style.display = "block";
+
+    if (result.message === "Donor already exists.") {
+      resultDiv.style.background = "#fff3e0";
+      resultDiv.style.border = "1px solid #ffcc80";
+      resultDiv.style.color = "#e65100";
+      resultDiv.innerText = "ഈ ദാതാവ് ഇതിനകം രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്.";
+    } else if (result.message === "Donor added successfully!") {
+      resultDiv.style.background = "#e8f5e9";
+      resultDiv.style.border = "1px solid #c8e6c9";
+      resultDiv.style.color = "#2e7d32";
+      resultDiv.innerHTML = `
+        <p>ഈ സദുദ്യമത്തോട് സഹകരിച്ചതിന് ഹൃദയം നിറഞ്ഞ നന്ദി...</p>
+        <p style="margin-top: 1em;">🍃 സ്നേഹത്തോടെ,<br>
+        ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ (QMRCC),<br>
+        വടക്കെ പല്ലാർ</p>
+      `;
+      form.reset();
+    } else {
+      resultDiv.style.background = "#ffebee";
+      resultDiv.style.border = "1px solid #ef9a9a";
+      resultDiv.style.color = "#b71c1c";
+      resultDiv.innerText = result.error || "നിങ്ങളുടെ ​ശ്രമം വിജയിച്ചില്ല. നന്ദി!.";
+    }
+
+  } catch (err) {
+    resultDiv.style.display = "block";
+    resultDiv.style.background = "#ffebee";
+    resultDiv.style.border = "1px solid #ef9a9a";
+    resultDiv.style.color = "#b71c1c";
+    resultDiv.innerText = "സർവർ പ്രശ്നം. പിന്നീട് വീണ്ടും ശ്രമിക്കുക.";
+  }
+});
+</script>
 </body>
 </html>
