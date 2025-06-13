@@ -2,11 +2,11 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <title>Donor Search - QMRCC Blood Bank</title>
+  <title>രക്തദാതാക്കളെ തിരയുക - QMRCC</title>
   <style>
     body {
       font-family: 'Noto Sans Malayalam', sans-serif;
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
       padding: 2em;
       background: #f9f9f9;
@@ -15,26 +15,45 @@
       text-align: center;
       color: #880e4f;
     }
-    form, .results {
+    form {
       background: #fff;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-top: 1em;
     }
     select, button {
-      display: block;
       width: 100%;
-      margin: 1em 0;
       padding: 10px;
       font-size: 1em;
+      margin: 1em 0;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 4px;
     }
-    .donor {
-      margin-bottom: 1em;
-      border-bottom: 1px dashed #ccc;
-      padding-bottom: 1em;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+      cursor: pointer;
+    }
+    #exportBtn {
+      margin-top: 1em;
+      padding: 10px 20px;
+      background: #00695c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #exportBtn:hover {
+      background: #004d40;
     }
   </style>
 </head>
@@ -53,16 +72,32 @@
   <button type="submit">തിരയുക</button>
 </form>
 
-<div class="results" id="results" style="display:none;"></div>
+<div id="resultsSection" style="display:none;">
+  <button id="exportBtn">CSV ആയി കയറ്റുമതി ചെയ്യുക</button>
+  <table id="resultsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>പേര്</th>
+        <th>ഫോൺ</th>
+        <th>പ്രദേശം</th>
+        <th>രക്ത ഗ്രൂപ്പ്</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
 <script>
 const form = document.getElementById("searchForm");
-const resultsDiv = document.getElementById("results");
+const resultsSection = document.getElementById("resultsSection");
+const resultsTable = document.getElementById("resultsTable").querySelector("tbody");
+const exportBtn = document.getElementById("exportBtn");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  resultsDiv.innerHTML = "തെരയുന്നു...";
-  resultsDiv.style.display = "block";
+  resultsSection.style.display = "none";
+  resultsTable.innerHTML = "<tr><td colspan='5'>തെരയുന്നു...</td></tr>";
 
   const group = form.group.value.trim();
   const url = `https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`;
@@ -72,26 +107,48 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {
-      resultsDiv.innerHTML = `<p>ഫലങ്ങൾ ഒന്നുമില്ല.</p>`;
+      resultsTable.innerHTML = "<tr><td colspan='5'>ഫലങ്ങൾ ഒന്നുമില്ല.</td></tr>";
+      resultsSection.style.display = "block";
       return;
     }
 
-    resultsDiv.innerHTML = "";
-    data.forEach((row, index) => {
-      resultsDiv.innerHTML += `
-        <div class="donor">
-          <strong>${index + 1}. ${row["Name"] || 'അജ്ഞാതൻ'}</strong><br>
-          ഫോൺ: ${row["Mobile Number"] || '—'}<br>
-          പ്രദേശം: ${row["Area"] || '—'}<br>
-          രക്ത ഗ്രൂപ്പ്: ${row["Blood Group"]?.value || '—'}
-        </div>
+    // Populate table
+    resultsTable.innerHTML = "";
+    data.forEach((row, i) => {
+      resultsTable.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${row["Name"] || 'അജ്ഞാതൻ'}</td>
+          <td>${row["Mobile Number"] || '—'}</td>
+          <td>${row["Area"] || '—'}</td>
+          <td>${row["Blood Group"]?.value || '—'}</td>
+        </tr>
       `;
     });
 
+    resultsSection.style.display = "block";
+
   } catch (err) {
-    resultsDiv.innerHTML = "<p>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</p>";
+    resultsTable.innerHTML = "<tr><td colspan='5'>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</td></tr>";
+    resultsSection.style.display = "block";
     console.error(err);
   }
+});
+
+// CSV Export
+exportBtn.addEventListener("click", () => {
+  let csv = "Sl No,Name,Phone,Area,Blood Group\n";
+  document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    const rowText = Array.from(cells).map(td => `"${td.innerText}"`).join(",");
+    csv += rowText + "\n";
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "donors.csv";
+  link.click();
 });
 </script>
 
