@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <title>QMRCC Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="QMRCC Family Member Search">
+  <meta name="author" content="QMRCC">
+
+  <!-- ✅ Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
+
+  <!-- ✅ SheetJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Anek Malayalam', sans-serif;
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .center-wrap {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .main-card {
+      background: rgba(255,255,255,0.98);
+      padding: 32px 24px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      animation: fadeIn 0.8s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .main-card img {
+      width: 100px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+    }
+
+    .main-title {
+      font-size: 2rem;
+      color: #00796b;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 8px 14px;
+      color: #009688;
+      background: rgba(0, 150, 136, 0.1);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: #009688;
+      color: white;
+    }
+
+    .main-desc {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #b2dfdb;
+      width: 60%;
+      max-width: 300px;
+      background: #f7fafc;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #009688;
+      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
+    }
+
+    .search-btn {
+      padding: 12px 24px;
+      background: linear-gradient(90deg, #009688 60%, #00796b 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .action-btns button {
+      padding: 10px 18px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      background: #e0f2f1;
+      color: #009688;
+      display: none;
+    }
+
+    .action-btns button:hover {
+      background: #009688;
+      color: white;
+    }
+
+    #results {
+      overflow-x: auto;
+      background: #f7fafc;
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #e0f2f1;
+      text-align: center;
+    }
+
+    th {
+      background: #f3f7f6;
+      color: #00796b;
+      font-weight: bold;
+    }
+
+    .footer-simple {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="center-wrap">
+    <div class="main-card">
+      <img src="https://i.postimg.cc/QxKRyX0q/QMRCC-Logo-2.png" alt="QMRCC Logo">
+      <div class="main-title">QMRCC Search</div>
+
+      <nav class="nav-links">
+        <a href="https://qmrccnorthpallar.github.io/QMRCC/index.html">Home</a>
+        <a href="https://qmrccnorthpallar.github.io/QMRCC/about.html">About</a>
+        <a href="https://qmrccnorthpallar.github.io/QMRCC/services.html">Services</a>
+        <a href="https://qmrccnorthpallar.github.io/QMRCC/blog.html">Blog</a>
+      </nav>
+
+      <div class="main-desc">വടക്കെ പല്ലാർ പ്രദേശവാസികളുടെ വിവരങ്ങൾ തിരയൂ...</div>
+
+      <div class="search-group">
+        <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ...">
+        <button class="search-btn" onclick="performSearch()">തിരയൂ</button>
+      </div>
+
+      <div class="action-btns">
+        <button id="printBtn" onclick="window.print()">പ്രിന്റ് ചെയ്യൂ</button>
+        <button id="exportBtn" onclick="exportToExcel()">Excel ആയി സംരക്ഷിക്കൂ</button>
+      </div>
+
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <div class="footer-simple">
+    © 2025 QMRCC. Powered by Google Sheets.
+  </div>
+
+  <script>
+    let latestResults = [];
+
+    function performSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      const resultsDiv = document.getElementById('results');
+      const printBtn = document.getElementById('printBtn');
+      const exportBtn = document.getElementById('exportBtn');
+      resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
+      printBtn.style.display = 'none';
+      exportBtn.style.display = 'none';
+      latestResults = [];
+
+      google.script.run
+        .withSuccessHandler(renderResults)
+        .searchFamilyMembers(query);
+    }
+
+    function renderResults(results) {
+      const resultsDiv = document.getElementById('results');
+      const printBtn = document.getElementById('printBtn');
+      const exportBtn = document.getElementById('exportBtn');
+
+      if (!results || results.length === 0) {
+        resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
+        return;
+      }
+
+      latestResults = results;
+
+      let html = `
+        <table>
+          <tr>
+            <th>സ്ഥലം</th>
+            <th>ID</th>
+            <th>പേര്</th>
+            <th>ഫോൺ</th>
+            <th>കുടുംബാംഗങ്ങൾ</th>
+            <th>ഷീറ്റ്</th>
+          </tr>
+      `;
+
+      results.forEach(row => {
+        html += `
+          <tr>
+            <td>${row.place}</td>
+            <td>${row.id}</td>
+            <td>${row.name}</td>
+            <td>${row.contact}</td>
+            <td>${row.familyMembers}</td>
+            <td>${row.sheetName}</td>
+          </tr>
+        `;
+      });
+
+      html += '</table>';
+      resultsDiv.innerHTML = html;
+      printBtn.style.display = 'inline-block';
+      exportBtn.style.display = 'inline-block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('searchInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') performSearch();
+      });
+    });
+
+    function exportToExcel() {
+      if (!latestResults.length) return;
+
+      const wsData = [
+        ['സ്ഥലം', 'ID', 'പേര്', 'ഫോൺ', 'കുടുംബാംഗങ്ങൾ', 'ഷീറ്റ്'],
+        ...latestResults.map(r => [
+          r.place, r.id, r.name, r.contact, r.familyMembers, r.sheetName
+        ])
+      ];
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, "SearchResults");
+      XLSX.writeFile(wb, "QMRCC_SearchResults.xlsx");
+    }
+  </script>
+</body>
+</html>
