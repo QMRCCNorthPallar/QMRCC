@@ -3,31 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <title>രക്തദാതാക്കളെ തിരയുക - QMRCC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Noto Sans Malayalam', sans-serif;
-      max-width: 800px;
-      margin: auto;
-      padding: 2em;
-      background: #f9f9f9;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-    h2 {
+    .center-wrap {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .main-card {
+      background: rgba(255,255,255,0.98);
+      padding: 32px 24px 24px 24px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
       text-align: center;
-      color: #880e4f;
+      max-width: 600px;
+      width: 100%;
+      animation: fadeIn 0.8s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    .logo-img {
+      width: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+    }
+    .main-title {
+      font-size: 2rem;
+      color: #00796b;
+      font-weight: 800;
+      margin-bottom: 2px;
+      letter-spacing: 1px;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+    .main-org {
+      font-size: 1.08rem;
+      color: #009688;
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+    .main-desc {
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 18px;
+      font-family: 'Anek Malayalam', sans-serif;
     }
     form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      margin-top: 10px;
     }
     select, button {
+      display: block;
       width: 100%;
-      padding: 10px;
-      font-size: 1em;
       margin: 1em 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      padding: 13px 18px;
+      font-size: 1.08rem;
+      border-radius: 8px;
+      border: 1.5px solid #b2dfdb;
+      background: #f7fafc;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.18s, box-shadow 0.18s;
+    }
+    select:focus {
+      border-color: #009688;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
+    }
+    button {
+      background: linear-gradient(90deg, #009688 60%, #00796b 100%);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      margin-top: 18px;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
     }
     .actions {
       display: flex;
@@ -43,6 +115,8 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 1rem;
+      margin: 0;
     }
     .actions button:hover {
       background: #004d40;
@@ -75,42 +149,60 @@
         width: 100%;
       }
     }
+    .footer-simple {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
-
-<h2>രക്തദാതാക്കളെ തിരയുക</h2>
-
-<form id="searchForm">
-  <select name="group" required>
-    <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
-    <option>A+</option><option>A-</option>
-    <option>B+</option><option>B-</option>
-    <option>O+</option><option>O-</option>
-    <option>AB+</option><option>AB-</option>
-  </select>
-  <button type="submit">തിരയുക</button>
-</form>
-
-<div id="resultsSection" style="display:none;">
-  <div class="actions">
-    <button id="exportBtn">CSV ആയി കയറ്റുമതി ചെയ്യുക</button>
-    <button id="printBtn">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+  <img src="images/blood_banner.png" alt="Blood Donation Banner"
+    style="width:100%;max-width:500px;display:block;margin:24px auto 0 auto;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.08);" />
+  <div class="center-wrap">
+    <div class="main-card">
+      <img src="images/logo2.png" alt="QMRCC Logo" class="logo-img">
+      <div class="main-title">QMRCC</div>
+      <div class="main-org">
+        ഖാഇദെ മില്ലത്ത് റിലീഫ് &amp; കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ
+      </div>
+      <div class="main-desc">
+        രക്തദാതാക്കളെ തിരയുക
+      </div>
+      <form id="searchForm">
+        <select name="group" required>
+          <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option>
+          <option>AB+</option><option>AB-</option>
+        </select>
+        <button type="submit">തിരയുക</button>
+      </form>
+      <div id="resultsSection" style="display:none; width:100%;">
+        <div class="actions">
+          <button id="exportBtn">CSV ആയി Export ചെയ്യുക</button>
+          <button id="printBtn">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+        </div>
+        <table id="resultsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>പേര്</th>
+              <th>ഫോൺ</th>
+              <th>പ്രദേശം</th>
+              <th>രക്ത ഗ്രൂപ്പ്</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <table id="resultsTable">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>പേര്</th>
-        <th>ഫോൺ</th>
-        <th>പ്രദേശം</th>
-        <th>രക്ത ഗ്രൂപ്പ്</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
+  <div class="footer-simple">
+    © 2025 QMRCC.
+  </div>
 <script>
 const form = document.getElementById("searchForm");
 const resultsSection = document.getElementById("resultsSection");
@@ -179,6 +271,5 @@ printBtn.addEventListener("click", () => {
   window.print();
 });
 </script>
-
 </body>
 </html>
