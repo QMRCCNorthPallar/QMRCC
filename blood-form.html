@@ -1,66 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
   <meta charset="UTF-8">
   <title>Blood Bank Donor Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .center-wrap {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .main-card {
+      background: rgba(255,255,255,0.98);
+      padding: 32px 24px 24px 24px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+      text-align: center;
       max-width: 500px;
-      margin: auto;
-      padding: 2em;
-      background: #f1f1f1;
+      width: 100%;
+      animation: fadeIn 0.8s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    .logo-img {
+      width: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+    }
+    .main-title {
+      font-size: 2rem;
+      color: #00796b;
+      font-weight: 800;
+      margin-bottom: 2px;
+      letter-spacing: 1px;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+    .main-org {
+      font-size: 1.08rem;
+      color: #009688;
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+    .main-desc {
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 18px;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+    form {
+      width: 100%;
+      margin-top: 10px;
     }
     input, select, button {
       display: block;
       width: 100%;
       margin: 1em 0;
-      padding: 10px;
-      font-size: 1em;
+      padding: 13px 18px;
+      font-size: 1.08rem;
+      border-radius: 8px;
+      border: 1.5px solid #b2dfdb;
+      background: #f7fafc;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.18s, box-shadow 0.18s;
+    }
+    input:focus, select:focus {
+      border-color: #009688;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
+    }
+    button {
+      background: linear-gradient(90deg, #009688 60%, #00796b 100%);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      margin-top: 18px;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
     }
     #result {
       margin-top: 1em;
       font-weight: bold;
+      color: #00796b;
+    }
+    .footer-simple {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
+  <div class="center-wrap">
+    <div class="main-card">
+      <img src="images/logo2.png" alt="QMRCC Logo" class="logo-img">
+      <div class="main-title" style="font-size:2rem; letter-spacing:1px;">QMRCC</div>
+      <div class="main-org" style="font-size:1.08rem; color:#009688; font-weight:700; margin-bottom:2px; font-family:'Anek Malayalam',sans-serif;">
+        ഖാഇദെ മില്ലത്ത് റിലീഫ് &amp; കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ
+      </div>
+      <div class="main-desc" style="font-size:1.05rem; color:#555; margin-bottom:18px; font-family:'Anek Malayalam',sans-serif;">
+        ബ്ലഡ് ബാങ്ക് വിവരശേഖരണം
+      </div>
+      <form id="donorForm">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="text" name="phone" placeholder="Phone" required />
+        <select name="bloodGroup" required>
+          <option value="">Select Blood Group</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option>
+          <option>AB+</option><option>AB-</option>
+        </select>
+        <input type="text" name="area" placeholder="Area / City" required />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </div>
+  <div class="footer-simple">
+    © 2025 QMRCC.
+  </div>
+  <script>
+    const form = document.getElementById('donorForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
 
-<h2>Blood Donor Registration</h2>
+      const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
 
-<form id="donorForm">
-  <input type="text" name="name" placeholder="Name" required />
-  <input type="text" name="phone" placeholder="Phone" required />
-  <select name="bloodGroup" required>
-    <option value="">Select Blood Group</option>
-    <option>A+</option><option>A-</option>
-    <option>B+</option><option>B-</option>
-    <option>O+</option><option>O-</option>
-    <option>AB+</option><option>AB-</option>
-  </select>
-  <input type="text" name="area" placeholder="Area / City" required />
-  <button type="submit">Submit</button>
-</form>
-
-<div id="result"></div>
-
-<script>
-const form = document.getElementById('donorForm');
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-
-  const result = await res.json();
-  document.getElementById("result").innerText = result.message || result.error || "Something went wrong.";
-});
-</script>
-
+      const result = await res.json();
+      document.getElementById("result").innerText = result.message || result.error || "Something went wrong.";
+    });
+  </script>
 </body>
 </html>
