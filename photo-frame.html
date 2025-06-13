@@ -2,448 +2,607 @@
 <html lang="en-us">
 
 <head>
-  <meta charset="utf-8">
-  <title>QMRCC Frame: Celebrate Unity!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Rubik:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-  <style>
-    html,
-    body {
-      background: linear-gradient(135deg, #e7f5e7 0%, #f7faf7 100%);
-      font-family: 'Anek Malayalam', 'Rubik', sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      width: 100vw;
-      box-sizing: border-box;
-    }
+    <meta charset="utf-8">
+    <title>QMRCC Frame: Celebrate Unity!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <meta name="description" content="Add a QMRCC frame to your photo and celebrate unity!">
+    <meta name="author" content="QMRCC">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <meta name="theme-name" content="QMRCC" />
 
-    .main-content {
-      max-width: 400px;
-      margin: 2rem auto 1.2rem auto;
-      padding: 1rem 0.5rem 1rem 0.5rem;
-      border-radius: 1.2rem;
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 8px 32px rgba(31, 164, 99, 0.13), 0 1.5px 8px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 
-    .photo-frame-title {
-      font-size: 2.1rem;
-      font-weight: 900;
-      color: #1fa463;
-      margin-bottom: 0.5rem;
-      text-align: center;
-      letter-spacing: 0.04em;
-      font-family: 'Rubik', sans-serif;
-      text-shadow: 0 2px 12px #e7f5e7, 0 1px 0 #fff;
-      padding: 0.3rem 0;
-    }
+    <!-- CSS Plugins -->
+    <link rel="stylesheet" href="plugins/slick/slick.css">
+    <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
+    <link rel="stylesheet" href="plugins/font-awesome/brands.css">
+    <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 
-    .photo-frame-subtitle {
-      font-size: 1.13rem;
-      color: #1a3d2b;
-      text-align: center;
-      margin-bottom: 1.1rem;
-      font-family: 'Anek Malayalam', sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      background: linear-gradient(90deg, #e7f5e7 60%, #f7faf7 100%);
-      border-radius: 0.7rem;
-      padding: 0.6rem 0.7rem 0.5rem 0.7rem;
-      box-shadow: 0 2px 8px rgba(31, 164, 99, 0.04);
-    }
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="css/style.css">
 
-    .photo-frame-label {
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-      color: #1fa463;
-      font-size: 1.02rem;
-      margin-top: 0.5rem;
-      text-align: center;
-      letter-spacing: 0.01em;
-      padding: 0.05rem 0;
-    }
+    <!-- Custom styles for photo frame tool -->
+    <style>
+        html,
+        body {
+            background: #f7faf7;
+            font-family: 'Rubik', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
 
-    .photo-frame-input,
-    .photo-frame-text {
-      width: 100%;
-      max-width: 260px;
-      padding: 0.28rem 0.6rem;
-      border-radius: 0.6rem;
-      border: 1.2px solid #1fa463;
-      background: #f7faf7;
-      color: #1a3d2b;
-      margin-bottom: 0.5rem;
-      font-size: 1.01rem;
-      outline: none;
-      transition: border 0.2s;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      box-sizing: border-box;
-      text-align: center;
-      font-family: 'Anek Malayalam', sans-serif;
-    }
+        .main-content {
+            max-width: 400px;
+            margin: 2rem auto 1.2rem auto;
+            padding: 1rem 0.5rem 1rem 0.5rem;
+            border-radius: 1.2rem;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 8px 32px rgba(31, 164, 99, 0.13), 0 1.5px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .photo-frame-input:focus,
-    .photo-frame-text:focus {
-      border-color: #2be08a;
-      background: #f0fff0;
-    }
+        .photo-frame-title {
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: #1fa463;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            letter-spacing: 0.04em;
+            font-family: 'Rubik', sans-serif;
+            text-shadow: 0 2px 12px #e7f5e7, 0 1px 0 #fff;
+            padding: 0.3rem 0;
+        }
 
-    .photo-frame-btn {
-      background: linear-gradient(90deg, #1fa463 60%, #2be08a 100%);
-      color: #fff;
-      border: none;
-      border-radius: 0.7rem;
-      padding: 0.55rem 1.3rem;
-      font-size: 1.08rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 1.1rem auto 0 auto;
-      display: inline-block;
-      min-width: 120px;
-      text-align: center;
-      letter-spacing: 0.01em;
-      box-shadow: 0 2px 8px rgba(31, 164, 99, 0.08);
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    }
+        .photo-frame-subtitle {
+            font-size: 1.13rem;
+            color: #1a3d2b;
+            text-align: center;
+            margin-bottom: 1.1rem;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            background: linear-gradient(90deg, #e7f5e7 60%, #f7faf7 100%);
+            border-radius: 0.7rem;
+            padding: 0.6rem 0.7rem 0.5rem 0.7rem;
+            box-shadow: 0 2px 8px rgba(31, 164, 99, 0.04);
+        }
 
-    .photo-frame-btn:hover,
-    .photo-frame-btn:focus {
-      background: linear-gradient(90deg, #2be08a 60%, #1fa463 100%);
-      color: #0d2d1e;
-      box-shadow: 0 4px 16px rgba(31, 164, 99, 0.13);
-    }
+        .photo-frame-label {
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+            color: #1fa463;
+            font-size: 1.02rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            letter-spacing: 0.01em;
+            padding: 0.05rem 0;
+        }
 
-    .photo-frame-btn-group {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-top: 0.7rem;
-    }
+        .photo-frame-input,
+        .photo-frame-text {
+            width: 100%;
+            max-width: 260px;
+            padding: 0.28rem 0.6rem;
+            border-radius: 0.6rem;
+            border: 1.2px solid #1fa463;
+            background: #f7faf7;
+            color: #1a3d2b;
+            margin-bottom: 0.5rem;
+            font-size: 1.01rem;
+            outline: none;
+            transition: border 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: 'Anek Malayalam', sans-serif;
+        }
 
-    .photo-frame-canvas-wrap {
-      background: #e7f5e7;
-      border-radius: 0.8rem;
-      padding: 0.25rem;
-      margin-bottom: 0.7rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1.2px solid #1fa463;
-      min-height: 60px;
-      width: 100%;
-      max-width: 320px;
-      box-sizing: border-box;
-    }
+        .photo-frame-input:focus,
+        .photo-frame-text:focus {
+            border-color: #2be08a;
+            background: #f0fff0;
+        }
 
-    .photo-frame-canvas {
-      border-radius: 0.5rem;
-      background: #fff;
-      max-width: 240px;
-      width: 100%;
-      height: auto;
-      border: 1px solid #e0e0e0;
-      display: block;
-      touch-action: none;
-      box-sizing: border-box;
-      margin: 0 auto;
-    }
+        .photo-frame-btn {
+            background: linear-gradient(90deg, #1fa463 60%, #2be08a 100%);
+            color: #fff;
+            border: none;
+            border-radius: 0.7rem;
+            padding: 0.55rem 1.3rem;
+            font-size: 1.08rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 1.1rem auto 0 auto;
+            display: inline-block;
+            min-width: 120px;
+            text-align: center;
+            letter-spacing: 0.01em;
+            box-shadow: 0 2px 8px rgba(31, 164, 99, 0.08);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
 
-    .photo-frame-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-bottom: 0.7rem;
-      align-items: center;
-    }
+        .photo-frame-btn:hover,
+        .photo-frame-btn:focus {
+            background: linear-gradient(90deg, #2be08a 60%, #1fa463 100%);
+            color: #0d2d1e;
+            box-shadow: 0 4px 16px rgba(31, 164, 99, 0.13);
+        }
 
-    .photo-frame-slider {
-      width: 70px;
-      margin: 0.2rem 0;
-      accent-color: #1fa463;
-    }
+        .photo-frame-btn-group {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.7rem;
+        }
 
-    #croppieModal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
-      align-items: center;
-      justify-content: center;
-    }
+        .photo-frame-canvas-wrap {
+            background: #e7f5e7;
+            border-radius: 0.8rem;
+            padding: 0.25rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1.2px solid #1fa463;
+            min-height: 60px;
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+        }
 
-    #croppieModal.active {
-      display: flex;
-    }
+        .photo-frame-canvas {
+            border-radius: 0.5rem;
+            background: #fff;
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            display: block;
+            touch-action: none;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
 
-    #croppieModal .modal-content {
-      background: #fff;
-      border-radius: 1rem;
-      padding: 1rem;
-      max-width: 95vw;
-      max-height: 95vh;
-      overflow: auto;
-      min-width: 180px;
-    }
+        .photo-frame-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 0.7rem;
+            align-items: center;
+        }
 
-    #croppieModal .modal-footer {
-      text-align: center;
-      margin-top: 0.7rem;
-    }
+        .photo-frame-slider {
+            width: 70px;
+            margin: 0.2rem 0;
+            accent-color: #1fa463;
+        }
 
-    @media (max-width: 600px) {
-      .main-content {
-        max-width: 99vw;
-        padding: 0.5rem 0.05rem 0.7rem 0.05rem;
-        border-radius: 0.7rem;
-      }
+        #croppieModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
 
-      .photo-frame-title {
-        font-size: 1.2rem;
-        padding: 0.2rem 0;
-      }
+        #croppieModal.active {
+            display: flex;
+        }
 
-      .photo-frame-subtitle {
-        font-size: 0.97rem;
-        padding: 0.4rem 0.3rem 0.3rem 0.3rem;
-        margin-bottom: 0.7rem;
-      }
+        #croppieModal .modal-content {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1rem;
+            max-width: 95vw;
+            max-height: 95vh;
+            overflow: auto;
+            min-width: 180px;
+        }
 
-      .photo-frame-label {
-        font-size: 0.97rem;
-        margin-top: 0.3rem;
-        padding: 0.03rem 0;
-      }
+        #croppieModal .modal-footer {
+            text-align: center;
+            margin-top: 0.7rem;
+        }
 
-      .photo-frame-input,
-      .photo-frame-text {
-        max-width: 180px;
-        font-size: 0.97rem;
-        padding: 0.18rem 0.4rem;
-        margin-bottom: 0.3rem;
-      }
+        @media (max-width: 600px) {
+            .main-content {
+                max-width: 99vw;
+                padding: 0.5rem 0.05rem 0.7rem 0.05rem;
+                border-radius: 0.7rem;
+            }
 
-      .photo-frame-canvas-wrap {
-        min-height: 40px;
-        padding: 0.08rem;
-        margin-bottom: 0.5rem;
-        max-width: 200px;
-      }
+            .photo-frame-title {
+                font-size: 1.2rem;
+                padding: 0.2rem 0;
+            }
 
-      .photo-frame-canvas {
-        max-width: 140px !important;
-        width: 140px !important;
-        border-radius: 0.3rem;
-      }
+            .photo-frame-subtitle {
+                font-size: 0.97rem;
+                padding: 0.4rem 0.3rem 0.3rem 0.3rem;
+                margin-bottom: 0.7rem;
+            }
 
-      .photo-frame-btn {
-        font-size: 0.93rem;
-        padding: 0.5rem 0.7rem;
-        min-width: 70px;
-      }
+            .photo-frame-label {
+                font-size: 0.97rem;
+                margin-top: 0.3rem;
+                padding: 0.03rem 0;
+            }
 
-      .photo-frame-controls label {
-        font-size: 0.97rem;
-      }
-    }
-  </style>
+            .photo-frame-input,
+            .photo-frame-text {
+                max-width: 180px;
+                font-size: 0.97rem;
+                padding: 0.18rem 0.4rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .photo-frame-canvas-wrap {
+                min-height: 40px;
+                padding: 0.08rem;
+                margin-bottom: 0.5rem;
+                max-width: 200px;
+            }
+
+            .photo-frame-canvas {
+                max-width: 140px !important;
+                width: 140px !important;
+                border-radius: 0.3rem;
+            }
+
+            .photo-frame-btn {
+                font-size: 0.93rem;
+                padding: 0.5rem 0.7rem;
+                min-width: 70px;
+            }
+
+            .photo-frame-controls label {
+                font-size: 0.97rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="main-content">
-    <div class="photo-frame-title">QMRCC Frame</div>
-    <div class="photo-frame-subtitle">
-      Show your support for QMRCC! Instantly add a vibrant frame to your photo and celebrate our unity.
-    </div>
-    <div class="photo-frame-label">Your Name (Malayalam):</div>
-    <input class="photo-frame-text" type="text" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32">
-    <div class="photo-frame-controls">
-      <label style="margin:0 0.3rem 0 0.3rem; color:#1fa463;">Text Size</label>
-      <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="photo-frame-slider">
-      <label style="margin:0 0.3rem 0 1rem; color:#1fa463;">Text Y</label>
-      <input type="range" min="0.7" max="1" step="0.01" value="0.94" id="textYSlider" class="photo-frame-slider">
-    </div>
-    <div class="photo-frame-label">Upload your photo (JPG/PNG/HEIC):</div>
-    <input class="photo-frame-input" type="file" id="photoFrameImage" accept="image/png, image/jpeg, image/heic">
-    <div class="photo-frame-canvas-wrap">
-      <canvas id="photoFrameCanvas" class="photo-frame-canvas" width="1080" height="1350"></canvas>
-    </div>
-    <div class="photo-frame-btn-group">
-      <button class="photo-frame-btn" id="downloadBtn">Download Image</button>
-    </div>
-    <div style="font-size:0.93em; color:#888; margin-top:1rem; text-align:center;">
-      All processing is done in your browser. No data is uploaded.
-    </div>
-  </div>
+    <!-- navigation -->
+    <header class="navigation bg-tertiary">
+        <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"> <a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item "> <a class="nav-link" href="about.html">About Us</a></li>
+                        <li class="nav-item "> <a class="nav-link" href="how-it-works.html">Our Mission</a></li>
+                        <li class="nav-item "> <a class="nav-link" href="services.html">Programs</a></li>
+                        <li class="nav-item "> <a class="nav-link" href="contact.html">Contact</a></li>
+                        <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item " href="blog.html">News</a></li>
+                                <li><a class="dropdown-item " href="blog-details.html">Stories</a></li>
+                                <li><a class="dropdown-item " href="service-details.html">Initiatives</a></li>
+                                <li><a class="dropdown-item " href="faq.html">FAQ&#39;s</a></li>
+                                <li><a class="dropdown-item " href="legal.html">Legal</a></li>
+                                <li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a></li>
+                                <li><a class="dropdown-item" href="photo-frame.html">Photo Frame</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <a href="#!" class="btn btn-outline-primary">Donate</a>
+                    <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Volunteer</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- /navigation -->
 
-  <!-- Croppie Modal -->
-  <div id="croppieModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
-    <div class="modal-content">
-      <div id="croppieContainer"></div>
-      <div class="photo-frame-btn-group modal-footer">
-        <button class="photo-frame-btn" id="croppieCancelBtn">Cancel</button>
-        <button class="photo-frame-btn" id="croppieApplyBtn">Crop</button>
-      </div>
-    </div>
-  </div>
+    <!-- Main Section for Photo Frame Tool -->
+    <section class="section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-9">
+                    <h2 class="mb-3 text-primary text-center fw-bold">QMRCC Photo Frame</h2>
+                    <p class="mb-4 text-center">Show your support for QMRCC! Instantly add a vibrant frame to your photo and celebrate our unity.</p>
+                    <form class="text-center">
+                        <div class="mb-3">
+                            <label for="photoFrameName" class="form-label fw-semibold">Your Name (Malayalam)</label>
+                            <input type="text" class="form-control mx-auto" style="max-width:260px;" id="photoFrameName" placeholder="നിങ്ങളുടെ പേര്" maxlength="32">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Upload your photo (JPG/PNG/HEIC)</label>
+                            <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                                <input type="file" class="form-control d-none" id="photoFrameImage" accept="image/png, image/jpeg, image/heic">
+                                <button type="button" class="btn btn-outline-primary rounded px-4" id="uploadBtn">Choose Photo</button>
+                                <span id="fileName" class="text-muted small"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3 mb-3 flex-wrap">
+                            <div>
+                                <label for="textSizeSlider" class="form-label fw-semibold">Text Size</label>
+                                <input type="range" min="20" max="80" step="1" value="36" id="textSizeSlider" class="form-range">
+                            </div>
+                            <div>
+                                <label for="textYSlider" class="form-label fw-semibold">Text Position</label>
+                                <input type="range" min="0.7" max="1" step="0.01" value="0.94" id="textYSlider" class="form-range">
+                            </div>
+                        </div>
+                        <div class="mb-3 text-center">
+                            <canvas id="photoFrameCanvas" class="img-fluid border" width="1080" height="1350" style="max-width:240px;width:100%;background:#fff;"></canvas>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-outline-primary rounded px-4" id="downloadBtn">
+                                Download Image
+                            </button>
+                        </div>
+                        <div class="text-center text-muted mt-3" style="font-size:0.93em;">
+                            All processing is done in your browser. No data is uploaded.
+                        </div>
+                    </form>
 
-  <script>
-    let userImgObj = null,
-      frameImg = null,
-      croppie = null;
-    let textSize = 36,
-      textY = 0.94;
-    const CANVAS_W = 1080,
-      CANVAS_H = 1350;
+                    <!-- Croppie Modal -->
+                    <div id="croppieModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+                        <div class="modal-content">
+                            <div id="croppieContainer"></div>
+                            <div class="d-flex justify-content-center gap-2 modal-footer mt-3">
+                                <button class="btn btn-outline-secondary" id="croppieCancelBtn">Cancel</button>
+                                <button class="btn btn-primary" id="croppieApplyBtn">Crop</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    const canvas = document.getElementById('photoFrameCanvas');
-    const ctx = canvas.getContext('2d');
-    const nameInput = document.getElementById('photoFrameName');
-    const textSizeSlider = document.getElementById('textSizeSlider');
-    const textYSlider = document.getElementById('textYSlider');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const photoFrameImage = document.getElementById('photoFrameImage');
-    const croppieModal = document.getElementById('croppieModal');
-    const croppieContainer = document.getElementById('croppieContainer');
-    const croppieCancelBtn = document.getElementById('croppieCancelBtn');
-    const croppieApplyBtn = document.getElementById('croppieApplyBtn');
+    <!-- Footer (copy from index.html) -->
+    <footer class="section-sm bg-tertiary">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <div class="footer-widget">
+                        <h5 class="mb-4 text-primary font-secondary">Service</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="service-details.html">Personal loans</a></li>
+                            <li class="mb-2"><a href="service-details.html">Home Equity Loans</a></li>
+                            <li class="mb-2"><a href="service-details.html">Student Loans</a></li>
+                            <li class="mb-2"><a href="service-details.html">Mortgage Loans</a></li>
+                            <li class="mb-2"><a href="service-details.html">Payday Loans</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <div class="footer-widget">
+                        <h5 class="mb-4 text-primary font-secondary">About</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#!">Benefits</a></li>
+                            <li class="mb-2"><a href="#!">Careers</a></li>
+                            <li class="mb-2"><a href="#!">Our Story</a></li>
+                            <li class="mb-2"><a href="#!">Team</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <div class="footer-widget">
+                        <h5 class="mb-4 text-primary font-secondary">Help</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="contact.html">Contact Us</a></li>
+                            <li class="mb-2"><a href="faq.html">FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center mt-5 text-center text-md-start">
+                <div class="col-lg-4">
+                    <a href="index.html">
+                        <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+                    <ul class="list-unstyled list-inline mb-0 text-lg-center">
+                        <li class="list-inline-item me-4"><a class="text-black" href="photo-frame.html">Privacy Policy</a></li>
+                        <li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
+                    <ul class="list-unstyled list-inline mb-0 social-icons">
+                        <li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black" href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black" href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
+                        <li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black" href="https://instagram.com/"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    // Load frame image
-    frameImg = new window.Image();
-    frameImg.src = 'images/frame/frame.png';
-    frameImg.onload = drawAll;
-    drawAll();
+    <!-- JS Plugins -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="plugins/slick/slick.min.js"></script>
+    <script src="plugins/scrollmenu/scrollmenu.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
-    nameInput.addEventListener('input', drawAll);
-    textSizeSlider.addEventListener('input', function () {
-      textSize = parseInt(this.value, 10);
-      drawAll();
-    });
-    textYSlider.addEventListener('input', function () {
-      textY = parseFloat(this.value);
-      drawAll();
-    });
+    <!-- Main Script -->
+    <script src="js/script.js"></script>
 
-    // --- Image upload & Croppie ---
-    photoFrameImage.addEventListener('change', function (e) {
-      if (!e.target.files[0]) return;
-      let file = e.target.files[0];
-      // Accept HEIC, JPEG, PNG
-      if (!file.type.match(/^image\/(heic|jpeg|png)$/) && !file.name.match(/\.heic$/i)) {
-        alert('Please upload a JPG, PNG, or HEIC image.');
-        return;
-      }
+    <!-- Custom JS for photo frame tool -->
+    <script>
+        let userImgObj = null,
+            frameImg = null,
+            croppie = null;
+        let textSize = 36,
+            textY = 0.94;
+        const CANVAS_W = 1080,
+            CANVAS_H = 1350;
 
-      // Handle HEIC
-      if (file.type === "image/heic" || file.name.match(/\.heic$/i)) {
-        heic2any({
-          blob: file,
-          toType: "image/jpeg",
-          quality: 0.95
-        }).then(function (convertedBlob) {
-          let reader = new FileReader();
-          reader.onload = function (ev) {
-            openCroppie(ev.target.result);
-          };
-          reader.readAsDataURL(convertedBlob);
-        }).catch(function (e) {
-          alert("Failed to convert HEIC image. Please try a different image.");
+        const canvas = document.getElementById('photoFrameCanvas');
+        const ctx = canvas.getContext('2d');
+        const nameInput = document.getElementById('photoFrameName');
+        const textSizeSlider = document.getElementById('textSizeSlider');
+        const textYSlider = document.getElementById('textYSlider');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const photoFrameImage = document.getElementById('photoFrameImage');
+        const croppieModal = document.getElementById('croppieModal');
+        const croppieContainer = document.getElementById('croppieContainer');
+        const croppieCancelBtn = document.getElementById('croppieCancelBtn');
+        const croppieApplyBtn = document.getElementById('croppieApplyBtn');
+
+        // Load frame image
+        frameImg = new window.Image();
+        frameImg.src = 'images/frame/frame.png';
+        frameImg.onload = drawAll;
+        drawAll();
+
+        nameInput.addEventListener('input', drawAll);
+        textSizeSlider.addEventListener('input', function () {
+            textSize = parseInt(this.value, 10);
+            drawAll();
         });
-        return;
-      }
+        textYSlider.addEventListener('input', function () {
+            textY = parseFloat(this.value);
+            drawAll();
+        });
 
-      // Handle JPEG/PNG as before
-      let reader = new FileReader();
-      reader.onload = function (ev) {
-        openCroppie(ev.target.result);
-      };
-      reader.readAsDataURL(file);
-    });
+        // --- Image upload & Croppie ---
+        photoFrameImage.addEventListener('change', function (e) {
+            if (!e.target.files[0]) return;
+            let file = e.target.files[0];
+            // Accept HEIC, JPEG, PNG
+            if (!file.type.match(/^image\/(heic|jpeg|png)$/) && !file.name.match(/\.heic$/i)) {
+                alert('Please upload a JPG, PNG, or HEIC image.');
+                return;
+            }
 
-    function openCroppie(src) {
-      croppieModal.style.display = 'flex';
-      if (croppie) { croppie.destroy(); croppie = null; }
-      croppie = new Croppie(croppieContainer, {
-        viewport: { width: 324, height: 405, type: 'square' }, // 1080:1350 ratio
-        boundary: { width: 350, height: 430 },
-        enableOrientation: true,
-        enableZoom: true
-      });
-      croppie.bind({ url: src });
-    }
+            // Handle HEIC
+            if (file.type === "image/heic" || file.name.match(/\.heic$/i)) {
+                heic2any({
+                    blob: file,
+                    toType: "image/jpeg",
+                    quality: 0.95
+                }).then(function (convertedBlob) {
+                    let reader = new FileReader();
+                    reader.onload = function (ev) {
+                        openCroppie(ev.target.result);
+                    };
+                    reader.readAsDataURL(convertedBlob);
+                }).catch(function (e) {
+                    alert("Failed to convert HEIC image. Please try a different image.");
+                });
+                return;
+            }
 
-    croppieCancelBtn.onclick = function () {
-      croppieModal.style.display = 'none';
-      if (croppie) { croppie.destroy(); croppie = null; }
-    };
+            // Handle JPEG/PNG as before
+            let reader = new FileReader();
+            reader.onload = function (ev) {
+                openCroppie(ev.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
 
-    croppieApplyBtn.onclick = function () {
-      if (!croppie) return;
-      croppie.result({
-        type: 'base64',
-        size: { width: CANVAS_W, height: CANVAS_H },
-        format: 'png',
-        quality: 1
-      }).then(function (croppedDataUrl) {
-        userImgObj = new window.Image();
-        userImgObj.onload = function () {
-          croppieModal.style.display = 'none';
-          croppie.destroy();
-          croppie = null;
-          drawAll();
+        document.getElementById('uploadBtn').onclick = function() {
+  document.getElementById('photoFrameImage').click();
+};
+document.getElementById('photoFrameImage').onchange = function(e) {
+  const file = e.target.files[0];
+  document.getElementById('fileName').textContent = file ? file.name : '';
+};
+
+        function openCroppie(src) {
+            croppieModal.style.display = 'flex';
+            if (croppie) { croppie.destroy(); croppie = null; }
+            croppie = new Croppie(croppieContainer, {
+                viewport: { width: 324, height: 405, type: 'square' }, // 1080:1350 ratio
+                boundary: { width: 350, height: 430 },
+                enableOrientation: true,
+                enableZoom: true
+            });
+            croppie.bind({ url: src });
+        }
+
+        croppieCancelBtn.onclick = function () {
+            croppieModal.style.display = 'none';
+            if (croppie) { croppie.destroy(); croppie = null; }
         };
-        userImgObj.src = croppedDataUrl;
-      });
-    };
 
-    function drawAll() {
-      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-      // Draw user image (if any)
-      if (userImgObj && userImgObj.complete) {
-        ctx.drawImage(userImgObj, 0, 0, CANVAS_W, CANVAS_H);
-      }
-      // Draw frame (always)
-      if (frameImg && frameImg.complete) {
-        ctx.drawImage(frameImg, 0, 0, CANVAS_W, CANVAS_H);
-      }
-      // Draw name text (always)
-      if (nameInput.value.trim().length > 0) {
-        ctx.save();
-        ctx.font = `bold ${textSize}px 'Anek Malayalam', sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0,0,0,0.5)';
-        ctx.shadowBlur = 4;
-        ctx.fillStyle = '#fff';
-        ctx.fillText(
-          nameInput.value,
-          CANVAS_W / 2,
-          CANVAS_H * textY
-        );
-        ctx.restore();
-      }
-    }
+        croppieApplyBtn.onclick = function () {
+            if (!croppie) return;
+            croppie.result({
+                type: 'base64',
+                size: { width: CANVAS_W, height: CANVAS_H },
+                format: 'png',
+                quality: 1
+            }).then(function (croppedDataUrl) {
+                userImgObj = new window.Image();
+                userImgObj.onload = function () {
+                    croppieModal.style.display = 'none';
+                    croppie.destroy();
+                    croppie = null;
+                    drawAll();
+                };
+                userImgObj.src = croppedDataUrl;
+            });
+        };
 
-    downloadBtn.onclick = function () {
-      let link = document.createElement('a');
-      link.download = 'photo-frame.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    };
-  </script>
+        function drawAll() {
+            ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+            // Draw user image (if any)
+            if (userImgObj && userImgObj.complete) {
+                ctx.drawImage(userImgObj, 0, 0, CANVAS_W, CANVAS_H);
+            }
+            // Draw frame (always)
+            if (frameImg && frameImg.complete) {
+                ctx.drawImage(frameImg, 0, 0, CANVAS_W, CANVAS_H);
+            }
+            // Draw name text (always)
+            if (nameInput.value.trim().length > 0) {
+                ctx.save();
+                ctx.font = `bold ${textSize}px 'Anek Malayalam', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 4;
+                ctx.fillStyle = '#fff';
+                ctx.fillText(
+                    nameInput.value,
+                    CANVAS_W / 2,
+                    CANVAS_H * textY
+                );
+                ctx.restore();
+            }
+        }
+
+        downloadBtn.onclick = function () {
+            let link = document.createElement('a');
+            link.download = 'photo-frame.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+    </script>
 </body>
 
 </html>
+<!--
+Themefisher Template - MIT License
+https://github.com/themefisher/
+-->
