@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <title>QMRCC Blood Bank - Search Donors</title>
+  <style>
+    body {
+      font-family: 'Noto Sans Malayalam', sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 2em;
+      background: #f9f9f9;
+    }
+    h2 {
+      text-align: center;
+      color: #b71c1c;
+    }
+    select, button {
+      display: block;
+      width: 100%;
+      margin: 1em 0;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #00695c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    .result {
+      margin-top: 1em;
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+    .result h3 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+<h2>രക്തദാനികൾ തിരയൂ</h2>
+
+<label for="bloodGroup">രക്ത ഗ്രൂപ്പ് തിരഞ്ഞെടുക്കൂ:</label>
+<select id="bloodGroup" required>
+  <option value="">-- Select --</option>
+  <option>A+</option><option>A-</option>
+  <option>B+</option><option>B-</option>
+  <option>O+</option><option>O-</option>
+  <option>AB+</option><option>AB-</option>
+</select>
+
+<button onclick="searchDonors()">തിരയുക</button>
+
+<div id="results"></div>
+
+<script>
+async function searchDonors() {
+  const group = document.getElementById("bloodGroup").value.trim();
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "";
+
+  if (!group) {
+    resultsDiv.innerHTML = "<p>ദയവായി രക്ത ഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക.</p>";
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`);
+    const data = await res.json();
+
+    if (data.length === 0) {
+      resultsDiv.innerHTML = "<p>ഈ ഗ്രൂപ്പിൽ നിലവിൽ രജിസ്റ്റർ ചെയ്ത ദാതാക്കളെ കണ്ടെത്തിയില്ല.</p>";
+      return;
+    }
+
+    data.forEach((donor, index) => {
+      const el = document.createElement("div");
+      el.className = "result";
+      el.innerHTML = `
+        <h3>${index + 1}. ${donor.name || 'പേര് ലഭ്യമല്ല'}</h3>
+        <p><strong>Phone:</strong> ${donor.phone || 'ലഭ്യമല്ല'}</p>
+        <p><strong>Area:</strong> ${donor.area || 'ലഭ്യമല്ല'}</p>
+        <p><strong>Blood Group:</strong> ${donor.bloodGroup || 'ലഭ്യമല്ല'}</p>
+      `;
+      resultsDiv.appendChild(el);
+    });
+
+  } catch (err) {
+    resultsDiv.innerHTML = "<p>സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>";
+  }
+}
+</script>
+
+</body>
+</html>
