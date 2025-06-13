@@ -61,7 +61,7 @@ const resultsDiv = document.getElementById("results");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  resultsDiv.innerHTML = "Loading...";
+  resultsDiv.innerHTML = "തെരയുന്നു...";
   resultsDiv.style.display = "block";
 
   const group = form.group.value.trim();
@@ -80,16 +80,17 @@ form.addEventListener("submit", async (e) => {
     data.forEach((row, index) => {
       resultsDiv.innerHTML += `
         <div class="donor">
-          <strong>${index + 1}. ${row.name || 'അജ്ഞാതൻ'}</strong><br>
-          ഫോൺ: ${row.phone || '—'}<br>
-          പ്രദേശം: ${row.area || '—'}<br>
-          രക്ത ഗ്രൂപ്പ്: ${row.bloodGroup || '—'}
+          <strong>${index + 1}. ${row["Name"] || 'അജ്ഞാതൻ'}</strong><br>
+          ഫോൺ: ${row["Mobile Number"] || '—'}<br>
+          പ്രദേശം: ${row["Area"] || '—'}<br>
+          രക്ത ഗ്രൂപ്പ്: ${row["Blood Group"]?.value || '—'}
         </div>
       `;
     });
 
   } catch (err) {
     resultsDiv.innerHTML = "<p>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</p>";
+    console.error(err);
   }
 });
 </script>
