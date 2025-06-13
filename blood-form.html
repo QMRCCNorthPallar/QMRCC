@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blood Bank Donor Form</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 500px;
+      margin: auto;
+      padding: 2em;
+      background: #f1f1f1;
+    }
+    input, select, button {
+      display: block;
+      width: 100%;
+      margin: 1em 0;
+      padding: 10px;
+      font-size: 1em;
+    }
+    #result {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Blood Donor Registration</h2>
+
+<form id="donorForm">
+  <input type="text" name="name" placeholder="Name" required />
+  <input type="text" name="phone" placeholder="Phone" required />
+  <select name="bloodGroup" required>
+    <option value="">Select Blood Group</option>
+    <option>A+</option><option>A-</option>
+    <option>B+</option><option>B-</option>
+    <option>O+</option><option>O-</option>
+    <option>AB+</option><option>AB-</option>
+  </select>
+  <input type="text" name="area" placeholder="Area / City" required />
+  <button type="submit">Submit</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+const form = document.getElementById('donorForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  document.getElementById("result").innerText = result.message || result.error || "Something went wrong.";
+});
+</script>
+
+</body>
+</html>
