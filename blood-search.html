@@ -2,7 +2,7 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <title>QMRCC Blood Bank - Search Donors</title>
+  <title>Donor Search - QMRCC Blood Bank</title>
   <style>
     body {
       font-family: 'Noto Sans Malayalam', sans-serif;
@@ -13,91 +13,85 @@
     }
     h2 {
       text-align: center;
-      color: #b71c1c;
+      color: #880e4f;
+    }
+    form, .results {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-top: 1em;
     }
     select, button {
       display: block;
       width: 100%;
       margin: 1em 0;
-      padding: 12px;
+      padding: 10px;
       font-size: 1em;
-      border-radius: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    button {
-      background-color: #00695c;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004d40;
-    }
-    .result {
-      margin-top: 1em;
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    }
-    .result h3 {
-      margin-top: 0;
-      color: #2e7d32;
+    .donor {
+      margin-bottom: 1em;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 1em;
     }
   </style>
 </head>
 <body>
 
-<h2>രക്തദാനികൾ തിരയൂ</h2>
+<h2>രക്തദാതാക്കളെ തിരയുക</h2>
 
-<label for="bloodGroup">രക്ത ഗ്രൂപ്പ് തിരഞ്ഞെടുക്കൂ:</label>
-<select id="bloodGroup" required>
-  <option value="">-- Select --</option>
-  <option>A+</option><option>A-</option>
-  <option>B+</option><option>B-</option>
-  <option>O+</option><option>O-</option>
-  <option>AB+</option><option>AB-</option>
-</select>
+<form id="searchForm">
+  <select name="group" required>
+    <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
+    <option>A+</option><option>A-</option>
+    <option>B+</option><option>B-</option>
+    <option>O+</option><option>O-</option>
+    <option>AB+</option><option>AB-</option>
+  </select>
+  <button type="submit">തിരയുക</button>
+</form>
 
-<button onclick="searchDonors()">തിരയുക</button>
-
-<div id="results"></div>
+<div class="results" id="results" style="display:none;"></div>
 
 <script>
-async function searchDonors() {
-  const group = document.getElementById("bloodGroup").value.trim();
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "";
+const form = document.getElementById("searchForm");
+const resultsDiv = document.getElementById("results");
 
-  if (!group) {
-    resultsDiv.innerHTML = "<p>ദയവായി രക്ത ഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക.</p>";
-    return;
-  }
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  resultsDiv.innerHTML = "Loading...";
+  resultsDiv.style.display = "block";
+
+  const group = form.group.value.trim();
+  const url = `https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`;
 
   try {
-    const res = await fetch(`https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`);
+    const res = await fetch(url);
     const data = await res.json();
 
-    if (data.length === 0) {
-      resultsDiv.innerHTML = "<p>ഈ ഗ്രൂപ്പിൽ നിലവിൽ രജിസ്റ്റർ ചെയ്ത ദാതാക്കളെ കണ്ടെത്തിയില്ല.</p>";
+    if (!Array.isArray(data) || data.length === 0) {
+      resultsDiv.innerHTML = `<p>ഫലങ്ങൾ ഒന്നുമില്ല.</p>`;
       return;
     }
 
-    data.forEach((donor, index) => {
-      const el = document.createElement("div");
-      el.className = "result";
-      el.innerHTML = `
-        <h3>${index + 1}. ${donor.name || 'പേര് ലഭ്യമല്ല'}</h3>
-        <p><strong>Phone:</strong> ${donor.phone || 'ലഭ്യമല്ല'}</p>
-        <p><strong>Area:</strong> ${donor.area || 'ലഭ്യമല്ല'}</p>
-        <p><strong>Blood Group:</strong> ${donor.bloodGroup || 'ലഭ്യമല്ല'}</p>
+    resultsDiv.innerHTML = "";
+    data.forEach((row, index) => {
+      resultsDiv.innerHTML += `
+        <div class="donor">
+          <strong>${index + 1}. ${row.name || 'അജ്ഞാതൻ'}</strong><br>
+          ഫോൺ: ${row.phone || '—'}<br>
+          പ്രദേശം: ${row.area || '—'}<br>
+          രക്ത ഗ്രൂപ്പ്: ${row.bloodGroup || '—'}
+        </div>
       `;
-      resultsDiv.appendChild(el);
     });
 
   } catch (err) {
-    resultsDiv.innerHTML = "<p>സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>";
+    resultsDiv.innerHTML = "<p>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</p>";
   }
-}
+});
 </script>
 
 </body>
