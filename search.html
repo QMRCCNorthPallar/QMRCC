@@ -2,13 +2,16 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <title>QMRCC Wallets</title>
+  <title>QMRCC Search</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="QMRCC Wallets">
+  <meta name="description" content="QMRCC Search">
   <meta name="author" content="QMRCC">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
+
+  <!-- SheetJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <style>
     body {
@@ -17,15 +20,19 @@
       margin: 0;
       padding: 0;
       color: #333;
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
     }
+
     .center-wrap {
       display: flex;
       flex: 1;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       padding: 20px;
     }
+
     .main-card {
       background: rgba(255,255,255,0.98);
       padding: 32px 24px 24px 24px;
@@ -39,6 +46,18 @@
       flex-direction: column;
       align-items: center;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .main-card img {
+      width: 90px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+    }
+
     .main-title {
       font-size: 2rem;
       color: #00796b;
@@ -46,94 +65,302 @@
       margin-bottom: 6px;
       letter-spacing: 1px;
     }
+
     .main-desc {
       font-size: 1.1rem;
       color: #555;
       margin-bottom: 12px;
     }
-    .wallet-card {
-      background: #f7fafc;
-      border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.06);
-      padding: 18px 16px;
-      margin: 16px 0;
-      text-align: left;
-      width: 100%;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
-      transition: box-shadow 0.18s;
-      border: 1.5px solid #b2dfdb;
+
+    .nav-links {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      margin-bottom: 18px;
+      margin-top: 0;
+      flex-wrap: wrap;
     }
-    .wallet-card h3 {
-      margin: 0 0 8px 0;
+    .nav-links a {
+      text-decoration: none;
       color: #009688;
-      font-size: 1.25rem;
       font-weight: 700;
+      font-size: 1.02rem;
+      background: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      position: relative;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
     }
-    .wallet-card img {
+    .nav-links a::after {
+      content: '';
       display: block;
-      margin-top: 10px;
-      max-width: 100px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.08);
+      margin: 0 auto;
+      width: 0%;
+      height: 2px;
+      background: #009688;
+      transition: width 0.2s;
     }
+    .nav-links a:hover, .nav-links a:focus {
+      color: #fff;
+      background: #009688;
+      box-shadow: 0 2px 8px rgba(0,150,136,0.13);
+    }
+    .nav-links a:hover::after, .nav-links a:focus::after {
+      width: 80%;
+      background: #fff;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      width: 100%;
+    }
+
+    #searchInput {
+      padding: 13px 18px;
+      font-size: 1.08rem;
+      border-radius: 8px 0 0 8px;
+      border: 1.5px solid #b2dfdb;
+      width: 70%;
+      min-width: 180px;
+      max-width: 370px;
+      background: #f7fafc;
+      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    #searchInput:focus {
+      border-color: #009688;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
+    }
+
+    .search-btn {
+      padding: 13px 22px;
+      background: linear-gradient(90deg, #009688 60%, #00796b 100%);
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Anek Malayalam', sans-serif;
+      font-size: 1.08rem;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-left: -1px;
+    }
+
+    .search-btn:hover, .search-btn:focus {
+      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .action-btns button {
+      padding: 10px 18px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      background: #e0f2f1;
+      color: #009688;
+      display: none;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+
+    .action-btns button:hover {
+      background: #009688;
+      color: white;
+    }
+
+    #results {
+      overflow-x: auto;
+      background: #f7fafc;
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #b2dfdb;
+      text-align: center;
+      font-family: 'Anek Malayalam', sans-serif;
+    }
+
+    th {
+      background: #f3f7f6;
+      color: #00796b;
+      font-weight: bold;
+      font-size: 1.08rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
     .footer-simple {
       text-align: center;
       padding: 20px;
       color: #666;
       font-size: 0.95rem;
     }
-    @media (max-width: 600px) {
-      .main-card { padding: 16px 4vw; }
-      .wallet-card { padding: 12px 6px; }
-    }
   </style>
 </head>
 <body>
   <div class="center-wrap">
     <div class="main-card">
-      <div class="main-title">QMRCC Search/div>
-      <div class="main-desc">Search QMRCC Data</div>
-      <div id="wallets"></div>
+      <img src="https://i.postimg.cc/QxKRyX0q/QMRCC-Logo-2.png" alt="QMRCC Logo">
+      <div class="main-title">QMRCC Search</div>
+      <div class="main-desc">വടക്കെ പല്ലാർ പ്രദേശവാസികളുടെ വിവരങ്ങൾ തിരയൂ...</div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+      <div class="search-group">
+        <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ...">
+        <button class="search-btn" onclick="performSearch()">തിരയൂ</button>
+      </div>
+      <div class="action-btns">
+        <button id="printBtn" onclick="window.print()">പ്രിന്റ് ചെയ്യൂ</button>
+        <button id="exportBtn" onclick="exportToExcel()">Excel ആയി സംരക്ഷിക്കൂ</button>
+      </div>
+      <div id="results"></div>
     </div>
   </div>
   <div class="footer-simple">
-    © 2025 QMRCC. Powered by Baserow.
+    © 2025 QMRCC. Powered by Google Sheets.
   </div>
   <script>
-    // Use your actual API token here
-    const apiUrl = 'https://api.baserow.io/api/database/rows/table/572535/?user_field_names=true';
+    // --- CONFIG ---
+    const BASEROW_PROXY_URL = "/.netlify/functions/baserow-proxy";
 
-    fetch(apiUrl, {
-      headers: {
-        'Authorization': 'm1crzB8dwKEILxSHtsDIBG1sYDLRXhN7'
+    let latestResults = [];
+
+    async function performSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      const resultsDiv = document.getElementById('results');
+      const printBtn = document.getElementById('printBtn');
+      const exportBtn = document.getElementById('exportBtn');
+      resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
+      printBtn.style.display = 'none';
+      exportBtn.style.display = 'none';
+      latestResults = [];
+
+      if (!query) {
+        resultsDiv.innerHTML = '<p style="color:#b71c1c;">ദയവായി തിരയാനുള്ള വാക്ക് നൽകുക.</p>';
+        return;
       }
-    })
-      .then(response => response.json())
-      .then(data => {
-        const rows = data?.results || [];
-        const container = document.getElementById('wallets');
-        if (!rows.length) {
-          container.innerHTML = '<div style="color:#b71c1c;">No wallets found.</div>';
-          return;
+
+      try {
+        let allRows = [];
+        let url = BASEROW_PROXY_URL;
+        while (url) {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          if (!data.results) throw new Error();
+          allRows = allRows.concat(data.results);
+          url = data.next ? BASEROW_PROXY_URL + data.next.substring(data.next.indexOf('?')) : null;
         }
-        rows.forEach(row => {
-          const walletCard = document.createElement('div');
-          walletCard.className = 'wallet-card';
-          walletCard.innerHTML = `
-            <h3>${row.Name || 'No Name'}</h3>
-            <p><strong>Address:</strong> ${row.WalletAddress || '-'}</p>
-            <p><strong>Balance:</strong> ${row.Balance || '-'}</p>
-            ${row.Image ? `<img src="${row.Image}" alt="${row.Name}" width="100" />` : ''}
-          `;
-          container.appendChild(walletCard);
+
+        // Client-side filtering
+        const q = query.toLowerCase();
+        const filtered = allRows.filter(row => {
+          return ['place', 'id', 'name', 'contact', 'sheetName'].some(
+            key => row[key] && String(row[key]).toLowerCase().includes(q)
+          );
         });
-      })
-      .catch(error => {
-        document.getElementById('wallets').innerHTML = '<div style="color:#b71c1c;">Error fetching data.</div>';
-        console.error('Error fetching data:', error);
+
+        renderResults(filtered);
+      } catch (e) {
+        resultsDiv.innerHTML = '<p style="color:#b71c1c;">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>';
+      }
+    }
+
+    function renderResults(results) {
+      const resultsDiv = document.getElementById('results');
+      const printBtn = document.getElementById('printBtn');
+      const exportBtn = document.getElementById('exportBtn');
+
+      if (!results || results.length === 0) {
+        resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
+        return;
+      }
+
+      latestResults = results;
+
+      let html = `
+        <table>
+          <tr>
+            <th>സ്ഥലം</th>
+            <th>ID</th>
+            <th>പേര്</th>
+            <th>ഫോൺ</th>
+            <th>കുടുംബാംഗങ്ങൾ</th>
+            <th>ഷീറ്റ്</th>
+          </tr>
+      `;
+
+      results.forEach(row => {
+        html += `
+          <tr>
+            <td>${row.place}</td>
+            <td>${row.id}</td>
+            <td>${row.name}</td>
+            <td>${row.contact}</td>
+            <td>${row.familyMembers}</td>
+            <td>${row.sheetName}</td>
+          </tr>
+        `;
       });
+
+      html += '</table>';
+      resultsDiv.innerHTML = html;
+      printBtn.style.display = 'inline-block';
+      exportBtn.style.display = 'inline-block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('searchInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') performSearch();
+      });
+    });
+
+    function exportToExcel() {
+      if (!latestResults.length) return;
+
+      const wsData = [
+        ['സ്ഥലം', 'ID', 'പേര്', 'ഫോൺ', 'കുടുംബാംഗങ്ങൾ', 'ഷീറ്റ്'],
+        ...latestResults.map(r => [
+          r.place, r.id, r.name, r.contact, r.familyMembers, r.sheetName
+        ])
+      ];
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, "SearchResults");
+      XLSX.writeFile(wb, "QMRCC_SearchResults.xlsx");
+    }
   </script>
 </body>
 </html>
