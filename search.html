@@ -259,55 +259,32 @@
       const resultsDiv = document.getElementById('results');
       const printBtn = document.getElementById('printBtn');
       const exportBtn = document.getElementById('exportBtn');
-
-      resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
-      printBtn.style.display = 'none';
-      exportBtn.style.display = 'none';
       latestResults = [];
+
+      const searchKey = "qmrcc2025"; // 👈 Same as in your Cloudflare secret
+      const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}`;
 
       if (!query) {
         resultsDiv.innerHTML = '<p style="color:#b71c1c;">ദയവായി തിരയാനുള്ള വാക്ക് നൽകുക.</p>';
         return;
       }
 
-      let allResults = [];
-      let url = "https://api.baserow.io/api/database/rows/table/572535/?user_field_names=true";
+      resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
+      printBtn.style.display = 'none';
+      exportBtn.style.display = 'none';
 
       try {
-        while (url) {
-          const res = await fetch(url, {
-            headers: {
-              "Authorization": "Token m1crzB8dwKEILxSHtsDIBG1sYDLRXhN7"
-            }
-          });
+        const res = await fetch(API_URL);
+        const data = await res.json();
 
-          const data = await res.json();
-          allResults = allResults.concat(data.results || []);
-
-          if (data.next) {
-            url = data.next;
-          } else {
-            url = null;
-          }
-        }
-
-        // Update this filter to match your new fields if needed
-        const filtered = allResults.filter(row =>
-          (row.HouseID || '').toString().toLowerCase().includes(query) ||
-          (row.Name || '').toLowerCase().includes(query) ||
-          (row.HouseName || '').toLowerCase().includes(query) ||
-          (row.Contact || '').toLowerCase().includes(query) ||
-          (row.Area || '').toLowerCase().includes(query)
-        );
-
-        if (filtered.length === 0) {
+        if (data.error) {
+          resultsDiv.innerHTML = '<p style="color:#b71c1c;">പ്രവേശനം നിരസിച്ചു.</p>';
+        } else if (data.length === 0) {
           resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
         } else {
-          renderResults(filtered);
+          renderResults(data); // This is your existing render logic
         }
-
       } catch (error) {
-        console.error("Error fetching Baserow data:", error);
         resultsDiv.innerHTML = '<p style="color:#b71c1c;">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>';
       }
     }
