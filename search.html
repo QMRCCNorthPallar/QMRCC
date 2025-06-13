@@ -261,7 +261,7 @@
       const exportBtn = document.getElementById('exportBtn');
       latestResults = [];
 
-      const searchKey = "qmrcc2025"; // 👈 Same as in your Cloudflare secret
+      const searchKey = prompt("Enter search key:"); // 👈 Same as in your Cloudflare secret
       const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}`;
 
       if (!query) {
