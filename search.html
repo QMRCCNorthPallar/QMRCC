@@ -252,15 +252,14 @@
   </div>
   <script>
     // --- CONFIG ---
-    const BASEROW_PROXY_URL = "/.netlify/functions/baserow-proxy";
-
     let latestResults = [];
 
     async function performSearch() {
-      const query = document.getElementById('searchInput').value.trim();
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const resultsDiv = document.getElementById('results');
       const printBtn = document.getElementById('printBtn');
       const exportBtn = document.getElementById('exportBtn');
+
       resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
       printBtn.style.display = 'none';
       exportBtn.style.display = 'none';
@@ -271,28 +270,44 @@
         return;
       }
 
+      let allResults = [];
+      let url = "https://api.baserow.io/api/database/rows/table/572535/?user_field_names=true";
+
       try {
-        let allRows = [];
-        let url = BASEROW_PROXY_URL;
         while (url) {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error();
+          const res = await fetch(url, {
+            headers: {
+              "Authorization": "Token m1crzB8dwKEILxSHtsDIBG1sYDLRXhN7"
+            }
+          });
+
           const data = await res.json();
-          if (!data.results) throw new Error();
-          allRows = allRows.concat(data.results);
-          url = data.next ? BASEROW_PROXY_URL + data.next.substring(data.next.indexOf('?')) : null;
+          allResults = allResults.concat(data.results || []);
+
+          if (data.next) {
+            url = data.next;
+          } else {
+            url = null;
+          }
         }
 
-        // Client-side filtering
-        const q = query.toLowerCase();
-        const filtered = allRows.filter(row => {
-          return ['place', 'id', 'name', 'contact', 'sheetName'].some(
-            key => row[key] && String(row[key]).toLowerCase().includes(q)
-          );
-        });
+        // Update this filter to match your new fields if needed
+        const filtered = allResults.filter(row =>
+          (row.HouseID || '').toString().toLowerCase().includes(query) ||
+          (row.Name || '').toLowerCase().includes(query) ||
+          (row.HouseName || '').toLowerCase().includes(query) ||
+          (row.Contact || '').toLowerCase().includes(query) ||
+          (row.Area || '').toLowerCase().includes(query)
+        );
 
-        renderResults(filtered);
-      } catch (e) {
+        if (filtered.length === 0) {
+          resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
+        } else {
+          renderResults(filtered);
+        }
+
+      } catch (error) {
+        console.error("Error fetching Baserow data:", error);
         resultsDiv.innerHTML = '<p style="color:#b71c1c;">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>';
       }
     }
@@ -312,24 +327,22 @@
       let html = `
         <table>
           <tr>
-            <th>സ്ഥലം</th>
-            <th>ID</th>
+            <th>ഹൗസ് ഐഡി</th>
             <th>പേര്</th>
+            <th>വീട്</th>
             <th>ഫോൺ</th>
-            <th>കുടുംബാംഗങ്ങൾ</th>
-            <th>ഷീറ്റ്</th>
+            <th>പ്രദേശം</th>
           </tr>
       `;
 
       results.forEach(row => {
         html += `
           <tr>
-            <td>${row.place}</td>
-            <td>${row.id}</td>
-            <td>${row.name}</td>
-            <td>${row.contact}</td>
-            <td>${row.familyMembers}</td>
-            <td>${row.sheetName}</td>
+            <td>${row.HouseID || ''}</td>
+            <td>${row.Name || ''}</td>
+            <td>${row.HouseName || ''}</td>
+            <td>${row.Contact || ''}</td>
+            <td>${row.Area || ''}</td>
           </tr>
         `;
       });
@@ -350,9 +363,9 @@
       if (!latestResults.length) return;
 
       const wsData = [
-        ['സ്ഥലം', 'ID', 'പേര്', 'ഫോൺ', 'കുടുംബാംഗങ്ങൾ', 'ഷീറ്റ്'],
+        ['ഹൗസ് ഐഡി', 'പേര്', 'വീട്', 'ഫോൺ', 'പ്രദേശം'],
         ...latestResults.map(r => [
-          r.place, r.id, r.name, r.contact, r.familyMembers, r.sheetName
+          r.HouseID, r.Name, r.HouseName, r.Contact, r.Area
         ])
       ];
 
