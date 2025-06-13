@@ -29,10 +29,29 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 1em;
+      flex-wrap: wrap;
+    }
+    .actions button {
+      flex: 1;
+      padding: 10px;
+      background: #00695c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .actions button:hover {
+      background: #004d40;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1em;
+      background: white;
     }
     th, td {
       border: 1px solid #ddd;
@@ -41,19 +60,20 @@
     }
     th {
       background-color: #eee;
-      cursor: pointer;
     }
-    #exportBtn {
-      margin-top: 1em;
-      padding: 10px 20px;
-      background: #00695c;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #exportBtn:hover {
-      background: #004d40;
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      table, table * {
+        visibility: visible;
+      }
+      table {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -73,7 +93,10 @@
 </form>
 
 <div id="resultsSection" style="display:none;">
-  <button id="exportBtn">CSV ആയി കയറ്റുമതി ചെയ്യുക</button>
+  <div class="actions">
+    <button id="exportBtn">CSV ആയി കയറ്റുമതി ചെയ്യുക</button>
+    <button id="printBtn">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+  </div>
   <table id="resultsTable">
     <thead>
       <tr>
@@ -93,6 +116,7 @@ const form = document.getElementById("searchForm");
 const resultsSection = document.getElementById("resultsSection");
 const resultsTable = document.getElementById("resultsTable").querySelector("tbody");
 const exportBtn = document.getElementById("exportBtn");
+const printBtn = document.getElementById("printBtn");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -112,7 +136,6 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    // Populate table
     resultsTable.innerHTML = "";
     data.forEach((row, i) => {
       resultsTable.innerHTML += `
@@ -149,6 +172,11 @@ exportBtn.addEventListener("click", () => {
   link.href = URL.createObjectURL(blob);
   link.download = "donors.csv";
   link.click();
+});
+
+// Print
+printBtn.addEventListener("click", () => {
+  window.print();
 });
 </script>
 
