@@ -119,14 +119,14 @@
     }
     .gallery-img-link {
       display: block;
-      overflow: hidden;
-      /* Remove border-radius for sharp edges */
-      border-radius: 0;
-      /* Stronger shadow for image cards */
+      margin-bottom: 1.2rem;
+      width: 100%;
       box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1.5px 6px rgba(0,0,0,0.10);
-      transition: transform 0.2s, box-shadow 0.2s;
       background: #fff;
-      aspect-ratio: 4/3;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      break-inside: avoid;
+      transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
     }
     .gallery-img-link:hover {
@@ -135,27 +135,24 @@
     }
     .gallery-img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       display: block;
-      transition: filter 0.2s;
-      aspect-ratio: 4/3;
+      object-fit: cover;
       background: #f4f6fa;
+      border-radius: 0;
+    }
+    @media (max-width: 1200px) {
+      .gallery-grid { column-count: 3; }
+    }
+    @media (max-width: 900px) {
+      .gallery-grid { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .gallery-grid { column-count: 1; }
+      .gallery-img-link { margin-bottom: 0.9rem; }
     }
     body.dark .gallery-img-link {
       background: #1e293b;
-    }
-    body.dark .gallery-title {
-      color: #fff;
-    }
-    @media (max-width: 600px) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.7rem;
-      }
-      .gallery-img-link, .gallery-img {
-        aspect-ratio: 4/3;
-      }
     }
   </style>
 </head>
