@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery - QMRCC North Pallar</title>
+  <!-- Use Bootstrap and your main styles for consistency -->
+  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
+  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
+  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+  <style>
+    body.dark {
+      background-color: #0f172a !important;
+      color: #fff !important;
+    }
+    .gallery-toggle {
+      border: none;
+      background: #f4f6fa;
+      color: #222;
+      border-radius: 50px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gallery-toggle:hover, .gallery-toggle.active {
+      background: #0d6efd;
+      color: #fff;
+    }
+    .gallery-title {
+      font-family: 'Rubik', 'Anek Malayalam', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-img-link {
+      display: block;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    .gallery-img-link:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.2s;
+    }
+    body.dark .gallery-img-link {
+      background: #1e293b;
+    }
+    body.dark .gallery-title {
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .gallery-img { height: 160px; }
+    }
+  </style>
+</head>
+<body style="font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;" class="bg-white transition-colors duration-300">
+
+  <!-- Navigation (copied from index.html for consistency) -->
+  <header class="navigation bg-tertiary">
+    <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
+            <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Pages
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                <li><a class="dropdown-item" href="blog-details.html">Blog Details</a></li>
+                <li><a class="dropdown-item" href="service-details.html">Service Details</a></li>
+                <li><a class="dropdown-item" href="search.html">Search</a></li>
+                <li><a class="dropdown-item" href="legal.html">Legal</a></li>
+                <li><a class="dropdown-item" href="terms.html">Terms &amp; Condition</a></li>
+                <li><a class="dropdown-item" href="privacy-policy.html">Privacy &amp; Policy</a></li>
+              </ul>
+            </li>
+          </ul>
+          <a href="#!" class="btn btn-outline-primary">Log In</a>
+          <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- /Navigation -->
+
+  <section class="section bg-tertiary">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h1 class="gallery-title mb-3 mb-md-0 text-capitalize fs-2">Gallery</h1>
+        <button id="toggleDarkBtn" onclick="toggleDarkMode()" class="gallery-toggle" aria-label="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+          <span id="toggleDarkText">Dark Mode</span>
+        </button>
+      </div>
+      <div id="gallery" class="gallery-grid"></div>
+    </div>
+  </section>
+
+  <!-- Footer (copied from index.html for consistency) -->
+  <footer class="section-sm bg-tertiary border-top mt-5">
+    <div class="container">
+      <div class="row justify-content-between">
+        <!-- Services -->
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">Services</h5>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+              <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+              <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+              <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+              <li class="mb-2"><a href="search.html">Data Search</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- About -->
+        <div class="col-lg-2 col-md-6 col-12 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">About</h5>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+              <li class="mb-2"><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- Contact Us -->
+        <div class="col-lg-4 col-md-12 col-12 mb-4">
+          <div class="footer-widget">
+            <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2 text-primary"></i>
+                <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+              </li>
+              <li class="mb-2">
+                <i class="fab fa-facebook me-2 text-primary"></i>
+                <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
+              </li>
+              <li class="mb-2">
+                <i class="fab fa-instagram me-2 text-primary"></i>
+                <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+              </li>
+              <li class="mb-2">
+                <i class="fab fa-whatsapp me-2 text-primary"></i>
+                <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
+              </li>
+              <li class="mb-2">
+                <i class="fab fa-youtube me-2 text-primary"></i>
+                <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row align-items-center text-center text-md-start">
+        <div class="col-lg-6 mb-2 mb-lg-0">
+          <a href="index.html">
+            <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
+          </a>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <small class="text-muted">
+            &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+            Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Plugins -->
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
+  <script>
+    // List all supported extensions
+    const supportedExtensions = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG', 'gif', 'webp'];
+
+    // Dynamically load all images in the folder (client-side JS can't read directory, so use a manifest or fetch from server)
+    // For static hosting, you must maintain a manifest file (gallery.json) with all image filenames.
+    // Example gallery.json: ["1747647183068.797.JPG", "IMG_8329.JPG", "QMRCC.png.png", ...]
+    // Place gallery.json in images/gallery/
+
+    const IMAGES_PER_PAGE = 20;
+    let allImages = [];
+    let currentPage = 1;
+
+    function renderGalleryPage(page) {
+      const galleryDiv = document.getElementById('gallery');
+      galleryDiv.innerHTML = '';
+      const start = (page - 1) * IMAGES_PER_PAGE;
+      const end = start + IMAGES_PER_PAGE;
+      const imagesToShow = allImages.slice(start, end);
+
+      imagesToShow.forEach(filename => {
+        const imgPath = `images/gallery/${filename}`;
+        const link = document.createElement('a');
+        link.href = imgPath;
+        link.setAttribute('data-lightbox', 'gallery');
+        link.className = "gallery-img-link";
+        const img = document.createElement('img');
+        img.src = imgPath;
+        img.className = "gallery-img";
+        img.loading = "lazy";
+        img.alt = filename;
+        link.appendChild(img);
+        galleryDiv.appendChild(link);
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      let pagination = document.getElementById('gallery-pagination');
+      if (!pagination) {
+        pagination = document.createElement('div');
+        pagination.id = 'gallery-pagination';
+        pagination.className = 'd-flex justify-content-center mt-4';
+        document.querySelector('.gallery-grid').after(pagination);
+      }
+      pagination.innerHTML = '';
+
+      const totalPages = Math.ceil(allImages.length / IMAGES_PER_PAGE);
+
+      if (totalPages <= 1) return;
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'btn btn-outline-primary mx-1';
+      prevBtn.textContent = 'Prev';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderGalleryPage(currentPage);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+      pagination.appendChild(prevBtn);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = 'btn btn-sm mx-1 ' + (i === currentPage ? 'btn-primary' : 'btn-outline-primary');
+        pageBtn.textContent = i;
+        pageBtn.onclick = () => {
+          currentPage = i;
+          renderGalleryPage(currentPage);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        pagination.appendChild(pageBtn);
+      }
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn btn-outline-primary mx-1';
+      nextBtn.textContent = 'Next';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderGalleryPage(currentPage);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+      pagination.appendChild(nextBtn);
+    }
+
+    // Fetch the manifest file (gallery.json) and initialize gallery
+    fetch('images/gallery/gallery.json')
+      .then(response => response.json())
+      .then(data => {
+        // Filter only supported image files
+        allImages = data.filter(filename => {
+          const ext = filename.split('.').pop();
+          return supportedExtensions.includes(ext);
+        });
+        renderGalleryPage(currentPage);
+      })
+      .catch(() => {
+        document.getElementById('gallery').innerHTML = '<div class="text-danger">Gallery could not be loaded.</div>';
+      });
+
+    // Improved toggle button with icon and text
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('toggleDarkBtn');
+      const icon = btn.querySelector('i');
+      const text = document.getElementById('toggleDarkText');
+      if (document.body.classList.contains('dark')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        text.textContent = "Light Mode";
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        text.textContent = "Dark Mode";
+      }
+    }
+  </script>
+</body>
+</html>
