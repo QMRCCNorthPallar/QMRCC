@@ -190,8 +190,8 @@
       </form>
       <div id="resultsSection" style="display:none; width:100%;">
         <div class="actions">
-          <button id="exportBtn">CSV ആയി Export ചെയ്യുക</button>
-          <button id="printBtn">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+          <button id="excelBtn">എക്സൽ ഫയലായി ഡൗൺലോഡ് ചെയ്യുക</button>
+          <button id="pdfBtn">PDF ആയി ഡൗൺലോഡ് ചെയ്യുക</button>
         </div>
         <table id="resultsTable">
           <thead>
@@ -213,12 +213,13 @@
   </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const form = document.getElementById("searchForm");
 const resultsSection = document.getElementById("resultsSection");
 const resultsTable = document.getElementById("resultsTable").querySelector("tbody");
-const exportBtn = document.getElementById("exportBtn");
-const printBtn = document.getElementById("printBtn");
+const excelBtn = document.getElementById("excelBtn");
+const pdfBtn = document.getElementById("pdfBtn");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -260,26 +261,33 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// CSV Export with logo and details
-exportBtn.addEventListener("click", () => {
-  let csv = `"QMRCC",,,,,\n"ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ",,,,,\n\n`;
-  csv += "Sl No,Name,Phone,Area,Blood Group\n";
+// Excel Export with logo and details
+excelBtn.addEventListener("click", () => {
+  // Prepare data
+  const ws_data = [
+    ["QMRCC"],
+    ["ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ"],
+    [],
+    ["#", "പേര്", "ഫോൺ", "പ്രദേശം", "രക്ത ഗ്രൂപ്പ്"]
+  ];
   document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
     const cells = row.querySelectorAll("td");
-    const rowText = Array.from(cells).map(td => `"${td.innerText}"`).join(",");
-    csv += rowText + "\n";
+    ws_data.push(Array.from(cells).map(td => td.innerText));
   });
 
-  const blob = new Blob([csv], { type: "text/csv" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "donors.csv";
-  link.click();
+  // Create worksheet and workbook
+  const ws = XLSX.utils.aoa_to_sheet(ws_data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Donors");
+
+  // Add logo (optional, only works in some Excel viewers)
+  // XLSX does not natively support images, so for most use-cases, only text will be included.
+
+  XLSX.writeFile(wb, "donors.xlsx");
 });
 
 // PDF Export with logo and details
-printBtn.textContent = "PDF ആയി Export ചെയ്യുക";
-printBtn.addEventListener("click", async () => {
+pdfBtn.addEventListener("click", async () => {
   const { jsPDF } = window.jspdf;
 
   // Create a container for PDF export
