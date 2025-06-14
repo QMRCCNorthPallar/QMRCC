@@ -12,6 +12,79 @@
   <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
   <style>
+    body.dark, html.dark {
+      background-color: #0f172a !important;
+      color: #fff !important;
+    }
+    body.dark .bg-tertiary,
+    html.dark .bg-tertiary {
+      background: #1e293b !important;
+    }
+    body.dark .gallery-toggle,
+    html.dark .gallery-toggle {
+      background: #334155;
+      color: #fff;
+    }
+    body.dark .gallery-toggle:hover, body.dark .gallery-toggle.active,
+    html.dark .gallery-toggle:hover, html.dark .gallery-toggle.active {
+      background: #0d6efd;
+      color: #fff;
+    }
+    body.dark .gallery-title,
+    html.dark .gallery-title {
+      color: #fff;
+    }
+    body.dark .gallery-img-link,
+    html.dark .gallery-img-link {
+      background: #1e293b;
+    }
+    body.dark .gallery-img,
+    html.dark .gallery-img {
+      filter: brightness(0.85) contrast(1.1);
+    }
+    body.dark .footer-widget,
+    html.dark .footer-widget {
+      color: #fff;
+    }
+    body.dark .navbar,
+    html.dark .navbar {
+      background: #1e293b !important;
+    }
+    body.dark .dropdown-menu,
+    html.dark .dropdown-menu {
+      background: #334155;
+      color: #fff;
+    }
+    body.dark .dropdown-item,
+    html.dark .dropdown-item {
+      color: #fff;
+    }
+    body.dark .dropdown-item:hover,
+    html.dark .dropdown-item:hover {
+      background: #0d6efd;
+      color: #fff;
+    }
+    body.dark .btn-outline-primary,
+    html.dark .btn-outline-primary {
+      color: #fff;
+      border-color: #fff;
+    }
+    body.dark .btn-outline-primary:hover,
+    html.dark .btn-outline-primary:hover {
+      background: #0d6efd;
+      color: #fff;
+      border-color: #0d6efd;
+    }
+    body.dark .btn-primary,
+    html.dark .btn-primary {
+      background: #0d6efd;
+      border-color: #0d6efd;
+    }
+    body.dark hr,
+    html.dark hr {
+      border-color: #334155;
+    }
+    /* Add more as needed for your UI */
     body.dark {
       background-color: #0f172a !important;
       color: #fff !important;
@@ -315,6 +388,7 @@
     // Improved toggle button with icon and text
     function toggleDarkMode() {
       document.body.classList.toggle('dark');
+      document.documentElement.classList.toggle('dark');
       const btn = document.getElementById('toggleDarkBtn');
       const icon = btn.querySelector('i');
       const text = document.getElementById('toggleDarkText');
