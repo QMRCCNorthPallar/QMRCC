@@ -211,6 +211,8 @@
   <div class="footer-simple">
     © 2025 QMRCC.
   </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const form = document.getElementById("searchForm");
 const resultsSection = document.getElementById("resultsSection");
@@ -258,9 +260,10 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// CSV Export
+// CSV Export with logo and details
 exportBtn.addEventListener("click", () => {
-  let csv = "Sl No,Name,Phone,Area,Blood Group\n";
+  let csv = `"QMRCC",,,,,\n"ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ",,,,,\n\n`;
+  csv += "Sl No,Name,Phone,Area,Blood Group\n";
   document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
     const cells = row.querySelectorAll("td");
     const rowText = Array.from(cells).map(td => `"${td.innerText}"`).join(",");
@@ -274,9 +277,59 @@ exportBtn.addEventListener("click", () => {
   link.click();
 });
 
-// Print
-printBtn.addEventListener("click", () => {
-  window.print();
+// PDF Export with logo and details
+printBtn.textContent = "PDF ആയി Export ചെയ്യുക";
+printBtn.addEventListener("click", async () => {
+  const { jsPDF } = window.jspdf;
+
+  // Create a container for PDF export
+  const pdfContainer = document.createElement("div");
+  pdfContainer.style.padding = "24px";
+  pdfContainer.style.background = "#fff";
+  pdfContainer.style.width = "700px";
+  pdfContainer.style.fontFamily = "'Anek Malayalam', sans-serif";
+  pdfContainer.innerHTML = `
+    <div style="text-align:center;margin-bottom:12px;">
+      <img src="images/logo2.png" alt="QMRCC Logo" style="width:70px;margin-bottom:8px;">
+      <div style="font-size:1.5rem;font-weight:800;color:#00796b;">QMRCC</div>
+      <div style="font-size:1.08rem;color:#009688;font-weight:700;">ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ</div>
+      <div style="font-size:1.05rem;color:#555;margin-bottom:10px;">രക്തദാതാക്കളുടെ പട്ടിക</div>
+    </div>
+    <table border="1" cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:1rem;">
+      <thead style="background:#eee;">
+        <tr>
+          <th>#</th>
+          <th>പേര്</th>
+          <th>ഫോൺ</th>
+          <th>പ്രദേശം</th>
+          <th>രക്ത ഗ്രൂപ്പ്</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${resultsTable.innerHTML}
+      </tbody>
+    </table>
+  `;
+  document.body.appendChild(pdfContainer);
+
+  // Use html2canvas to render the container
+  const canvas = await window.html2canvas(pdfContainer, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "pt",
+    format: "a4"
+  });
+
+  // Calculate width/height for A4
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const imgWidth = pageWidth - 40;
+  const imgHeight = canvas.height * imgWidth / canvas.width;
+
+  pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
+  pdf.save("donors.pdf");
+
+  document.body.removeChild(pdfContainer);
 });
 </script>
 </body>
