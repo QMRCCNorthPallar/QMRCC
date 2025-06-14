@@ -130,7 +130,7 @@
       <form id="donorForm">
         <input type="text" name="name" placeholder="പേര്" required />
         <input type="text" name="phone" placeholder="ഫോൺ നമ്പർ" required />
-        <input type="number" name="age" required placeholder="വയസ്സ്" min="18" max="65" />
+        <input type="number" name="age" id="ageInput" required placeholder="വയസ്സ്" min="18" max="65" />
         <select name="bloodGroup" required>
           <option value="">രക്ത ​ഗ്രൂപ്പ്</option>
           <option>A+</option><option>A-</option>
@@ -150,6 +150,17 @@
   <script>
 const form = document.getElementById('donorForm');
 const resultDiv = document.getElementById('result');
+
+// ✅ Minimal Malayalam age validation
+const ageInput = document.getElementById("ageInput");
+ageInput.addEventListener("input", () => {
+  const age = parseInt(ageInput.value);
+  if (ageInput.validity.valueMissing || age < 18 || age > 65) {
+    ageInput.setCustomValidity("18 - 65 വയസ്സിന് ഇടയിലുള്ളവരാണ് രക്തദാനം ചെയ്യേണ്ടത്.");
+  } else {
+    ageInput.setCustomValidity("");
+  }
+});
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
