@@ -128,16 +128,17 @@
         ബ്ലഡ് ബാങ്ക് വിവരശേഖരണം
       </div>
       <form id="donorForm">
-        <input type="text" name="name" placeholder="Name" required />
-        <input type="text" name="phone" placeholder="Phone" required />
+        <input type="text" name="name" placeholder="പേര്" required />
+        <input type="text" name="phone" placeholder="ഫോൺ നമ്പർ" required />
+        <input type="number" name="age" required placeholder="വയസ്സ്" min="18" max="65" />
         <select name="bloodGroup" required>
-          <option value="">Select Blood Group</option>
+          <option value="">രക്ത ​ഗ്രൂപ്പ്</option>
           <option>A+</option><option>A-</option>
           <option>B+</option><option>B-</option>
           <option>O+</option><option>O-</option>
           <option>AB+</option><option>AB-</option>
         </select>
-        <input type="text" name="area" placeholder="Area / City" required />
+        <input type="text" name="area" placeholder="സ്ഥലം" required />
         <button type="submit">Submit</button>
       </form>
       <div id="result"></div>
