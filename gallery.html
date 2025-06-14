@@ -119,17 +119,19 @@
     }
     .gallery-img-link {
       display: block;
-      border-radius: 1rem;
       overflow: hidden;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      /* Remove border-radius for sharp edges */
+      border-radius: 0;
+      /* Stronger shadow for image cards */
+      box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1.5px 6px rgba(0,0,0,0.10);
       transition: transform 0.2s, box-shadow 0.2s;
       background: #fff;
-      aspect-ratio: 4/3; /* Ensures consistent aspect ratio */
+      aspect-ratio: 4/3;
       position: relative;
     }
     .gallery-img-link:hover {
       transform: translateY(-6px) scale(1.04);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.13);
     }
     .gallery-img {
       width: 100%;
@@ -137,7 +139,7 @@
       object-fit: cover;
       display: block;
       transition: filter 0.2s;
-      aspect-ratio: 4/3; /* Ensures image fits the card */
+      aspect-ratio: 4/3;
       background: #f4f6fa;
     }
     body.dark .gallery-img-link {
