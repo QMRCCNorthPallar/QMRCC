@@ -300,7 +300,7 @@
     // Example gallery.json: ["1747647183068.797.JPG", "IMG_8329.JPG", "QMRCC.png.png", ...]
     // Place gallery.json in images/gallery/
 
-    const IMAGES_PER_PAGE = 20;
+    const IMAGES_PER_PAGE = 32; // Show 32 images per page
     let allImages = [];
     let currentPage = 1;
 
@@ -317,7 +317,6 @@
         link.href = imgPath;
         link.setAttribute('data-lightbox', 'gallery');
         link.className = "gallery-img-link";
-        // Use <img> with loading="lazy" and fetchpriority="low" for fast mobile load
         const img = document.createElement('img');
         img.src = imgPath;
         img.className = "gallery-img";
