@@ -114,8 +114,8 @@
     }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
     }
     .gallery-img-link {
       display: block;
@@ -124,6 +124,8 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
       transition: transform 0.2s, box-shadow 0.2s;
       background: #fff;
+      aspect-ratio: 4/3; /* Ensures consistent aspect ratio */
+      position: relative;
     }
     .gallery-img-link:hover {
       transform: translateY(-6px) scale(1.04);
@@ -131,10 +133,12 @@
     }
     .gallery-img {
       width: 100%;
-      height: 220px;
+      height: 100%;
       object-fit: cover;
       display: block;
       transition: filter 0.2s;
+      aspect-ratio: 4/3; /* Ensures image fits the card */
+      background: #f4f6fa;
     }
     body.dark .gallery-img-link {
       background: #1e293b;
@@ -143,7 +147,13 @@
       color: #fff;
     }
     @media (max-width: 600px) {
-      .gallery-img { height: 160px; }
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+      }
+      .gallery-img-link, .gallery-img {
+        aspect-ratio: 4/3;
+      }
     }
   </style>
 </head>
@@ -305,10 +315,12 @@
         link.href = imgPath;
         link.setAttribute('data-lightbox', 'gallery');
         link.className = "gallery-img-link";
+        // Use <img> with loading="lazy" and fetchpriority="low" for fast mobile load
         const img = document.createElement('img');
         img.src = imgPath;
         img.className = "gallery-img";
         img.loading = "lazy";
+        img.setAttribute('fetchpriority', 'low');
         img.alt = filename;
         link.appendChild(img);
         galleryDiv.appendChild(link);
