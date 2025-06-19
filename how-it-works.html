@@ -11,17 +11,21 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Wallet - Payday Loan Service Template</title>
+	<title>QMRCC - Quaid-E-Millath Releif& Cultural Center</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-	<meta name="description" content="This is meta description">
+	<meta name="description" content="Learn how QMRCC's community programs and services work in North Pallar. Understand our process and how we support our community.">
 	<meta name="author" content="Themefisher">
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- theme meta -->
+  <meta name="theme-name" content="wallet" />
 
 	<!-- # Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap" rel="stylesheet">
 
 	<!-- # CSS Plugins -->
 	<link rel="stylesheet" href="plugins/slick/slick.css">
@@ -33,14 +37,14 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body style="font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;">
 
 <!-- navigation -->
 <header class="navigation bg-tertiary">
 	<nav class="navbar navbar-expand-xl navbar-light text-center py-3">
 		<div class="container">
 			<a class="navbar-brand" href="index.html">
-				<img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
+				<img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
 			</button>
@@ -70,68 +74,141 @@
 							</li>
 							<li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a>
 							</li>
-							<li><a class="dropdown-item " href="photo-frame.html">Privacy &amp; Policy</a>
+							<li><a class="dropdown-item " href="privacy-policy.html">Privacy &amp; Policy</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
-				<!-- account btn --> <a href="#!" class="btn btn-outline-primary">Log In</a>
-				<!-- account btn --> <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+				<!-- account btn --> <a href="#!" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
+				<!-- account btn --> <a href="#!" class="btn btn-primary ms-2 ms-lg-3" data-bs-toggle="modal" data-bs-target="#volunteerModal">Volunteer</a>
 			</div>
 		</div>
 	</nav>
 </header>
 <!-- /navigation -->
 
-<div class="modal applyLoanModal fade" id="applyLoan" tabindex="-1" aria-labelledby="applyLoanLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-bottom-0">
-        <h4 class="modal-title" id="exampleModalLabel">How much do you need?</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="#!" method="post">
-          <div class="row">
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_amount" class="form-label">Amount</label>
-                <input type="number" class="form-control shadow-none" id="loan_amount" placeholder="ex: 25000">
+  <!-- Donate Modal -->
+  <div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h4 class="modal-title" id="donateModalLabel">Support Our Mission</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#!" method="post">
+            <div class="row">
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donation_amount" class="form-label">Donation Amount</label>
+                  <input type="number" class="form-control shadow-none" id="donation_amount" placeholder="ex: 1000">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donation_type" class="form-label">Purpose</label>
+                  <select class="form-control shadow-none" id="donation_type">
+                    <option value="general">General Fund</option>
+                    <option value="baithurahma">Baithurahma Housing</option>
+                    <option value="education">Education Support</option>
+                    <option value="medical">Medical Support</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_name" class="form-label">Full Name</label>
+                  <input type="text" class="form-control shadow-none" id="donor_name">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control shadow-none" id="donor_email">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_phone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control shadow-none" id="donor_phone">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="payment_method" class="form-label">Payment Method</label>
+                  <select class="form-control shadow-none" id="payment_method">
+                    <option value="bank">Bank Transfer</option>
+                    <option value="upi">UPI</option>
+                    <option value="cash">Cash</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary w-100">Donate Now</button>
               </div>
             </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_how_long_for" class="form-label">How long for?</label>
-                <input type="number" class="form-control shadow-none" id="loan_how_long_for" placeholder="ex: 12">
-              </div>
-            </div>
-            <div class="col-lg-12 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_repayment" class="form-label">Repayment</label>
-                <input type="number" class="form-control shadow-none" id="loan_repayment" disabled>
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_full_name" class="form-label">Full Name</label>
-                <input type="text" class="form-control shadow-none" id="loan_full_name">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_email_address" class="form-label">Email address</label>
-                <input type="email" class="form-control shadow-none" id="loan_email_address">
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary w-100">Get Your Loan Now</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Volunteer Modal -->
+  <div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h4 class="modal-title" id="volunteerModalLabel">Join Our Volunteer Team</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#!" method="post">
+            <div class="row">
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_name" class="form-label">Full Name</label>
+                  <input type="text" class="form-control shadow-none" id="volunteer_name">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control shadow-none" id="volunteer_email">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_phone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control shadow-none" id="volunteer_phone">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="availability" class="form-label">Availability</label>
+                  <select class="form-control shadow-none" id="availability">
+                    <option value="weekends">Weekends</option>
+                    <option value="weekdays">Weekdays</option>
+                    <option value="evenings">Evenings</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_skills" class="form-label">Skills / Interests</label>
+                  <textarea class="form-control shadow-none" id="volunteer_skills" rows="3" placeholder="Please list any special skills or areas of interest"></textarea>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <section class="page-header bg-tertiary">
 	<div class="container">
@@ -163,7 +240,7 @@
 			<path d="M817.266 289.466C813.108 259.989 787.151 237.697 759.261 227.271C731.372 216.846 701.077 215.553 671.666 210.904C642.254 206.24 611.795 197.156 591.664 175.224C555.853 136.189 566.345 75.5336 560.763 22.8649C552.302 -56.8256 498.487 -130.133 425 -162.081" stroke="currentColor" stroke-miterlimit="10" />
 			<path d="M832.584 276.159C828.427 246.683 802.469 224.391 774.58 213.965C746.69 203.539 716.395 202.246 686.984 197.598C657.573 192.934 627.114 183.85 606.982 161.918C571.172 122.883 581.663 62.2275 576.082 9.55873C567.62 -70.1318 513.806 -143.439 440.318 -175.387" stroke="currentColor" stroke-miterlimit="10" />
 			<path d="M847.904 262.853C843.747 233.376 817.789 211.084 789.9 200.659C762.011 190.233 731.716 188.94 702.304 184.292C672.893 179.627 642.434 170.544 622.303 148.612C586.492 109.577 596.983 48.9211 591.402 -3.74766C582.94 -83.4382 529.126 -156.746 455.638 -188.694" stroke="currentColor" stroke-miterlimit="10" />
-			<path d="M863.24 249.547C859.083 220.07 833.125 197.778 805.236 187.353C777.347 176.927 747.051 175.634 717.64 170.986C688.229 166.321 657.77 157.237 637.639 135.306C601.828 96.2707 612.319 35.6149 606.738 -17.0538C598.276 -96.7443 544.462 -170.052 470.974 -202" stroke="currentColor" stroke-miterlimit="10" />
+			<path d="M863.24 249.547C859.083 220.07 833.125 197.778 805.236 187.353C777.347 176.927 747.051 175.634 717.640 170.986C688.229 166.321 657.770 157.237 637.639 135.306C601.828 96.2707 612.319 35.6149 606.738 -17.0538C598.276 -96.7443 544.462 -170.052 470.974 -202" stroke="currentColor" stroke-miterlimit="10" />
 		</svg>
 	</div>
 </section>
@@ -174,10 +251,10 @@
 			<div class="col-lg-5">
 				<div class="section-title">
 					<p class="text-primary text-uppercase fw-bold mb-3">How It Works</p>
-					<h1>See How Wallet Works In One Minute.</h1>
+					<h1>See How QMRCC Impacts Our Community</h1>
 					<p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consv allis quam aliquet integer eget magna ullam corper peent esque urna. Srna morbi id vitae. Vulpuate nisl</p>
-						<p>sed morbi sit ut placerat eges aeftas et. Pellen tesque tristisque magnis augue gravida pulvinar placerat. Tellus massa pretra scelerisque leo. In faucisfbus egestas. In habitasse sagittis, convallis ut commodo amet.</p>
+						<p>QMRCC operates through a network of dedicated volunteers and community partners to identify needs and implement effective solutions for the people of North Pallar and surrounding areas.</p>
+						<p>Our transparent approach ensures that resources are properly allocated where they're needed most. Through collaborative efforts with local stakeholders, we develop sustainable programs that create lasting positive change in our community.</p>
 					</p>
 				</div>
 			</div>
@@ -216,8 +293,8 @@
 		<div class="row justify-content-center align-items-center">
 			<div class="col-lg-7">
 				<div class="section-title text-center">
-					<p class="text-primary text-uppercase fw-bold mb-3">Apply Loan</p>
-					<h1>Applying For A Loan Is Very Easy In Just 3 Easy Steps</h1>
+					<p class="text-primary text-uppercase fw-bold mb-3">Get Involved</p>
+					<h1>Supporting Our Community In Just 3 Easy Steps</h1>
 				</div>
 			</div>
 		</div>
@@ -227,22 +304,22 @@
 					<div class="step-item col-lg-4 col-md-6">
 						<div class="text-center">
 							<p class="count">01</p>
-							<h3 class="mb-3">Fill Out The Form</h3>
-							<p class="mb-0">Lorem ipsum dolor, consectetur adipiscing. Id egestas sceleriue dui id sed velit facsi eget. Magnis etra.</p>
+							<h3 class="mb-3">Identify Community Needs</h3>
+							<p class="mb-0">Our team works closely with community members to identify areas where support is needed most urgently, ensuring our resources are directed effectively.</p>
 						</div>
 					</div>
 					<div class="step-item col-lg-4 col-md-6">
 						<div class="text-center">
 							<p class="count">02</p>
-							<h3 class="mb-3">Data verification</h3>
-							<p class="mb-0">Lorem ipsum dolor, consectetur adipiscing. Id egestas sceleriue dui id sed velit facsi eget. Magnis etra.</p>
+							<h3 class="mb-3">Develop Action Plans</h3>
+							<p class="mb-0">We create comprehensive plans with clear objectives, timelines and resource allocations to address the identified needs in a sustainable manner.</p>
 						</div>
 					</div>
 					<div class="step-item col-lg-4 col-md-6">
 						<div class="text-center">
 							<p class="count">03</p>
-							<h3 class="mb-3">Get your money</h3>
-							<p class="mb-0">Lorem ipsum dolor, consectetur adipiscing. Id egestas sceleriue dui id sed velit facsi eget. Magnis etra.</p>
+							<h3 class="mb-3">Implement & Evaluate</h3>
+							<p class="mb-0">Our volunteers and partners execute the programs while continuously monitoring progress and making improvements to maximize community impact.</p>
 						</div>
 					</div>
 				</div>
@@ -255,35 +332,35 @@
 		<div class="row justify-content-center align-items-center">
 			<div class="col-lg-6">
 				<div class="section-title text-center">
-					<p class="text-primary text-uppercase fw-bold mb-3">Questions You Have</p>
-					<h1>You Will Get In Wallet</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing . egestas cursus pellentesque dignissim dui, congue. Vel etiam ut</p>
+					<p class="text-primary text-uppercase fw-bold mb-3">Our Commitment</p>
+					<h1>How QMRCC Makes A Difference</h1>
+					<p>Through our dedicated programs and community initiatives, we strive to create meaningful impact and lasting change in the lives of those we serve.</p>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-center">
 			<div class="icon-box-item col-lg-4 col-md-6">
 				<div class="block">
-					<div class="icon"> <i class="fas fa-truck"></i>
+					<div class="icon"> <i class="fas fa-home"></i>
 					</div>
-					<h3 class="mb-3">Fast and convenient</h3>
-					<p class="mb-0">Lorem ipsum dolor sit amet, conse cteatur adipiscing elit. Sit eros, in adipia scing non tellus netus. Pharetra egestas laciansfsia.</p>
+					<h3 class="mb-3">Housing Support</h3>
+					<p class="mb-0">Through our Baithurahma initiative, we provide housing assistance to families in need, ensuring everyone has access to safe and dignified shelter in our community.</p>
 				</div>
 			</div>
 			<div class="icon-box-item col-lg-4 col-md-6">
 				<div class="block">
-					<div class="icon"> <i class="fas fa-shield-alt"></i>
+					<div class="icon"> <i class="fas fa-heartbeat"></i>
 					</div>
-					<h3 class="mb-3">Vey Safe and reliable</h3>
-					<p class="mb-0">Lorem ipsum dolor sit amet, conse cteatur adipiscing elit. Sit eros, in adipia scing non tellus netus. Pharetra egestas laciansfsia.</p>
+					<h3 class="mb-3">Healthcare Access</h3>
+					<p class="mb-0">Our blood bank and medical assistance programs help community members access vital healthcare services when they need them most.</p>
 				</div>
 			</div>
 			<div class="icon-box-item col-lg-4 col-md-6">
 				<div class="block">
-					<div class="icon"> <i class="fas fa-handshake"></i>
+					<div class="icon"> <i class="fas fa-graduation-cap"></i>
 					</div>
-					<h3 class="mb-3">Trusted by customers</h3>
-					<p class="mb-0">Lorem ipsum dolor sit amet, conse cteatur adipiscing elit. Sit eros, in adipia scing non tellus netus. Pharetra egestas laciansfsia.</p>
+					<h3 class="mb-3">Education Support</h3>
+					<p class="mb-0">We believe in the power of education to transform lives, which is why we offer scholarships, learning materials, and mentoring to students in our community.</p>
 				</div>
 			</div>
 		</div>
@@ -294,8 +371,8 @@
 		<div class="row justify-content-center align-items-center mb-5">
 			<div class="col-lg-6">
 				<div class="section-title text-center">
-					<p class="text-primary text-uppercase fw-bold mb-3">QUIESTIONS fOR LOAN</p>
-					<h1>Additional Informations</h1>
+					<p class="text-primary text-uppercase fw-bold mb-3">COMMON QUESTIONS</p>
+					<h1>Frequently Asked Questions</h1>
 				</div>
 			</div>
 		</div>
@@ -303,48 +380,40 @@
 			<div class="col-lg-9">
 				<div class="accordion accordion-border-bottom" id="additional_Info">
 					<div class="accordion-item bg-transparent">
-						<h2 class="accordion-header accordion-button h5 border-0 active" id="heading-8a4ed081f8ec73b6e9377f609cffed128b925ed9" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-8a4ed081f8ec73b6e9377f609cffed128b925ed9" aria-expanded="true" aria-controls="collapse-8a4ed081f8ec73b6e9377f609cffed128b925ed9">How can I integrate Avocode to my
-              current tool stack?
+						<h2 class="accordion-header accordion-button h5 border-0 active" id="heading-8a4ed081f8ec73b6e9377f609cffed128b925ed9" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-8a4ed081f8ec73b6e9377f609cffed128b925ed9" aria-expanded="true" aria-controls="collapse-8a4ed081f8ec73b6e9377f609cffed128b925ed9">How can I get involved with QMRCC as a volunteer?
             </h2>
 						<div id="collapse-8a4ed081f8ec73b6e9377f609cffed128b925ed9" class="accordion-collapse collapse border-0 show" aria-labelledby="heading-8a4ed081f8ec73b6e9377f609cffed128b925ed9" data-bs-parent="#additional_Info">
 							<div class="accordion-body py-0 content">
-								<h6 id="service-provided-as-is">Service Provided AS IS:</h6>
-								<p>The Service is provided for free during this pilot project, and is provided as is with no warranty. Conclude will provide User support for the Service, however; Conclude is not committed to any level of service or availability of the Service. A further description of the Service and our user support is available at the Site.</p>
-								<h6 id="company-liability">Company Liability:</h6>
-								<p>If you enter into this agreement on behalf of a company, you hereby agree that the company is responsible under this Agreement for all actions and omissions conducted by its designated users of the Service.</p>
+								<p>Getting involved as a volunteer is easy! You can click the "Volunteer" button at the top of our website to fill out a simple form, or visit our office in person. We have opportunities for people with all types of skills and availability, from one-time events to regular commitments.</p>
 							</div>
 						</div>
 					</div>
 					<div class="accordion-item bg-transparent">
-						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-5547386a6e7381108d294d5eebe26d464fcd8c2c" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5547386a6e7381108d294d5eebe26d464fcd8c2c" aria-expanded="false" aria-controls="collapse-5547386a6e7381108d294d5eebe26d464fcd8c2c">How can I use Avocode with cloud
-              documents?
+						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-5547386a6e7381108d294d5eebe26d464fcd8c2c" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5547386a6e7381108d294d5eebe26d464fcd8c2c" aria-expanded="false" aria-controls="collapse-5547386a6e7381108d294d5eebe26d464fcd8c2c">What kinds of donations does QMRCC accept?
             </h2>
 						<div id="collapse-5547386a6e7381108d294d5eebe26d464fcd8c2c" class="accordion-collapse collapse border-0 " aria-labelledby="heading-5547386a6e7381108d294d5eebe26d464fcd8c2c" data-bs-parent="#additional_Info">
-							<div class="accordion-body py-0 content">The difference between and premium product consist number of components, plugins, page in each. The Free versions contain only a few elements and pages that.</div>
+							<div class="accordion-body py-0 content">We welcome monetary donations through bank transfer, UPI, or cash. You can specify if your donation is for a specific program like Baithurahma, education support, or medical aid, or for our general fund to address the most pressing needs.</div>
 						</div>
 					</div>
 					<div class="accordion-item bg-transparent">
-						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-c9475aed4d896279ec43e21b49f55179d31b95ee" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-c9475aed4d896279ec43e21b49f55179d31b95ee" aria-expanded="false" aria-controls="collapse-c9475aed4d896279ec43e21b49f55179d31b95ee">If I cancel, can I archive my designs
-              to keep them safe until I come back?
+						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-c9475aed4d896279ec43e21b49f55179d31b95ee" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-c9475aed4d896279ec43e21b49f55179d31b95ee" aria-expanded="false" aria-controls="collapse-c9475aed4d896279ec43e21b49f55179d31b95ee">How does QMRCC select beneficiaries for its programs?
             </h2>
 						<div id="collapse-c9475aed4d896279ec43e21b49f55179d31b95ee" class="accordion-collapse collapse border-0 " aria-labelledby="heading-c9475aed4d896279ec43e21b49f55179d31b95ee" data-bs-parent="#additional_Info">
-							<div class="accordion-body py-0 content">The difference between and premium product consist number of components, plugins, page in each. The Free versions contain only a few elements and pages that.</div>
+							<div class="accordion-body py-0 content">Beneficiaries are selected based on need, assessed through community outreach and applications. Our focus is on supporting the most vulnerable members of the North Pallar community and surrounding areas, prioritizing those with limited resources and urgent requirements.</div>
 						</div>
 					</div>
 					<div class="accordion-item bg-transparent">
-						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-202f9ad39223c3254b19b10ed0e635bc52686306" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-202f9ad39223c3254b19b10ed0e635bc52686306" aria-expanded="false" aria-controls="collapse-202f9ad39223c3254b19b10ed0e635bc52686306">How can I adjust user permissions
-              &amp; admin provileges?
+						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-202f9ad39223c3254b19b10ed0e635bc52686306" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-202f9ad39223c3254b19b10ed0e635bc52686306" aria-expanded="false" aria-controls="collapse-202f9ad39223c3254b19b10ed0e635bc52686306">How can I stay informed about QMRCC's activities and impact?
             </h2>
 						<div id="collapse-202f9ad39223c3254b19b10ed0e635bc52686306" class="accordion-collapse collapse border-0 " aria-labelledby="heading-202f9ad39223c3254b19b10ed0e635bc52686306" data-bs-parent="#additional_Info">
-							<div class="accordion-body py-0 content">The difference between and premium product consist number of components, plugins, page in each. The Free versions contain only a few elements and pages that.</div>
+							<div class="accordion-body py-0 content">You can stay updated by following us on our social media channels (Facebook, Instagram, YouTube) and joining our WhatsApp Channel. We regularly share news, project updates, and stories of impact there. You can find links to all our platforms in the footer of this website.</div>
 						</div>
 					</div>
 					<div class="accordion-item bg-transparent">
-						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-85282f95ad03ef14f79af368179d94939e4ed160" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-85282f95ad03ef14f79af368179d94939e4ed160" aria-expanded="false" aria-controls="collapse-85282f95ad03ef14f79af368179d94939e4ed160">How do I get back to Avocode and
-              resume my subscription?
+						<h2 class="accordion-header accordion-button h5 border-0 " id="heading-85282f95ad03ef14f79af368179d94939e4ed160" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-85282f95ad03ef14f79af368179d94939e4ed160" aria-expanded="false" aria-controls="collapse-85282f95ad03ef14f79af368179d94939e4ed160">Where is QMRCC located?
             </h2>
 						<div id="collapse-85282f95ad03ef14f79af368179d94939e4ed160" class="accordion-collapse collapse border-0 " aria-labelledby="heading-85282f95ad03ef14f79af368179d94939e4ed160" data-bs-parent="#additional_Info">
-							<div class="accordion-body py-0 content">The difference between and premium product consist number of components, plugins, page in each. The Free versions contain only a few elements and pages that.</div>
+							<div class="accordion-body py-0 content">Our main office is located in North Pallar. Specific contact details and our full address can be found on the "Contact Us" page of our website. Feel free to visit us during office hours.</div>
 						</div>
 					</div>
 				</div>
@@ -353,98 +422,76 @@
 	</div>
 </section>
 
-<footer class="section-sm bg-tertiary">
-	<div class="container">
-		<div class="row justify-content-between">
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">Service</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="service-details.html">Personal loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Home Equity Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Student Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Mortgage Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Payday Loans</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">About</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="#!">Benefits</a>
-						</li>
-						<li class="mb-2"><a href="#!">Careers</a>
-						</li>
-						<li class="mb-2"><a href="#!">Our Story</a>
-						</li>
-						<li class="mb-2"><a href="#!">Team</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">Help</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="contact.html">Contact Us</a>
-						</li>
-						<li class="mb-2"><a href="search.html">FAQs</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-12 newsletter-form">
-				<div style="background-color: #F4F4F4; padding: 35px;">
-					<h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
-					<div class="pe-0 pe-xl-5">
-						<form action="#!" method="post" name="mc-embedded-subscribe-form" target="_blank">
-							<div class="input-group mb-3">
-								<input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address"> <span class="input-group-text border-0 p-0">
-                    <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
-                      aria-label="Subscribe for Newsletter"><i class="fas fa-arrow-right"></i></button>
-                  </span>
-							</div>
-							<div style="position: absolute; left: -5000px;" aria-hidden="true">
-								<input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
-							</div>
-						</form>
-					</div>
-					<p class="mb-0">Lorem ipsum dolor sit amet, rdghds consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat</p>
-				</div>
-			</div>
-		</div>
-		<div class="row align-items-center mt-5 text-center text-md-start">
-			<div class="col-lg-4">
+<footer class="section-sm bg-tertiary border-top mt-5">
+  <div class="container">
+    <div class="row justify-content-between">
+      <!-- Services -->
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Services</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+            <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+            <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+            <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+            <li class="mb-2"><a href="search.html">Data Search</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- About -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">About</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+            <li class="mb-2"><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Contact Us -->
+      <div class="col-lg-4 col-md-12 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="fas fa-envelope me-2 text-primary"></i>
+              <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-facebook me-2 text-primary"></i>
+              <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-instagram me-2 text-primary"></i>
+              <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-whatsapp me-2 text-primary"></i>
+              <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-youtube me-2 text-primary"></i>
+              <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row align-items-center text-center text-md-start">
+      <div class="col-lg-6 mb-2 mb-lg-0">
         <a href="index.html">
-          <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
         </a>
-			</div>
-			<div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
-				<ul class="list-unstyled list-inline mb-0 text-lg-center">
-					<li class="list-inline-item me-4"><a class="text-black" href="photo-frame.html">Privacy Policy</a>
-					</li>
-					<li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp; Conditions</a>
-					</li>
-				</ul>
-			</div>
-			<div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
-				<ul class="list-unstyled list-inline mb-0 social-icons">
-					<li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black" href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
-					</li>
-					<li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
-					</li>
-					<li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black" href="https://instagram.com/"><i class="fab fa-instagram"></i></a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+      </div>
+      <div class="col-lg-6 text-lg-end">
+        <small class="text-muted">
+          &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+          Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
+        </small>
+      </div>
+    </div>
+  </div>
 </footer>
 
 

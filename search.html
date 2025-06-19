@@ -2,13 +2,30 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <title>QMRCC Search</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="QMRCC Search">
+  <title>Search - QMRCC North Pallar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="description" content="Search for community members and residents in North Pallar area. Find contact details and information about people in our community database.">
   <meta name="author" content="QMRCC">
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- theme meta -->
+  <meta name="theme-name" content="wallet" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Plugins -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
+  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
+  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+
+  <!-- Main Style Sheet -->
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- SheetJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -25,26 +42,28 @@
       min-height: 100vh;
     }
 
-    .center-wrap {
+    .search-hero {
       display: flex;
-      flex: 1;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 60px 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
     }
 
-    .main-card {
-      background: rgba(255,255,255,0.98);
-      padding: 32px 24px 24px 24px;
-      border-radius: 22px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-      text-align: center;
-      max-width: 600px;
+    .search-container {
+      max-width: 700px;
       width: 100%;
+      text-align: center;
       animation: fadeIn 0.8s;
+    }
+
+    .search-content {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
     }
 
     @keyframes fadeIn {
@@ -52,156 +71,119 @@
       to { opacity: 1; transform: none; }
     }
 
-    .main-card img {
-      width: 90px;
-      margin-bottom: 10px;
+    .search-container img {
+      width: 160px;
+      margin-bottom: 20px;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
     }
 
-    .main-title {
-      font-size: 2rem;
+    .search-title {
+      font-size: 2.5rem;
       color: #00796b;
       font-weight: 800;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
       letter-spacing: 1px;
     }
 
-    .main-desc {
-      font-size: 1.1rem;
+    .search-desc {
+      font-size: 1.2rem;
       color: #555;
-      margin-bottom: 12px;
+      margin-bottom: 30px;
     }
 
-    .nav-links {
+    .search-form {
       display: flex;
-      gap: 0.7rem;
-      justify-content: center;
-      margin-bottom: 18px;
-      margin-top: 0;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #009688;
-      font-weight: 700;
-      font-size: 1.02rem;
-      background: none;
-      padding: 5px 10px;
-      border-radius: 6px;
-      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-      position: relative;
-      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-    }
-    .nav-links a::after {
-      content: '';
-      display: block;
-      margin: 0 auto;
-      width: 0%;
-      height: 2px;
-      background: #009688;
-      transition: width 0.2s;
-    }
-    .nav-links a:hover, .nav-links a:focus {
-      color: #fff;
-      background: #009688;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.13);
-    }
-    .nav-links a:hover::after, .nav-links a:focus::after {
-      width: 80%;
-      background: #fff;
-    }
-
-    .search-group {
-      display: flex;
-      gap: 0;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
       width: 100%;
+      max-width: 650px;
+      margin: 0 auto 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 100px;
+      position: relative;
     }
 
     #searchInput {
-      padding: 13px 18px;
-      font-size: 1.08rem;
-      border-radius: 8px 0 0 8px;
-      border: 1.5px solid #b2dfdb;
-      width: 70%;
-      min-width: 180px;
-      max-width: 370px;
-      background: #f7fafc;
+      flex-grow: 1;
+      padding: 18px 25px;
+      font-size: 1.1rem;
+      border-radius: 100px 0 0 100px;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      background: #fff;
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
       outline: none;
-      box-sizing: border-box;
-    }
-
-    #searchInput:focus {
-      border-color: #009688;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
     }
 
     .search-btn {
-      padding: 13px 22px;
+      padding: 0 30px;
       background: linear-gradient(90deg, #009688 60%, #00796b 100%);
       color: white;
       border: none;
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 100px 100px 0;
       font-weight: 700;
       cursor: pointer;
       font-family: 'Anek Malayalam', sans-serif;
-      font-size: 1.08rem;
-      transition: background 0.2s, box-shadow 0.2s;
-      margin-left: -1px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
     }
 
     .search-btn:hover, .search-btn:focus {
-      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
-      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
+      background: linear-gradient(90deg, #00796b 60%, #00695c 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
     }
 
     .action-btns {
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
 
     .action-btns button {
-      padding: 10px 18px;
+      padding: 10px 20px;
       font-size: 1rem;
-      border-radius: 8px;
+      border-radius: 50px;
       border: none;
       font-weight: 700;
       cursor: pointer;
       background: #e0f2f1;
-      color: #009688;
+      color: #00796b;
       display: none;
       font-family: 'Anek Malayalam', sans-serif;
+      transition: all 0.3s ease;
     }
 
     .action-btns button:hover {
-      background: #009688;
+      background: #00796b;
       color: white;
+      box-shadow: 0 4px 12px rgba(0,121,107,0.2);
+    }
+
+    .results-container {
+      padding: 0 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
     }
 
     #results {
       overflow-x: auto;
-      background: #f7fafc;
-      padding: 16px;
+      background: #fff;
+      padding: 20px;
       border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     th, td {
-      padding: 12px;
-      border: 1px solid #b2dfdb;
-      text-align: center;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      text-align: left;
       font-family: 'Anek Malayalam', sans-serif;
     }
 
@@ -211,97 +193,293 @@
       font-weight: bold;
       font-size: 1.08rem;
       letter-spacing: 0.5px;
-      text-transform: uppercase;
     }
 
-    .footer-simple {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.95rem;
+    tr:hover td {
+      background-color: #f5f5f5;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 25px;
+      background-color: #25D366;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+    }
+
+    .contact-btn:hover {
+      background-color: #128C7E;
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .contact-btn i {
+      margin-left: 8px;
+      font-size: 1.2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .search-title {
+        font-size: 2rem;
+      }
+      .search-desc {
+        font-size: 1.1rem;
+      }
+      .search-form {
+        flex-direction: column;
+        box-shadow: none;
+        gap: 10px;
+      }
+      #searchInput {
+        border-radius: 100px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+      .search-btn {
+        border-radius: 100px;
+        padding: 12px 0;
+      }
+      .contact-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .contact-btn {
+        display: flex;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="center-wrap">
-    <div class="main-card">
+
+<!-- navigation -->
+<header class="navigation bg-tertiary">
+  <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"> <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="how-it-works.html">How It Works</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item " href="blog.html">Blog</a>
+              </li>
+              <li><a class="dropdown-item " href="blog-details.html">Blog Details</a>
+              </li>
+              <li><a class="dropdown-item " href="service-details.html">Service Details</a>
+              </li>
+              <li><a class="dropdown-item active" href="search.html">Search</a>
+              </li>
+              <li><a class="dropdown-item " href="gallery.html">Gallery</a>
+              </li>
+              <li><a class="dropdown-item " href="faq.html">FAQ</a>
+              </li>
+              <li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://wa.me/+919744057543" target="_blank" class="btn btn-outline-primary"><i class="fab fa-whatsapp me-2"></i>Contact Us</a>
+        <a href="#!" data-bs-toggle="modal" data-bs-target="#donationModal" class="btn btn-primary ms-2 ms-lg-3">Donate</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Search Hero Section -->
+<section class="search-hero">
+  <div class="search-container">
+    <div class="search-content">
       <img src="images/logo2.png" alt="QMRCC Logo">
-      <div class="main-title">QMRCC Search</div>
-      <div class="main-desc">വടക്കെ പല്ലാർ പ്രദേശവാസികളുടെ വിവരങ്ങൾ തിരയൂ...</div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="how-it-works.html">How It Works</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-        <a href="blog.html">Blog</a>
-      </nav>
-      <div class="search-group">
-        <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ...">
-        <button class="search-btn" onclick="performSearch()">തിരയൂ</button>
-      </div>
-      <div class="action-btns">
-        <button id="printBtn" onclick="window.print()">പ്രിന്റ് ചെയ്യൂ</button>
-        <button id="exportBtn" onclick="exportToExcel()">Excel ആയി സംരക്ഷിക്കൂ</button>
-      </div>
-      <div id="results"></div>
+      <h1 class="search-title">QMRCC Search</h1>
+      <p class="search-desc">വടക്കെ പല്ലാർ പ്രദേശവാസികളുടെ വിവരങ്ങൾ തിരയൂ...</p>
+    </div>
+    <div class="search-form">
+      <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ...">
+      <button class="search-btn" onclick="performSearch()">തിരയൂ</button>
+    </div>
+    <div class="contact-buttons">
+      <a href="https://wa.me/+919744057543" target="_blank" class="contact-btn">
+        ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" class="contact-btn">
+        QMRCC വാട്സപ്പ് ചാനൽ <i class="fab fa-whatsapp"></i>
+      </a>
     </div>
   </div>
-  <div class="footer-simple">
-    © 2025 QMRCC.
+</section>
+
+<!-- Results Section -->
+<section class="results-container">
+  <div class="action-btns">
+    <button id="printBtn" onclick="window.print()"><i class="fas fa-print me-2"></i>പ്രിന്റ് ചെയ്യൂ</button>
+    <button id="exportBtn" onclick="exportToExcel()"><i class="fas fa-file-excel me-2"></i>Excel ആയി സംരക്ഷിക്കൂ</button>
   </div>
-  <script>
-    // --- CONFIG ---
-    let latestResults = [];
+  <div id="results"></div>
+</section>
 
-    async function performSearch() {
-      const query = document.getElementById('searchInput').value.trim().toLowerCase();
-      const resultsDiv = document.getElementById('results');
-      const printBtn = document.getElementById('printBtn');
-      const exportBtn = document.getElementById('exportBtn');
-      latestResults = [];
+<footer class="section-sm bg-tertiary">
+  <div class="container">
+    <div class="row justify-content-between">
+      <!-- Services -->
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Services</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+            <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+            <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+            <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+            <li class="mb-2"><a href="search.html">Data Search</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- About -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">About</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+            <li class="mb-2"><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Contact Us -->
+      <div class="col-lg-4 col-md-12 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="fas fa-envelope me-2 text-primary"></i>
+              <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-facebook me-2 text-primary"></i>
+              <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-instagram me-2 text-primary"></i>
+              <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-whatsapp me-2 text-primary"></i>
+              <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-youtube me-2 text-primary"></i>
+              <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row align-items-center text-center text-md-start">
+      <div class="col-lg-6 mb-2 mb-lg-0">
+        <a href="index.html">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
+        </a>
+      </div>
+      <div class="col-lg-6 text-lg-end">
+        <small class="text-muted">
+          &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+          Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
+        </small>
+      </div>
+    </div>
+  </div>
+</footer>
 
-      const searchKey = prompt("Enter search key:"); // 👈 Same as in your Cloudflare secret
-      const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}`;
+<!-- # JS Plugins -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<script src="plugins/slick/slick.min.js"></script>
+<script src="plugins/scrollmenu/scrollmenu.min.js"></script>
 
-      if (!query) {
-        resultsDiv.innerHTML = '<p style="color:#b71c1c;">ദയവായി തിരയാനുള്ള വാക്ക് നൽകുക.</p>';
-        return;
-      }
+<!-- Main Script -->
+<script src="js/script.js"></script>
 
-      resultsDiv.innerHTML = '<span style="color:#009688;">തിരയുന്നു...</span>';
-      printBtn.style.display = 'none';
-      exportBtn.style.display = 'none';
+<script>
+  // --- CONFIG ---
+  let latestResults = [];
 
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
+  async function performSearch() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const resultsDiv = document.getElementById('results');
+    const printBtn = document.getElementById('printBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    latestResults = [];
 
-        if (data.error) {
-          resultsDiv.innerHTML = '<p style="color:#b71c1c;">പ്രവേശനം നിരസിച്ചു.</p>';
-        } else if (data.length === 0) {
-          resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
-        } else {
-          renderResults(data); // This is your existing render logic
-        }
-      } catch (error) {
-        resultsDiv.innerHTML = '<p style="color:#b71c1c;">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</p>';
-      }
+    const searchKey = prompt("Enter search key:"); // 👈 Same as in your Cloudflare secret
+    const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}`;
+
+    if (!query) {
+      resultsDiv.innerHTML = '<div class="alert alert-warning">ദയവായി തിരയാനുള്ള വാക്ക് നൽകുക.</div>';
+      return;
     }
 
-    function renderResults(results) {
-      const resultsDiv = document.getElementById('results');
-      const printBtn = document.getElementById('printBtn');
-      const exportBtn = document.getElementById('exportBtn');
+    resultsDiv.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-3" style="color:#009688;">തിരയുന്നു...</p></div>';
+    printBtn.style.display = 'none';
+    exportBtn.style.display = 'none';
 
-      if (!results || results.length === 0) {
-        resultsDiv.innerHTML = '<p style="color:#b71c1c;">ഫലങ്ങൾ ഒന്നുമില്ല.</p>';
-        return;
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+
+      if (data.error) {
+        resultsDiv.innerHTML = '<div class="alert alert-danger">പ്രവേശനം നിരസിച്ചു.</div>';
+      } else if (data.length === 0) {
+        resultsDiv.innerHTML = '<div class="alert alert-warning">ഫലങ്ങൾ ഒന്നുമില്ല.</div>';
+      } else {
+        renderResults(data);
       }
+    } catch (error) {
+      resultsDiv.innerHTML = '<div class="alert alert-danger">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</div>';
+    }
+  }
 
-      latestResults = results;
+  function renderResults(results) {
+    const resultsDiv = document.getElementById('results');
+    const printBtn = document.getElementById('printBtn');
+    const exportBtn = document.getElementById('exportBtn');
 
-      let html = `
+    if (!results || results.length === 0) {
+      resultsDiv.innerHTML = '<div class="alert alert-warning">ഫലങ്ങൾ ഒന്നുമില്ല.</div>';
+      return;
+    }
+
+    latestResults = results;
+
+    let html = `
+      <div class="table-responsive">
         <table>
           <tr>
             <th>ക്രമം</th>
@@ -311,48 +489,48 @@
             <th>ഫോൺ</th>
             <th>പ്രദേശം</th>
           </tr>
+    `;
+
+    results.forEach((row, idx) => {
+      html += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${row.HouseID || ''}</td>
+          <td>${row.Name || ''}</td>
+          <td>${row.HouseName || ''}</td>
+          <td>${row.Contact || ''}</td>
+          <td>${row.Area || ''}</td>
+        </tr>
       `;
-
-      results.forEach((row, idx) => {
-        html += `
-          <tr>
-            <td>${idx + 1}</td>
-            <td>${row.HouseID || ''}</td>
-            <td>${row.Name || ''}</td>
-            <td>${row.HouseName || ''}</td>
-            <td>${row.Contact || ''}</td>
-            <td>${row.Area || ''}</td>
-          </tr>
-        `;
-      });
-
-      html += '</table>';
-      resultsDiv.innerHTML = html;
-      printBtn.style.display = 'inline-block';
-      exportBtn.style.display = 'inline-block';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('searchInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') performSearch();
-      });
     });
 
-    function exportToExcel() {
-      if (!latestResults.length) return;
+    html += '</table></div>';
+    resultsDiv.innerHTML = html;
+    printBtn.style.display = 'inline-block';
+    exportBtn.style.display = 'inline-block';
+  }
 
-      const wsData = [
-        ['ക്രമം', 'ഹൗസ് ഐഡി', 'പേര്', 'വീട്ടുപോര്', 'ഫോൺ', 'പ്രദേശം'],
-        ...latestResults.map((r, idx) => [
-          idx + 1, r.HouseID, r.Name, r.HouseName, r.Contact, r.Area
-        ])
-      ];
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') performSearch();
+    });
+  });
 
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet(wsData);
-      XLSX.utils.book_append_sheet(wb, ws, "SearchResults");
-      XLSX.writeFile(wb, "QMRCC_SearchResults.xlsx");
-    }
-  </script>
+  function exportToExcel() {
+    if (!latestResults.length) return;
+
+    const wsData = [
+      ['ക്രമം', 'ഹൗസ് ഐഡി', 'പേര്', 'വീട്ടുപോര്', 'ഫോൺ', 'പ്രദേശം'],
+      ...latestResults.map((r, idx) => [
+        idx + 1, r.HouseID, r.Name, r.HouseName, r.Contact, r.Area
+      ])
+    ];
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    XLSX.utils.book_append_sheet(wb, ws, "SearchResults");
+    XLSX.writeFile(wb, "QMRCC_SearchResults.xlsx");
+  }
+</script>
 </body>
 </html>

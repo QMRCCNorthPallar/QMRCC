@@ -11,17 +11,21 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Wallet - Payday Loan Service Template</title>
+	<title>Our Blog - QMRCC</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-	<meta name="description" content="This is meta description">
+	<meta name="description" content="Read the latest news, stories and updates about QMRCC's community activities and initiatives in North Pallar. Stay informed about our ongoing projects and upcoming events.">
 	<meta name="author" content="Themefisher">
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- theme meta -->
+  <meta name="theme-name" content="wallet" />
 
 	<!-- # Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap" rel="stylesheet">
 
 	<!-- # CSS Plugins -->
 	<link rel="stylesheet" href="plugins/slick/slick.css">
@@ -33,14 +37,14 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body style="font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;">
 
 <!-- navigation -->
 <header class="navigation bg-tertiary">
 	<nav class="navbar navbar-expand-xl navbar-light text-center py-3">
 		<div class="container">
 			<a class="navbar-brand" href="index.html">
-				<img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
+				<img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
 			</button>
@@ -51,12 +55,6 @@
     <li class="nav-item"> <a class="nav-link" href="how-it-works.html">How It Works</a></li>
     <li class="nav-item"> <a class="nav-link" href="services.html">Services</a></li>
     <li class="nav-item"> <a class="nav-link" href="contact.html">Contact</a></li>
-    <li class="nav-item">
-        <a class="nav-link" href="blood-form.html">Blood Bank Form</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="blood-search.html">Blood Search</a>
-    </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,23 +64,24 @@
             <li><a class="dropdown-item" href="search.html">Search</a></li>
             <li><a class="dropdown-item" href="legal.html">Legal</a></li>
             <li><a class="dropdown-item" href="terms.html">Terms &amp; Condition</a></li>
-            <li><a class="dropdown-item" href="photo-frame.html">Photo Frame</a></li>
+            <li><a class="dropdown-item" href="privacy-policy.html">Privacy &amp; Policy</a></li>
         </ul>
     </li>
 </ul>
-				<!-- account btn --> <a href="#!" class="btn btn-outline-primary">Log In</a>
-				<!-- account btn --> <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+				<!-- account btn --> <a href="#!" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
+				<!-- account btn --> <a href="#!" class="btn btn-primary ms-2 ms-lg-3" data-bs-toggle="modal" data-bs-target="#volunteerModal">Volunteer</a>
 			</div>
 		</div>
 	</nav>
 </header>
 <!-- /navigation -->
 
-<div class="modal applyLoanModal fade" id="applyLoan" tabindex="-1" aria-labelledby="applyLoanLabel" aria-hidden="true">
+<!-- Donate Modal -->
+<div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header border-bottom-0">
-        <h4 class="modal-title" id="exampleModalLabel">How much do you need?</h4>
+        <h4 class="modal-title" id="donateModalLabel">Support Our Mission</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -90,36 +89,107 @@
           <div class="row">
             <div class="col-lg-6 mb-4 pb-2">
               <div class="form-group">
-                <label for="loan_amount" class="form-label">Amount</label>
-                <input type="number" class="form-control shadow-none" id="loan_amount" placeholder="ex: 25000">
+                <label for="donation_amount" class="form-label">Donation Amount</label>
+                <input type="number" class="form-control shadow-none" id="donation_amount" placeholder="ex: 1000">
               </div>
             </div>
             <div class="col-lg-6 mb-4 pb-2">
               <div class="form-group">
-                <label for="loan_how_long_for" class="form-label">How long for?</label>
-                <input type="number" class="form-control shadow-none" id="loan_how_long_for" placeholder="ex: 12">
+                <label for="donation_type" class="form-label">Purpose</label>
+                <select class="form-control shadow-none" id="donation_type">
+                  <option value="general">General Fund</option>
+                  <option value="baithurahma">Baithurahma Housing</option>
+                  <option value="education">Education Support</option>
+                  <option value="medical">Medical Support</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="donor_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control shadow-none" id="donor_name">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="donor_email" class="form-label">Email Address</label>
+                <input type="email" class="form-control shadow-none" id="donor_email">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="donor_phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control shadow-none" id="donor_phone">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="payment_method" class="form-label">Payment Method</label>
+                <select class="form-control shadow-none" id="payment_method">
+                  <option value="bank">Bank Transfer</option>
+                  <option value="upi">UPI</option>
+                  <option value="cash">Cash</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button type="submit" class="btn btn-primary w-100">Donate Now</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Volunteer Modal -->
+<div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h4 class="modal-title" id="volunteerModalLabel">Join Our Volunteer Team</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="#!" method="post">
+          <div class="row">
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control shadow-none" id="volunteer_name">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_email" class="form-label">Email Address</label>
+                <input type="email" class="form-control shadow-none" id="volunteer_email">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control shadow-none" id="volunteer_phone">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="availability" class="form-label">Availability</label>
+                <select class="form-control shadow-none" id="availability">
+                  <option value="weekends">Weekends</option>
+                  <option value="weekdays">Weekdays</option>
+                  <option value="evenings">Evenings</option>
+                  <option value="flexible">Flexible</option>
+                </select>
               </div>
             </div>
             <div class="col-lg-12 mb-4 pb-2">
               <div class="form-group">
-                <label for="loan_repayment" class="form-label">Repayment</label>
-                <input type="number" class="form-control shadow-none" id="loan_repayment" disabled>
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_full_name" class="form-label">Full Name</label>
-                <input type="text" class="form-control shadow-none" id="loan_full_name">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="loan_email_address" class="form-label">Email address</label>
-                <input type="email" class="form-control shadow-none" id="loan_email_address">
+                <label for="volunteer_skills" class="form-label">Skills / Interests</label>
+                <textarea class="form-control shadow-none" id="volunteer_skills" rows="3" placeholder="Please list any special skills or areas of interest"></textarea>
               </div>
             </div>
             <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary w-100">Get Your Loan Now</button>
+              <button type="submit" class="btn btn-primary w-100">Submit Application</button>
             </div>
           </div>
         </form>
@@ -172,9 +242,9 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
-									<img loading="lazy" decoding="async" src="images/blog/post-5.jpg" alt="Post Thumbnail">
-									<img loading="lazy" decoding="async" src="images/blog/post-3.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-5.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-3.jpg" alt="Post Thumbnail">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">15 Mar, 2020</p>
@@ -186,7 +256,7 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-1.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-1.jpg" alt="Post Thumbnail">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">14 Mar, 2020</p>
@@ -198,7 +268,7 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-2.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-2.jpg" alt="Post Thumbnail">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">14 Mar, 2020</p>
@@ -210,7 +280,7 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-3.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-3.jpg" alt="Post Thumbnail">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">14 Mar, 2020</p>
@@ -222,7 +292,7 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
+									<img loading="preload" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">14 Mar, 2020</p>
@@ -234,7 +304,7 @@
 						<div class="col-md-6" data-aos="fade">
 							<article class="blog-post">
 								<div class="post-slider slider-sm rounded">
-									<img loading="lazy" decoding="async" src="images/blog/post-5.jpg" alt="Post Thumbnail" width="420" height="280">
+									<img loading="preload" decoding="async" src="images/blog/post-5.jpg" alt="Post Thumbnail" width="420" height="280">
 								</div>
 								<div class="pt-4">
 									<p class="mb-3">14 Mar, 2020</p>
@@ -312,7 +382,7 @@
 						<li class="d-flex widget-post align-items-center">
 							<a class="text-black" href="/blog/elements/">
 								<div class="widget-post-image flex-shrink-0 me-3">
-									<img class="rounded" loading="lazy" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
+									<img class="rounded" loading="preload" decoding="async" src="images/blog/post-4.jpg" alt="Post Thumbnail">
 								</div>
 							</a>
 							<div class="flex-grow-1">
@@ -325,7 +395,7 @@
 						<li class="d-flex widget-post align-items-center">
 							<a class="text-black" href="/blog/post-1/">
 								<div class="widget-post-image flex-shrink-0 me-3">
-									<img class="rounded" loading="lazy" decoding="async" src="images/blog/post-1.jpg" alt="Post Thumbnail">
+									<img class="rounded" loading="preload" decoding="async" src="images/blog/post-1.jpg" alt="Post Thumbnail">
 								</div>
 							</a>
 							<div class="flex-grow-1">
@@ -338,7 +408,7 @@
 						<li class="d-flex widget-post align-items-center">
 							<a class="text-black" href="/blog/post-2/">
 								<div class="widget-post-image flex-shrink-0 me-3">
-									<img class="rounded" loading="lazy" decoding="async" src="images/blog/post-2.jpg" alt="Post Thumbnail">
+									<img class="rounded" loading="preload" decoding="async" src="images/blog/post-2.jpg" alt="Post Thumbnail">
 								</div>
 							</a>
 							<div class="flex-grow-1">
@@ -365,98 +435,76 @@
 	</div>
 </section>
 
-<footer class="section-sm bg-tertiary">
-	<div class="container">
-		<div class="row justify-content-between">
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">Service</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="service-details.html">Personal loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Home Equity Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Student Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Mortgage Loans</a>
-						</li>
-						<li class="mb-2"><a href="service-details.html">Payday Loans</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">About</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="#!">Benefits</a>
-						</li>
-						<li class="mb-2"><a href="#!">Careers</a>
-						</li>
-						<li class="mb-2"><a href="#!">Our Story</a>
-						</li>
-						<li class="mb-2"><a href="#!">Team</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-2 col-md-4 col-6 mb-4">
-				<div class="footer-widget">
-					<h5 class="mb-4 text-primary font-secondary">Help</h5>
-					<ul class="list-unstyled">
-						<li class="mb-2"><a href="contact.html">Contact Us</a>
-						</li>
-						<li class="mb-2"><a href="search.html">FAQs</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-12 newsletter-form">
-				<div style="background-color: #F4F4F4; padding: 35px;">
-					<h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
-					<div class="pe-0 pe-xl-5">
-						<form action="#!" method="post" name="mc-embedded-subscribe-form" target="_blank">
-							<div class="input-group mb-3">
-								<input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address"> <span class="input-group-text border-0 p-0">
-                    <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
-                      aria-label="Subscribe for Newsletter"><i class="fas fa-arrow-right"></i></button>
-                  </span>
-							</div>
-							<div style="position: absolute; left: -5000px;" aria-hidden="true">
-								<input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
-							</div>
-						</form>
-					</div>
-					<p class="mb-0">Lorem ipsum dolor sit amet, rdghds consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat</p>
-				</div>
-			</div>
-		</div>
-		<div class="row align-items-center mt-5 text-center text-md-start">
-			<div class="col-lg-4">
+<footer class="section-sm bg-tertiary border-top mt-5">
+  <div class="container">
+    <div class="row justify-content-between">
+      <!-- Services -->
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Services</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+            <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+            <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+            <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+            <li class="mb-2"><a href="search.html">Data Search</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- About -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">About</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+            <li class="mb-2"><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Contact Us -->
+      <div class="col-lg-4 col-md-12 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="fas fa-envelope me-2 text-primary"></i>
+              <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-facebook me-2 text-primary"></i>
+              <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-instagram me-2 text-primary"></i>
+              <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-whatsapp me-2 text-primary"></i>
+              <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-youtube me-2 text-primary"></i>
+              <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row align-items-center text-center text-md-start">
+      <div class="col-lg-6 mb-2 mb-lg-0">
         <a href="index.html">
-          <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="Wallet">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
         </a>
-			</div>
-			<div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
-				<ul class="list-unstyled list-inline mb-0 text-lg-center">
-					<li class="list-inline-item me-4"><a class="text-black" href="photo-frame.html">Privacy Policy</a>
-					</li>
-					<li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp; Conditions</a>
-					</li>
-				</ul>
-			</div>
-			<div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
-				<ul class="list-unstyled list-inline mb-0 social-icons">
-					<li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black" href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
-					</li>
-					<li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
-					</li>
-					<li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black" href="https://instagram.com/"><i class="fab fa-instagram"></i></a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+      </div>
+      <div class="col-lg-6 text-lg-end">
+        <small class="text-muted">
+          &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+          Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
+        </small>
+      </div>
+    </div>
+  </div>
 </footer>
 
 
