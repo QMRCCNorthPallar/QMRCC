@@ -31,228 +31,111 @@
   <style>
     body {
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      background: linear-gradient(135deg, #f5f5f5 0%, #e0f2f1 100%);
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
       color: #333;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
-
-    .form-hero {
+    .center-wrap {
       display: flex;
+      flex: 1;
       justify-content: center;
       align-items: center;
-      padding: 60px 0 30px;
-      background-color: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
+      padding: 20px;
     }
-
-    .form-container {
-      max-width: 600px;
-      width: 100%;
+    .main-card {
+      background: rgba(255,255,255,0.98);
+      padding: 32px 24px 24px 24px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
       text-align: center;
+      max-width: 500px;
+      width: 100%;
       animation: fadeIn 0.8s;
-      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: none; }
     }
-
-    .form-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
     .logo-img {
-      width: 120px;
-      margin-bottom: 20px;
+      width: 80px;
+      margin-bottom: 10px;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
     }
-
     .main-title {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: #00796b;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin-bottom: 2px;
       letter-spacing: 1px;
+      font-family: 'Anek Malayalam', sans-serif;
     }
-
     .main-org {
-      font-size: 1.2rem;
+      font-size: 1.08rem;
       color: #009688;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 2px;
+      font-family: 'Anek Malayalam', sans-serif;
     }
-
     .main-desc {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       color: #555;
-      margin-bottom: 30px;
+      margin-bottom: 18px;
+      font-family: 'Anek Malayalam', sans-serif;
     }
-
-    .donor-form {
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    form {
       width: 100%;
       margin-top: 10px;
     }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-control {
+    input, select, button {
       display: block;
       width: 100%;
-      padding: 15px 20px;
-      font-size: 1.1rem;
-      border-radius: 10px;
-      border: 1.5px solid #e0e0e0;
-      background: #f9f9f9;
+      margin: 1em 0;
+      padding: 13px 18px;
+      font-size: 1.08rem;
+      border-radius: 8px;
+      border: 1.5px solid #b2dfdb;
+      background: #f7fafc;
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      transition: all 0.3s ease;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.18s, box-shadow 0.18s;
     }
-
-    .form-control:focus {
+    input:focus, select:focus {
       border-color: #009688;
       background: #fff;
       box-shadow: 0 2px 8px rgba(0,150,136,0.10);
     }
-
-    .form-select {
-      display: block;
-      width: 100%;
-      padding: 15px 20px;
-      font-size: 1.1rem;
-      border-radius: 10px;
-      border: 1.5px solid #e0e0e0;
-      background: #f9f9f9;
-      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      transition: all 0.3s ease;
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23464646' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 15px center;
-      background-size: 15px;
-    }
-
-    .form-select:focus {
-      border-color: #009688;
-      background-color: #fff;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
-    }
-
-    .btn-submit {
-      display: inline-block;
-      padding: 16px 30px;
+    button {
       background: linear-gradient(90deg, #009688 60%, #00796b 100%);
       color: white;
-      border: none;
-      border-radius: 10px;
       font-weight: 700;
-      font-size: 1.1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
+      border: none;
+      margin-top: 18px;
+      transition: background 0.2s, box-shadow 0.2s;
     }
-
-    .btn-submit:hover {
-      background: linear-gradient(90deg, #00796b 60%, #005a4f 100%);
-      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
-      transform: translateY(-2px);
+    button:hover, button:focus {
+      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
     }
-
     #result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      font-weight: 500;
-      display: none;
+      margin-top: 1em;
+      font-weight: bold;
+      color: #00796b;
     }
-
-    .result-success {
-      background-color: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      color: #2e7d32;
+    .content-section {
+      margin-top: 90px;
     }
-
-    .result-warning {
-      background-color: #fff3e0;
-      border: 1px solid #ffcc80;
-      color: #e65100;
-    }
-
-    .result-error {
-      background-color: #ffebee;
-      border: 1px solid #ef9a9a;
-      color: #b71c1c;
-    }
-
-    .banner-img {
-      width: 100%;
-      max-width: 600px;
-      display: block;
-      margin: 0 auto;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    }
-
-    .contact-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .contact-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 14px 28px;
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
-    }
-
-    .contact-btn:hover {
-      background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-      transform: translateY(-3px);
-      color: white;
-      text-decoration: none;
-    }
-
-    .contact-btn i {
-      margin-right: 8px;
-      font-size: 1.2rem;
-    }
-
-    @media (max-width: 768px) {
-      .main-title {
-        font-size: 2rem;
-      }
-      .main-desc {
-        font-size: 1.1rem;
-      }
-      .donor-form {
-        padding: 20px 15px;
-      }
-      .banner-img {
-        max-width: 90%;
-      }
-      .contact-buttons {
-        flex-direction: column;
+    @media (max-width: 600px) {
+      .main-card {
+        max-width: 98vw;
+        padding: 16px 6px 14px 6px;
+        border-radius: 14px;
       }
     }
   </style>
@@ -299,64 +182,44 @@
 						</ul>
 					</li>
 				</ul>
-				<a href="https://wa.me/+919744057543" target="_blank" class="btn btn-outline-primary"><i class="fab fa-whatsapp me-2"></i>Contact Us</a>
-				<a href="#!" data-bs-toggle="modal" data-bs-target="#donationModal" class="btn btn-primary ms-2 ms-lg-3">Donate</a>
+				<!-- account btn --> <a href="#!" class="btn btn-outline-primary">Log In</a>
+				<!-- account btn --> <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
 			</div>
 		</div>
 	</nav>
 </header>
 
-<img src="images/blood_banner.png" alt="Blood Donation Banner" class="banner-img mt-5" />
-
-<section class="form-hero">
-  <div class="form-container">
-    <div class="form-content">
+<div class="content-section">
+  <img src="images/blood_banner.png" alt="Blood Donation Banner"
+    style="width:100%;max-width:500px;display:block;margin:24px auto 0 auto;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.08);" />
+  <div class="center-wrap">
+    <div class="main-card">
       <img src="images/logo2.png" alt="QMRCC Logo" class="logo-img">
-      <h1 class="main-title">QMRCC Blood Bank</h1>
-      <div class="main-org">
+      <div class="main-title" style="font-size:2rem; letter-spacing:1px;">QMRCC</div>
+      <div class="main-org" style="font-size:1.08rem; color:#009688; font-weight:700; margin-bottom:2px; font-family:'Anek Malayalam',sans-serif;">
         ഖാഇദെ മില്ലത്ത് റിലീഫ് &amp; കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ
       </div>
-      <div class="main-desc">
+      <div class="main-desc" style="font-size:1.05rem; color:#555; margin-bottom:18px; font-family:'Anek Malayalam',sans-serif;">
         ബ്ലഡ് ബാങ്ക് വിവരശേഖരണം
       </div>
-    </div>
-
-    <form id="donorForm" class="donor-form">
-      <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="പേര്" required />
-      </div>
-      <div class="form-group">
-        <input type="text" name="phone" class="form-control" placeholder="ഫോൺ നമ്പർ" required />
-      </div>
-      <div class="form-group">
-        <input type="number" name="age" id="ageInput" class="form-control" required placeholder="വയസ്സ്" min="18" max="65" />
-      </div>
-      <div class="form-group">
-        <select name="bloodGroup" class="form-select" required>
+      <form id="donorForm">
+        <input type="text" name="name" placeholder="പേര്" required />
+        <input type="text" name="phone" placeholder="ഫോൺ നമ്പർ" required />
+        <input type="number" name="age" id="ageInput" required placeholder="വയസ്സ്" min="18" max="65" />
+        <select name="bloodGroup" required>
           <option value="">രക്ത ​ഗ്രൂപ്പ്</option>
           <option>A+</option><option>A-</option>
           <option>B+</option><option>B-</option>
           <option>O+</option><option>O-</option>
           <option>AB+</option><option>AB-</option>
         </select>
-      </div>
-      <div class="form-group">
-        <input type="text" name="area" class="form-control" placeholder="സ്ഥലം" required />
-      </div>
-      <button type="submit" class="btn-submit">Submit</button>
+        <input type="text" name="area" placeholder="സ്ഥലം" required />
+        <button type="submit">Submit</button>
+      </form>
       <div id="result"></div>
-    </form>
-
-    <div class="contact-buttons mt-4">
-      <a href="https://wa.me/+919744057543" target="_blank" class="contact-btn">
-        <i class="fab fa-whatsapp"></i> ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം
-      </a>
-      <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" class="contact-btn">
-        <i class="fab fa-whatsapp"></i> QMRCC വാട്സപ്പ് ചാനൽ
-      </a>
     </div>
   </div>
-</section>
+</div>
 
 <footer class="section-sm bg-tertiary border-top mt-5">
   <div class="container">
@@ -430,33 +293,6 @@
   </div>
 </footer>
 
-<!-- Modal -->
-<div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="donationModalLabel">സംഭാവന നൽകാം</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>QMRCC-യുടെ പ്രവർത്തനങ്ങൾക്ക് ഉദാരമായി സംഭാവന നൽകി സഹായിക്കാവുന്നതാണ്.</p>
-        <!-- Placeholder for payment details -->
-        <div class="text-center my-4">
-          <img src="images/QR_CODE_Example.jpeg" alt="QR Code" class="img-fluid" style="max-width: 200px;">
-          <p class="mt-2">UPI ID: exampleupi@bank</p>
-          <p>അല്ലെങ്കിൽ താഴെ കാണുന്ന ബട്ടൺ ക്ലിക്ക് ചെയ്യുക</p>
-        </div>
-        <div class="d-grid gap-2">
-          <a href="#" class="btn btn-success disabled">ഓൺലൈൻ പേയ്മെന്റ് (coming soon)</a>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">അടയ്ക്കുക</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- # JS Plugins -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/bootstrap.min.js"></script>
@@ -489,16 +325,14 @@ form.addEventListener('submit', async (e) => {
   // Validate phone number
   if (!/^\d{10}$/.test(data.phone)) {
     resultDiv.style.display = "block";
-    resultDiv.className = "result-error";
+    resultDiv.style.background = "#ffebee";
+    resultDiv.style.border = "1px solid #ef9a9a";
+    resultDiv.style.color = "#b71c1c";
     resultDiv.innerText = "മൊബൈൽ നമ്പർ 10 അക്കമുള്ളതായിരിക്കണം.";
     return;
   }
 
   try {
-    resultDiv.style.display = "block";
-    resultDiv.className = "";
-    resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"></div><p class="mt-3">സമർപ്പിക്കുന്നു...</p></div>';
-
     const res = await fetch("https://bloodbank-worker.qmrccnorthpallar.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -509,31 +343,39 @@ form.addEventListener('submit', async (e) => {
     resultDiv.style.display = "block";
 
     if (result.message === "Donor already exists.") {
-      resultDiv.className = "result-warning";
+      resultDiv.style.background = "#fff3e0";
+      resultDiv.style.border = "1px solid #ffcc80";
+      resultDiv.style.color = "#e65100";
       resultDiv.innerText = "ഈ ദാതാവ് ഇതിനകം രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്.";
     } else if (result.message === "Donor added successfully!") {
-      resultDiv.className = "result-success";
+      resultDiv.style.background = "#e8f5e9";
+      resultDiv.style.border = "1px solid #c8e6c9";
+      resultDiv.style.color = "#2e7d32";
       resultDiv.innerHTML = `
         <p>ഈ സദുദ്യമത്തോട് സഹകരിച്ചതിന് ഹൃദയം നിറഞ്ഞ നന്ദി...</p>
         <p style="margin-top: 1em;">🍃 സ്നേഹത്തോടെ,<br>
         ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ (QMRCC),<br>
         വടക്കെ പല്ലാർ</p>
         <div style="margin-top:1.5em;">
-          <a href="blood-search.html"
-             class="btn btn-success">
+          <a href="https://qmrccnorthpallar.github.io/QMRCC/blood-search.html"
+             style="display:inline-block;padding:12px 24px;background:#009688;color:#fff;border-radius:8px;font-weight:700;text-decoration:none;font-family:'Anek Malayalam',sans-serif;font-size:1.08rem;">
             Blood Group Search
           </a>
         </div>
       `;
       form.reset();
     } else {
-      resultDiv.className = "result-error";
+      resultDiv.style.background = "#ffebee";
+      resultDiv.style.border = "1px solid #ef9a9a";
+      resultDiv.style.color = "#b71c1c";
       resultDiv.innerText = result.error || "നിങ്ങളുടെ ​ശ്രമം വിജയിച്ചില്ല. നന്ദി!.";
     }
 
   } catch (err) {
     resultDiv.style.display = "block";
-    resultDiv.className = "result-error";
+    resultDiv.style.background = "#ffebee";
+    resultDiv.style.border = "1px solid #ef9a9a";
+    resultDiv.style.color = "#b71c1c";
     resultDiv.innerText = "സർവർ പ്രശ്നം. പിന്നീട് വീണ്ടും ശ്രമിക്കുക.";
   }
 });

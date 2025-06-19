@@ -30,9 +30,6 @@
   <!-- SheetJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-  <!-- Font Awesome for search icon -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
   <style>
     body {
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
@@ -98,17 +95,10 @@
       display: flex;
       width: 100%;
       max-width: 650px;
-      margin: 0 auto 15px;
+      margin: 0 auto 30px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       border-radius: 100px;
       position: relative;
-      background: #fff;
-    }
-
-    .search-input-wrapper {
-      position: relative;
-      flex-grow: 1;
-      display: flex;
     }
 
     #searchInput {
@@ -123,57 +113,6 @@
       outline: none;
     }
 
-    .search-dropdown {
-      position: relative;
-      display: inline-block;
-      border-left: 1px solid #eee;
-    }
-
-    .dropdown-toggle {
-      background: none;
-      border: none;
-      padding: 0 20px;
-      height: 100%;
-      font-family: 'Anek Malayalam', sans-serif;
-      color: #555;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-
-    .dropdown-toggle i {
-      margin-left: 8px;
-      font-size: 12px;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: white;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      padding: 8px 0;
-      min-width: 140px;
-      display: none;
-      z-index: 10;
-    }
-
-    .dropdown-menu.show {
-      display: block;
-    }
-
-    .dropdown-item {
-      padding: 10px 20px;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .dropdown-item:hover {
-      background-color: #f5f5f5;
-    }
-
-
     .search-btn {
       padding: 0 30px;
       background: linear-gradient(90deg, #009688 60%, #00796b 100%);
@@ -185,32 +124,11 @@
       font-family: 'Anek Malayalam', sans-serif;
       font-size: 1.1rem;
       transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-btn i {
-      margin-right: 10px;
     }
 
     .search-btn:hover, .search-btn:focus {
       background: linear-gradient(90deg, #00796b 60%, #00695c 100%);
       box-shadow: 0 4px 16px rgba(0,150,136,0.2);
-    }
-
-    .search-help {
-      margin: 10px 0 20px;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    .search-help kbd {
-      background: #f1f1f1;
-      border-radius: 3px;
-      border: 1px solid #ddd;
-      padding: 2px 6px;
-      font-size: 0.85rem;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     .action-btns {
@@ -256,19 +174,6 @@
       margin-bottom: 40px;
     }
 
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .results-count {
-      color: #666;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -298,34 +203,32 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
       margin: 20px 0;
     }
 
     .contact-btn {
       display: inline-flex;
       align-items: center;
-      padding: 14px 28px;
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      padding: 12px 25px;
+      background-color: #25D366;
       color: white;
       text-decoration: none;
       border-radius: 50px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       transition: all 0.3s ease;
-      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
     }
 
     .contact-btn:hover {
-      background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-      transform: translateY(-3px);
-      color: white;
-      text-decoration: none;
+      background-color: #128C7E;
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+      transform: translateY(-2px);
     }
 
     .contact-btn i {
-      margin-right: 8px;
+      margin-left: 8px;
       font-size: 1.2rem;
     }
 
@@ -341,22 +244,15 @@
         flex-direction: column;
         box-shadow: none;
         gap: 10px;
-        background: transparent;
-      }
-      .search-input-wrapper {
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        border-radius: 100px;
-        background: #fff;
       }
       #searchInput {
-        border-radius: 100px 0 0 100px;
-        width: 100%;
+        border-radius: 100px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       }
       .search-btn {
         border-radius: 100px;
-        padding: 15px 0;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 12px 0;
       }
       .contact-buttons {
         flex-direction: column;
@@ -365,12 +261,6 @@
       .contact-btn {
         display: flex;
         justify-content: center;
-      }
-      .dropdown-toggle {
-        padding: 0 15px;
-      }
-      .dropdown-toggle span {
-        display: none;
       }
     }
   </style>
@@ -433,36 +323,15 @@
       <p class="search-desc">വടക്കെ പല്ലാർ പ്രദേശവാസികളുടെ വിവരങ്ങൾ തിരയൂ...</p>
     </div>
     <div class="search-form">
-      <div class="search-input-wrapper">
-        <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ..." autofocus>
-        <div class="search-dropdown">
-          <button class="dropdown-toggle" id="searchTypeToggle">
-            <span id="selectedSearchType">All</span>
-            <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-menu" id="searchTypeMenu">
-            <div class="dropdown-item" data-value="all">All</div>
-            <div class="dropdown-item" data-value="name">Name</div>
-            <div class="dropdown-item" data-value="house">House</div>
-            <div class="dropdown-item" data-value="area">Area</div>
-            <div class="dropdown-item" data-value="phone">Phone</div>
-          </div>
-        </div>
-      </div>
-      <button class="search-btn" onclick="performSearch()">
-        <i class="fas fa-search"></i>
-        <span>തിരയൂ</span>
-      </button>
-    </div>
-    <div class="search-help">
-      Press <kbd>Enter</kbd> to search
+      <input type="text" id="searchInput" placeholder="പേര്, ഫോൺ, ഐഡി, സ്ഥലം തിരയൂ...">
+      <button class="search-btn" onclick="performSearch()">തിരയൂ</button>
     </div>
     <div class="contact-buttons">
       <a href="https://wa.me/+919744057543" target="_blank" class="contact-btn">
-        <i class="fab fa-whatsapp"></i> ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം
+        ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം <i class="fab fa-whatsapp"></i>
       </a>
       <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" class="contact-btn">
-        <i class="fab fa-whatsapp"></i> QMRCC വാട്സപ്പ് ചാനൽ
+        QMRCC വാട്സപ്പ് ചാനൽ <i class="fab fa-whatsapp"></i>
       </a>
     </div>
   </div>
@@ -561,46 +430,6 @@
 <script>
   // --- CONFIG ---
   let latestResults = [];
-  let selectedSearchType = 'all';
-
-  // Setup dropdown functionality
-  document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-    const dropdownToggle = document.getElementById('searchTypeToggle');
-    const dropdownMenu = document.getElementById('searchTypeMenu');
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-
-    // Focus input on page load
-    searchInput.focus();
-
-    // Enter key triggers search
-    searchInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') performSearch();
-    });
-
-    // Toggle dropdown visibility
-    dropdownToggle.addEventListener('click', function() {
-      dropdownMenu.classList.toggle('show');
-    });
-
-    // Close dropdown when clicking elsewhere
-    document.addEventListener('click', function(e) {
-      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        dropdownMenu.classList.remove('show');
-      }
-    });
-
-    // Handle dropdown item selection
-    dropdownItems.forEach(item => {
-      item.addEventListener('click', function() {
-        selectedSearchType = this.getAttribute('data-value');
-        document.getElementById('selectedSearchType').textContent = this.textContent;
-        dropdownMenu.classList.remove('show');
-        searchInput.focus();
-      });
-    });
-  });
-
 
   async function performSearch() {
     const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -608,6 +437,9 @@
     const printBtn = document.getElementById('printBtn');
     const exportBtn = document.getElementById('exportBtn');
     latestResults = [];
+
+    const searchKey = prompt("Enter search key:"); // 👈 Same as in your Cloudflare secret
+    const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}`;
 
     if (!query) {
       resultsDiv.innerHTML = '<div class="alert alert-warning">ദയവായി തിരയാനുള്ള വാക്ക് നൽകുക.</div>';
@@ -619,9 +451,6 @@
     exportBtn.style.display = 'none';
 
     try {
-      const searchKey = prompt("Enter search key:"); // Search key validation
-      const API_URL = `https://baserow-proxy.qmrccnorthpallar.workers.dev/?key=${searchKey}&q=${encodeURIComponent(query)}&type=${selectedSearchType}`;
-
       const res = await fetch(API_URL);
       const data = await res.json();
 
@@ -630,14 +459,14 @@
       } else if (data.length === 0) {
         resultsDiv.innerHTML = '<div class="alert alert-warning">ഫലങ്ങൾ ഒന്നുമില്ല.</div>';
       } else {
-        renderResults(data, query);
+        renderResults(data);
       }
     } catch (error) {
       resultsDiv.innerHTML = '<div class="alert alert-danger">സർവർ പ്രശ്നം. ദയവായി പിന്നീട് ശ്രമിക്കുക.</div>';
     }
   }
 
-  function renderResults(results, query) {
+  function renderResults(results) {
     const resultsDiv = document.getElementById('results');
     const printBtn = document.getElementById('printBtn');
     const exportBtn = document.getElementById('exportBtn');
@@ -650,9 +479,6 @@
     latestResults = results;
 
     let html = `
-      <div class="results-header">
-        <div class="results-count">${results.length} ഫലങ്ങൾ കണ്ടെത്തി - "${query}" എന്നതിനുള്ള</div>
-      </div>
       <div class="table-responsive">
         <table>
           <tr>
@@ -684,6 +510,11 @@
     exportBtn.style.display = 'inline-block';
   }
 
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') performSearch();
+    });
+  });
 
   function exportToExcel() {
     if (!latestResults.length) return;
