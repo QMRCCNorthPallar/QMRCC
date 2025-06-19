@@ -8,7 +8,7 @@
   <meta name="author" content="QMRCC North Pallar">
   <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
   <link rel="icon" href="images/favicon.png" type="image/x-icon">
-  
+
   <!-- theme meta -->
   <meta name="theme-name" content="wallet" />
 
@@ -20,9 +20,8 @@
 
   <!-- # CSS Plugins -->
   <link rel="stylesheet" href="plugins/slick/slick.css">
-  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
-  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
-  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <!-- # Main Style Sheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -97,53 +96,102 @@
 
     .search-form {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto 30px;
+      max-width: 650px;
+      margin: 0 auto 15px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       border-radius: 100px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    select {
-      width: 100%;
-      padding: 18px 25px;
-      font-size: 1.1rem;
-      border: 1px solid #e0e0e0;
+      position: relative;
       background: #fff;
-      font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      outline: none;
-      border-radius: 100px 100px 0 0;
-      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: row;
     }
 
-    select:focus {
-      border-color: #009688;
-      box-shadow: 0 0 0 2px rgba(0,150,136,0.2);
+    .search-input-wrapper {
+      position: relative;
+      flex-grow: 1;
+      display: flex;
     }
 
-    button[type="submit"] {
+    .search-dropdown {
+      flex-grow: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .dropdown-toggle {
+      background: none;
+      border: none;
+      padding: 0 25px;
+      height: 100%;
       width: 100%;
-      padding: 15px;
+      text-align: left;
+      font-family: 'Anek Malayalam', sans-serif;
+      color: #555;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.1rem;
+    }
+
+    .dropdown-toggle i {
+      margin-left: 8px;
+      font-size: 12px;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 8px 0;
+      display: none;
+      z-index: 10;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 12px 25px;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .search-btn {
+      padding: 0 30px;
       background: linear-gradient(90deg, #009688 60%, #00796b 100%);
       color: white;
+      border: none;
+      border-radius: 0 100px 100px 0;
       font-weight: 700;
       cursor: pointer;
-      border: none;
       font-family: 'Anek Malayalam', sans-serif;
       font-size: 1.1rem;
       transition: all 0.3s ease;
-      border-radius: 0 0 100px 100px;
+      display: flex;
+      align-items: center;
     }
 
-    button[type="submit"]:hover {
-      background: linear-gradient(90deg, #00796b 60%, #00695c 100%);
-      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
+    .search-btn i {
+      margin-right: 10px;
     }
+
 
     .results-container {
-      max-width: 900px;
+      max-width: 1000px;
       width: 100%;
       margin: 0 auto;
       padding: 0 20px 40px;
@@ -158,10 +206,8 @@
     }
 
     .actions button {
-      flex: 1;
-      min-width: 200px;
-      padding: 12px 18px;
-      background: #00796b;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #00796b 0%, #006c5f 100%);
       color: white;
       border: none;
       border-radius: 50px;
@@ -175,8 +221,8 @@
     }
 
     .actions button:hover {
-      background: #00695c;
-      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
+      background: linear-gradient(135deg, #006c5f 0%, #005a4f 100%);
+      box-shadow: 0 4px 16px rgba(0,121,107,0.2);
       transform: translateY(-2px);
     }
 
@@ -190,7 +236,7 @@
       margin-top: 1em;
       background: white;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
     }
 
@@ -214,32 +260,32 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
-      margin: 20px 0 30px;
+      gap: 15px;
+      margin: 20px 0;
     }
 
     .contact-btn {
       display: inline-flex;
       align-items: center;
-      padding: 12px 25px;
-      background-color: #25D366;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
       color: white;
       text-decoration: none;
       border-radius: 50px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
     }
 
     .contact-btn:hover {
-      background-color: #128C7E;
-      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
-      transform: translateY(-2px);
+      background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+      transform: translateY(-3px);
     }
 
     .contact-btn i {
-      margin-left: 8px;
+      margin-right: 8px;
       font-size: 1.2rem;
     }
 
@@ -261,21 +307,40 @@
         font-size: 1.1rem;
       }
       .search-form {
+        flex-direction: column;
+        box-shadow: none;
+        background: transparent;
+        gap: 10px;
         border-radius: 20px;
       }
-      select {
-        border-radius: 20px 20px 0 0;
-        padding: 15px 20px;
+
+      .search-input-wrapper {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border-radius: 100px;
+        background: #fff;
       }
-      button[type="submit"] {
-        border-radius: 0 0 20px 20px;
+
+      .dropdown-toggle {
+         padding: 15px 20px;
       }
+
+      .search-btn {
+        border-radius: 100px;
+        padding: 15px 0;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
       .actions {
         flex-direction: column;
       }
       .actions button {
         width: 100%;
+        justify-content: flex-start;
       }
+       .actions button i {
+         margin-right: 15px;
+       }
     }
 
     @media print {
@@ -360,24 +425,40 @@
         രക്തദാതാക്കളെ തിരയൂ...
       </div>
     </div>
-    
+
     <form id="searchForm" class="search-form">
-      <select name="group" required>
-        <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
-        <option>A+</option><option>A-</option>
-        <option>B+</option><option>B-</option>
-        <option>O+</option><option>O-</option>
-        <option>AB+</option><option>AB-</option>
-      </select>
-      <button type="submit">തിരയുക</button>
+      <div class="search-input-wrapper">
+        <div class="search-dropdown">
+          <button type="button" class="dropdown-toggle" id="bloodGroupToggle">
+            <span id="selectedBloodGroup">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" id="bloodGroupMenu">
+            <div class="dropdown-item" data-value="A+">A+</div>
+            <div class="dropdown-item" data-value="A-">A-</div>
+            <div class="dropdown-item" data-value="B+">B+</div>
+            <div class="dropdown-item" data-value="B-">B-</div>
+            <div class="dropdown-item" data-value="O+">O+</div>
+            <div class="dropdown-item" data-value="O-">O-</div>
+            <div class="dropdown-item" data-value="AB+">AB+</div>
+            <div class="dropdown-item" data-value="AB-">AB-</div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="bloodGroupInput" name="group" required>
+      <button type="submit" class="search-btn">
+        <i class="fas fa-search"></i>
+        <span>തിരയുക</span>
+      </button>
     </form>
-    
+
+
     <div class="contact-buttons">
       <a href="https://wa.me/+919744057543" target="_blank" class="contact-btn">
-        ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-whatsapp"></i> ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം
       </a>
       <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" class="contact-btn">
-        QMRCC വാട്സപ്പ് ചാനൽ <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-whatsapp"></i> QMRCC വാട്സപ്പ് ചാനൽ
       </a>
     </div>
   </div>
@@ -429,7 +510,6 @@
           <ul class="list-unstyled mb-0">
             <li class="mb-2"><a href="our-story.html">Our Story</a></li>
             <li class="mb-2"><a href="about.html">About Us</a></li>
-          >
           </ul>
         </div>
       </div>
@@ -521,126 +601,155 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const form = document.getElementById("searchForm");
-const resultsSection = document.getElementById("resultsSection");
-const resultsTable = document.getElementById("resultsTable").querySelector("tbody");
-const excelBtn = document.getElementById("excelBtn");
-const pdfBtn = document.getElementById("pdfBtn");
+document.addEventListener('DOMContentLoaded', () => {
+  // Dropdown functionality
+  const bloodGroupToggle = document.getElementById('bloodGroupToggle');
+  const bloodGroupMenu = document.getElementById('bloodGroupMenu');
+  const bloodGroupInput = document.getElementById('bloodGroupInput');
+  const selectedBloodGroup = document.getElementById('selectedBloodGroup');
+  const dropdownItems = document.querySelectorAll('#bloodGroupMenu .dropdown-item');
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  resultsSection.style.display = "none";
-  resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'><div class='spinner-border text-primary' role='status'></div><p class='mt-3'>തെരയുന്നു...</p></td></tr>";
-  resultsSection.style.display = "block";
+  bloodGroupToggle.addEventListener('click', function() {
+    bloodGroupMenu.classList.toggle('show');
+  });
 
-  const group = form.group.value.trim();
-  const url = `https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`;
-
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'>ഫലങ്ങൾ ഒന്നുമില്ല.</td></tr>";
-      return;
+  document.addEventListener('click', function(e) {
+    if (!bloodGroupToggle.contains(e.target) && !bloodGroupMenu.contains(e.target)) {
+      bloodGroupMenu.classList.remove('show');
     }
+  });
 
-    resultsTable.innerHTML = "";
-    data.forEach((row, i) => {
-      resultsTable.innerHTML += `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${row["Name"] || 'അജ്ഞാതൻ'}</td>
-          <td>${row["Mobile Number"] || '—'}</td>
-          <td>${row["Area"] || '—'}</td>
-          <td>${row["Blood Group"]?.value || '—'}</td>
-        </tr>
-      `;
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const value = this.getAttribute('data-value');
+      bloodGroupInput.value = value;
+      selectedBloodGroup.textContent = this.textContent;
+      bloodGroupMenu.classList.remove('show');
+    });
+  });
+
+  // Search functionality
+  const form = document.getElementById("searchForm");
+  const resultsSection = document.getElementById("resultsSection");
+  const resultsTable = document.getElementById("resultsTable").querySelector("tbody");
+  const excelBtn = document.getElementById("excelBtn");
+  const pdfBtn = document.getElementById("pdfBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    resultsSection.style.display = "none";
+    resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'><div class='spinner-border text-primary' role='status'></div><p class='mt-3'>തെരയുന്നു...</p></td></tr>";
+    resultsSection.style.display = "block";
+
+    const group = bloodGroupInput.value.trim();
+    const url = `https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!Array.isArray(data) || data.length === 0) {
+        resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'>ഫലങ്ങൾ ഒന്നുമില്ല.</td></tr>";
+        return;
+      }
+
+      resultsTable.innerHTML = "";
+      data.forEach((row, i) => {
+        resultsTable.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${row["Name"] || 'അജ്ഞാതൻ'}</td>
+            <td>${row["Mobile Number"] || '—'}</td>
+            <td>${row["Area"] || '—'}</td>
+            <td>${row["Blood Group"]?.value || '—'}</td>
+          </tr>
+        `;
+      });
+
+    } catch (err) {
+      resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4 text-danger'><i class='fas fa-exclamation-circle me-2'></i>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</td></tr>";
+      console.error(err);
+    }
+  });
+
+  // Excel Export with logo and details
+  excelBtn.addEventListener("click", () => {
+    // Prepare data
+    const ws_data = [
+      ["QMRCC"],
+      ["ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ"],
+      [],
+      ["#", "പേര്", "ഫോൺ", "പ്രദേശം", "രക്ത ഗ്രൂപ്പ്"]
+    ];
+    document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
+      const cells = row.querySelectorAll("td");
+      ws_data.push(Array.from(cells).map(td => td.innerText));
     });
 
-  } catch (err) {
-    resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4 text-danger'><i class='fas fa-exclamation-circle me-2'></i>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</td></tr>";
-    console.error(err);
-  }
-});
+    // Create worksheet and workbook
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Donors");
 
-// Excel Export with logo and details
-excelBtn.addEventListener("click", () => {
-  // Prepare data
-  const ws_data = [
-    ["QMRCC"],
-    ["ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ"],
-    [],
-    ["#", "പേര്", "ഫോൺ", "പ്രദേശം", "രക്ത ഗ്രൂപ്പ്"]
-  ];
-  document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
-    const cells = row.querySelectorAll("td");
-    ws_data.push(Array.from(cells).map(td => td.innerText));
+    // Add logo (optional, only works in some Excel viewers)
+    // XLSX does not natively support images, so for most use-cases, only text will be included.
+
+    XLSX.writeFile(wb, "donors.xlsx");
   });
 
-  // Create worksheet and workbook
-  const ws = XLSX.utils.aoa_to_sheet(ws_data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Donors");
+  // PDF Export with logo and details
+  pdfBtn.addEventListener("click", async () => {
+    const { jsPDF } = window.jspdf;
 
-  // Add logo (optional, only works in some Excel viewers)
-  // XLSX does not natively support images, so for most use-cases, only text will be included.
+    // Create a container for PDF export
+    const pdfContainer = document.createElement("div");
+    pdfContainer.style.padding = "24px";
+    pdfContainer.style.background = "#fff";
+    pdfContainer.style.width = "700px";
+    pdfContainer.style.fontFamily = "'Anek Malayalam', sans-serif";
+    pdfContainer.innerHTML = `
+      <div style="text-align:center;margin-bottom:12px;">
+        <img src="images/logo2.png" alt="QMRCC Logo" style="width:70px;margin-bottom:8px;">
+        <div style="font-size:1.5rem;font-weight:800;color:#00796b;">QMRCC</div>
+        <div style="font-size:1.08rem;color:#009688;font-weight:700;">ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ</div>
+        <div style="font-size:1.05rem;color:#555;margin-bottom:10px;">രക്തദാതാക്കളുടെ പട്ടിക</div>
+      </div>
+      <table border="1" cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:1rem;">
+        <thead style="background:#eee;">
+          <tr>
+            <th>#</th>
+            <th>പേര്</th>
+            <th>ഫോൺ</th>
+            <th>പ്രദേശം</th>
+            <th>രക്ത ഗ്രൂപ്പ്</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${resultsTable.innerHTML}
+        </tbody>
+      </table>
+    `;
+    document.body.appendChild(pdfContainer);
 
-  XLSX.writeFile(wb, "donors.xlsx");
-});
+    // Use html2canvas to render the container
+    const canvas = await window.html2canvas(pdfContainer, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",
+      format: "a4"
+    });
 
-// PDF Export with logo and details
-pdfBtn.addEventListener("click", async () => {
-  const { jsPDF } = window.jspdf;
+    // Calculate width/height for A4
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth - 40;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
 
-  // Create a container for PDF export
-  const pdfContainer = document.createElement("div");
-  pdfContainer.style.padding = "24px";
-  pdfContainer.style.background = "#fff";
-  pdfContainer.style.width = "700px";
-  pdfContainer.style.fontFamily = "'Anek Malayalam', sans-serif";
-  pdfContainer.innerHTML = `
-    <div style="text-align:center;margin-bottom:12px;">
-      <img src="images/logo2.png" alt="QMRCC Logo" style="width:70px;margin-bottom:8px;">
-      <div style="font-size:1.5rem;font-weight:800;color:#00796b;">QMRCC</div>
-      <div style="font-size:1.08rem;color:#009688;font-weight:700;">ഖാഇദെ മില്ലത്ത് റിലീഫ് & കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ</div>
-      <div style="font-size:1.05rem;color:#555;margin-bottom:10px;">രക്തദാതാക്കളുടെ പട്ടിക</div>
-    </div>
-    <table border="1" cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:1rem;">
-      <thead style="background:#eee;">
-        <tr>
-          <th>#</th>
-          <th>പേര്</th>
-          <th>ഫോൺ</th>
-          <th>പ്രദേശം</th>
-          <th>രക്ത ഗ്രൂപ്പ്</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${resultsTable.innerHTML}
-      </tbody>
-    </table>
-  `;
-  document.body.appendChild(pdfContainer);
+    pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
+    pdf.save("donors.pdf");
 
-  // Use html2canvas to render the container
-  const canvas = await window.html2canvas(pdfContainer, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF({
-    orientation: "portrait",
-    unit: "pt",
-    format: "a4"
+    document.body.removeChild(pdfContainer);
   });
-
-  // Calculate width/height for A4
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const imgWidth = pageWidth - 40;
-  const imgHeight = canvas.height * imgWidth / canvas.width;
-
-  pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
-  pdf.save("donors.pdf");
-
-  document.body.removeChild(pdfContainer);
 });
 </script>
 </body>
