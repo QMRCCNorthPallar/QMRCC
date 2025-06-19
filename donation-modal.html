@@ -1,0 +1,260 @@
+<!-- Donation Modal -->
+<div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="donateModalLabel">Support Our Mission</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs mb-4" id="modalTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="donate-tab" data-bs-toggle="tab" data-bs-target="#donate-tab-pane" type="button" role="tab" aria-controls="donate-tab-pane" aria-selected="true">Donate</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="volunteer-tab" data-bs-toggle="tab" data-bs-target="#volunteer-tab-pane" type="button" role="tab" aria-controls="volunteer-tab-pane" aria-selected="false">Volunteer</button>
+          </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content" id="modalTabsContent">
+          <!-- Donation Tab -->
+          <div class="tab-pane fade show active" id="donate-tab-pane" role="tabpanel" aria-labelledby="donate-tab" tabindex="0">
+            <form action="#!" method="post" id="donationForm">
+              <div class="row">
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="donor_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control shadow-none" id="donor_name" required>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="donor_email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control shadow-none" id="donor_email" required>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="donor_phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control shadow-none" id="donor_phone">
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="donation_type" class="form-label">Donation Purpose</label>
+                    <select class="form-control shadow-none" id="donation_type">
+                      <option value="general">General Fund</option>
+                      <option value="baithurahma">Baithurahma Housing</option>
+                      <option value="education">Education Support</option>
+                      <option value="medical">Medical Support</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 mb-4">
+                  <label class="form-label">Donation Amount</label>
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="donationAmount" id="amount_500" value="500">
+                      <label class="form-check-label" for="amount_500">₹500</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="donationAmount" id="amount_1000" value="1000">
+                      <label class="form-check-label" for="amount_1000">₹1000</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="donationAmount" id="amount_2500" value="2500">
+                      <label class="form-check-label" for="amount_2500">₹2500</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="donationAmount" id="amount_5000" value="5000">
+                      <label class="form-check-label" for="amount_5000">₹5000</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="donationAmount" id="amount_other" value="other" checked>
+                      <label class="form-check-label" for="amount_other">Other</label>
+                    </div>
+                  </div>
+                  <input type="number" class="form-control shadow-none" id="donation_amount_custom" placeholder="Enter amount" min="1">
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="payment_method" class="form-label">Payment Method</label>
+                    <select class="form-control shadow-none" id="payment_method">
+                      <option value="bank">Bank Transfer</option>
+                      <option value="upi">UPI</option>
+                      <option value="cash">Cash</option>
+                      <option value="check">Check</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="donation_frequency" class="form-label">Donation Frequency</label>
+                    <select class="form-control shadow-none" id="donation_frequency">
+                      <option value="one-time">One Time</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                      <option value="annually">Annually</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 mb-4">
+                  <div class="form-group">
+                    <label for="donor_message" class="form-label">Message (Optional)</label>
+                    <textarea class="form-control shadow-none" id="donor_message" rows="3" placeholder="Any specific notes or requests"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary w-100">Donate Now</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Volunteer Tab -->
+          <div class="tab-pane fade" id="volunteer-tab-pane" role="tabpanel" aria-labelledby="volunteer-tab" tabindex="0">
+            <form action="#!" method="post" id="volunteerForm">
+              <div class="row">
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control shadow-none" id="volunteer_name" required>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control shadow-none" id="volunteer_email" required>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control shadow-none" id="volunteer_phone" required>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_age" class="form-label">Age</label>
+                    <input type="number" class="form-control shadow-none" id="volunteer_age" min="18" max="100">
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_availability" class="form-label">Availability</label>
+                    <select class="form-control shadow-none" id="volunteer_availability">
+                      <option value="weekends">Weekends Only</option>
+                      <option value="weekdays">Weekdays Only</option>
+                      <option value="evenings">Evenings Only</option>
+                      <option value="flexible">Flexible Schedule</option>
+                      <option value="specific">Specific Days</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_hours" class="form-label">Hours Available Per Week</label>
+                    <select class="form-control shadow-none" id="volunteer_hours">
+                      <option value="1-5">1-5 hours</option>
+                      <option value="5-10">5-10 hours</option>
+                      <option value="10-20">10-20 hours</option>
+                      <option value="20+">20+ hours</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_skills" class="form-label">Skills & Interests</label>
+                    <textarea class="form-control shadow-none" id="volunteer_skills" rows="3" placeholder="Please list any special skills, qualifications, or areas of interest" required></textarea>
+                  </div>
+                </div>
+                <div class="col-12 mb-4 pb-2">
+                  <div class="form-group">
+                    <label for="volunteer_experience" class="form-label">Prior Volunteer Experience (if any)</label>
+                    <textarea class="form-control shadow-none" id="volunteer_experience" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="col-12 mb-4">
+                  <div class="form-group">
+                    <label for="volunteer_message" class="form-label">Why do you want to volunteer with QMRCC?</label>
+                    <textarea class="form-control shadow-none" id="volunteer_message" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="container-fluid p-0">
+          <div class="row">
+            <div class="col-12 text-center">
+              <p class="small text-muted mb-0">Thank you for your interest in supporting QMRCC. For any questions, please contact us at <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Volunteer Modal -->
+<div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h4 class="modal-title" id="volunteerModalLabel">Join Our Volunteer Team</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="#!" method="post">
+          <div class="row">
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_name_simple" class="form-label">Full Name</label>
+                <input type="text" class="form-control shadow-none" id="volunteer_name_simple">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_email_simple" class="form-label">Email Address</label>
+                <input type="email" class="form-control shadow-none" id="volunteer_email_simple">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_phone_simple" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control shadow-none" id="volunteer_phone_simple">
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4 pb-2">
+              <div class="form-group">
+                <label for="availability_simple" class="form-label">Availability</label>
+                <select class="form-control shadow-none" id="availability_simple">
+                  <option value="weekends">Weekends</option>
+                  <option value="weekdays">Weekdays</option>
+                  <option value="evenings">Evenings</option>
+                  <option value="flexible">Flexible</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-4 pb-2">
+              <div class="form-group">
+                <label for="volunteer_skills_simple" class="form-label">Skills / Interests</label>
+                <textarea class="form-control shadow-none" id="volunteer_skills_simple" rows="3" placeholder="Please list any special skills or areas of interest"></textarea>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

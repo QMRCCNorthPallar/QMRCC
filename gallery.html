@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse our gallery of images showcasing QMRCC's community activities, events, and initiatives in North Pallar.">
+  <meta name="author" content="QMRCC North Pallar">
   <title>Gallery - QMRCC North Pallar</title>
+
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- theme meta -->
+  <meta name="theme-name" content="wallet" />
+
   <!-- Use Bootstrap and your main styles for consistency -->
   <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
   <link rel="stylesheet" href="plugins/font-awesome/brands.css">
@@ -84,7 +93,6 @@
     html.dark hr {
       border-color: #334155;
     }
-    /* Add more as needed for your UI */
     body.dark {
       background-color: #0f172a !important;
       color: #fff !important;
@@ -112,26 +120,30 @@
       font-weight: 700;
       letter-spacing: 0.5px;
     }
+    /* Pinterest-style masonry grid layout */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-auto-rows: 10px;
+      grid-gap: 16px;
     }
     .gallery-img-link {
       display: block;
-      margin-bottom: 1.2rem;
+      grid-row-end: span 30; /* Will be adjusted by JS */
       width: 100%;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1.5px 6px rgba(0,0,0,0.10);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.13);
       background: #fff;
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       overflow: hidden;
-      break-inside: avoid;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease-out;
       position: relative;
     }
     .gallery-img-link:hover {
-      transform: translateY(-6px) scale(1.04);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.13);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.18), 0 5px 10px rgba(0,0,0,0.15);
+    }
+    .gallery-img-link:hover .gallery-img {
+      transform: scale(1.05);
     }
     .gallery-img {
       width: 100%;
@@ -139,20 +151,54 @@
       display: block;
       object-fit: cover;
       background: #f4f6fa;
-      border-radius: 0;
+      border-radius: 0.75rem;
+      transition: transform 0.4s ease-out;
     }
+    /* Responsive adjustments */
     @media (max-width: 1200px) {
-      .gallery-grid { column-count: 3; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
     }
     @media (max-width: 900px) {
-      .gallery-grid { column-count: 2; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
     }
     @media (max-width: 600px) {
-      .gallery-grid { column-count: 1; }
-      .gallery-img-link { margin-bottom: 0.9rem; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+      .gallery-img-link {
+        border-radius: 0.5rem;
+      }
+      .gallery-img {
+        border-radius: 0.5rem;
+      }
     }
     body.dark .gallery-img-link {
       background: #1e293b;
+    }
+    /* Lightbox customization */
+    .lb-data .lb-caption {
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Rubik', 'Anek Malayalam', sans-serif;
+    }
+    .lb-data .lb-details {
+      width: 90%;
+    }
+    body.dark .lb-outerContainer {
+      background-color: #1e293b;
+    }
+    body.dark .lb-dataContainer {
+      background-color: #1e293b;
+    }
+    body.dark .lb-data .lb-details {
+      color: #fff;
+    }
+    body.dark .lb-data .lb-close {
+      filter: invert(1);
     }
   </style>
 </head>
@@ -190,8 +236,8 @@
               </ul>
             </li>
           </ul>
-          <a href="#!" class="btn btn-outline-primary">Log In</a>
-          <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+          <a href="https://wa.me/message/PT35ZOX6HLQCI1" target="_blank" class="btn btn-outline-primary"><i class="fab fa-whatsapp me-2"></i>Contact Us</a>
+          <a href="#!" data-bs-toggle="modal" data-bs-target="#donationModal" class="btn btn-primary ms-2 ms-lg-3">Donate</a>
         </div>
       </div>
     </nav>
@@ -202,12 +248,23 @@
     <div class="container">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h1 class="gallery-title mb-3 mb-md-0 text-capitalize fs-2">Gallery</h1>
-        <button id="toggleDarkBtn" onclick="toggleDarkMode()" class="gallery-toggle" aria-label="Toggle dark mode">
-          <i class="fas fa-moon"></i>
-          <span id="toggleDarkText">Dark Mode</span>
-        </button>
+        <div class="d-flex gap-2">
+          <button id="toggleDarkBtn" onclick="toggleDarkMode()" class="gallery-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+            <span id="toggleDarkText">Dark Mode</span>
+          </button>
+        </div>
       </div>
+
       <div id="gallery" class="gallery-grid"></div>
+
+      <!-- Loading indicator -->
+      <div id="gallery-loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading gallery images...</p>
+      </div>
     </div>
   </section>
 
@@ -292,39 +349,83 @@
     // List all supported extensions
     const supportedExtensions = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG', 'gif', 'webp'];
 
-    // Dynamically load all images in the folder (client-side JS can't read directory, so use a manifest or fetch from server)
-    // For static hosting, you must maintain a manifest file (gallery.json) with all image filenames.
-    // Example gallery.json: ["1747647183068.797.JPG", "IMG_8329.JPG", "QMRCC.png.png", ...]
-    // Place gallery.json in images/gallery/
-
-    const IMAGES_PER_PAGE = 32; // Show 32 images per page
+    // Dynamically load images
+    const IMAGES_PER_PAGE = 24; // Show 24 images per page for better performance
     let allImages = [];
     let currentPage = 1;
+    let loadedImages = 0;
+    let totalImagesOnPage = 0;
+
+    // Function to set the height span for each grid item based on its content
+    function resizeGridItem(item) {
+      const grid = document.getElementById("gallery");
+      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-gap'));
+      const contentHeight = item.querySelector('img').getBoundingClientRect().height;
+      const rowSpan = Math.ceil((contentHeight + rowGap) / (rowHeight + rowGap));
+      item.style.gridRowEnd = "span " + rowSpan;
+      return true;
+    }
+
+    // Apply sizing to all items in the grid
+    function resizeAllGridItems() {
+      const allItems = document.querySelectorAll(".gallery-img-link");
+      allItems.forEach(item => {
+        if (item.querySelector('img').complete) {
+          resizeGridItem(item);
+        }
+      });
+    }
+
+    // Handle image loading completion
+    function handleImageLoad() {
+      loadedImages++;
+      resizeGridItem(this.parentElement);
+
+      // When all images are loaded, hide the loading indicator
+      if (loadedImages === totalImagesOnPage) {
+        document.getElementById('gallery-loading').style.display = 'none';
+        document.getElementById('gallery').style.visibility = 'visible';
+      }
+    }
 
     function renderGalleryPage(page) {
       const galleryDiv = document.getElementById('gallery');
       galleryDiv.innerHTML = '';
+      galleryDiv.style.visibility = 'hidden';
+
+      document.getElementById('gallery-loading').style.display = 'block';
+
       const start = (page - 1) * IMAGES_PER_PAGE;
       const end = start + IMAGES_PER_PAGE;
       const imagesToShow = allImages.slice(start, end);
+      totalImagesOnPage = imagesToShow.length;
+      loadedImages = 0;
 
       imagesToShow.forEach(filename => {
         const imgPath = `images/gallery/${filename}`;
         const link = document.createElement('a');
         link.href = imgPath;
         link.setAttribute('data-lightbox', 'gallery');
+        link.setAttribute('data-title', filename.replace(/\.[^/.]+$/, "").replace(/_/g, " "));
         link.className = "gallery-img-link";
+
         const img = document.createElement('img');
         img.src = imgPath;
         img.className = "gallery-img";
         img.loading = "lazy";
-        img.setAttribute('fetchpriority', 'low');
-        img.alt = filename;
+        img.alt = filename.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+        img.onload = handleImageLoad;
+        img.onerror = handleImageLoad; // Count errors too to avoid stuck loading state
+
         link.appendChild(img);
         galleryDiv.appendChild(link);
       });
 
       renderPagination();
+
+      // Apply initial sizing and add resize handling
+      window.addEventListener('resize', resizeAllGridItems);
     }
 
     function renderPagination() {
@@ -332,7 +433,7 @@
       if (!pagination) {
         pagination = document.createElement('div');
         pagination.id = 'gallery-pagination';
-        pagination.className = 'd-flex justify-content-center mt-4';
+        pagination.className = 'd-flex justify-content-center flex-wrap mt-5';
         document.querySelector('.gallery-grid').after(pagination);
       }
       pagination.innerHTML = '';
@@ -342,8 +443,8 @@
       if (totalPages <= 1) return;
 
       const prevBtn = document.createElement('button');
-      prevBtn.className = 'btn btn-outline-primary mx-1';
-      prevBtn.textContent = 'Prev';
+      prevBtn.className = 'btn btn-outline-primary mx-1 mb-2';
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left me-1"></i> Prev';
       prevBtn.disabled = currentPage === 1;
       prevBtn.onclick = () => {
         if (currentPage > 1) {
@@ -354,9 +455,39 @@
       };
       pagination.appendChild(prevBtn);
 
-      for (let i = 1; i <= totalPages; i++) {
+      // Show limited page buttons with ellipsis for large numbers
+      const maxVisibleButtons = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+
+      if (endPage - startPage + 1 < maxVisibleButtons) {
+        startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+      }
+
+      // First page button
+      if (startPage > 1) {
+        const firstBtn = document.createElement('button');
+        firstBtn.className = 'btn btn-sm mx-1 mb-2 btn-outline-primary';
+        firstBtn.textContent = '1';
+        firstBtn.onclick = () => {
+          currentPage = 1;
+          renderGalleryPage(currentPage);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        pagination.appendChild(firstBtn);
+
+        if (startPage > 2) {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'mx-1 mb-2 align-self-center';
+          ellipsis.textContent = '...';
+          pagination.appendChild(ellipsis);
+        }
+      }
+
+      // Page buttons
+      for (let i = startPage; i <= endPage; i++) {
         const pageBtn = document.createElement('button');
-        pageBtn.className = 'btn btn-sm mx-1 ' + (i === currentPage ? 'btn-primary' : 'btn-outline-primary');
+        pageBtn.className = 'btn btn-sm mx-1 mb-2 ' + (i === currentPage ? 'btn-primary' : 'btn-outline-primary');
         pageBtn.textContent = i;
         pageBtn.onclick = () => {
           currentPage = i;
@@ -366,9 +497,29 @@
         pagination.appendChild(pageBtn);
       }
 
+      // Last page button
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'mx-1 mb-2 align-self-center';
+          ellipsis.textContent = '...';
+          pagination.appendChild(ellipsis);
+        }
+
+        const lastBtn = document.createElement('button');
+        lastBtn.className = 'btn btn-sm mx-1 mb-2 btn-outline-primary';
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => {
+          currentPage = totalPages;
+          renderGalleryPage(currentPage);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        pagination.appendChild(lastBtn);
+      }
+
       const nextBtn = document.createElement('button');
-      nextBtn.className = 'btn btn-outline-primary mx-1';
-      nextBtn.textContent = 'Next';
+      nextBtn.className = 'btn btn-outline-primary mx-1 mb-2';
+      nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right ms-1"></i>';
       nextBtn.disabled = currentPage === totalPages;
       nextBtn.onclick = () => {
         if (currentPage < totalPages) {
@@ -380,19 +531,34 @@
       pagination.appendChild(nextBtn);
     }
 
+    // Configure Lightbox options
+    lightbox.option({
+      'resizeDuration': 300,
+      'wrapAround': true,
+      'fadeDuration': 300,
+      'imageFadeDuration': 300,
+      'positionFromTop': 100,
+      'showImageNumberLabel': false
+    });
+
     // Fetch the manifest file (gallery.json) and initialize gallery
     fetch('images/gallery/gallery.json')
       .then(response => response.json())
       .then(data => {
         // Filter only supported image files
         allImages = data.filter(filename => {
-          const ext = filename.split('.').pop();
+          const ext = filename.split('.').pop().toLowerCase();
           return supportedExtensions.includes(ext);
+        }).sort((a, b) => {
+          // Sort by filename to maintain consistent order
+          return a.localeCompare(b);
         });
         renderGalleryPage(currentPage);
       })
       .catch(() => {
-        document.getElementById('gallery').innerHTML = '<div class="text-danger">Gallery could not be loaded.</div>';
+        document.getElementById('gallery-loading').style.display = 'none';
+        document.getElementById('gallery').innerHTML = '<div class="alert alert-danger py-4">Gallery images could not be loaded. Please try again later.</div>';
+        document.getElementById('gallery').style.visibility = 'visible';
       });
 
     // Improved toggle button with icon and text
@@ -411,7 +577,35 @@
         icon.classList.add('fa-moon');
         text.textContent = "Dark Mode";
       }
+
+      // Save preference to localStorage
+      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
     }
+
+    // Check for saved dark mode preference
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark');
+        document.documentElement.classList.add('dark');
+        const icon = document.querySelector('#toggleDarkBtn i');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        document.getElementById('toggleDarkText').textContent = "Light Mode";
+      }
+    });
+  </script>
+  <!-- Add this just before the closing </body> tag -->
+  <script>
+    // Fallback in case gallery.json doesn't exist
+    setTimeout(() => {
+      if (document.getElementById('gallery-loading').style.display !== 'none') {
+        const message = document.createElement('div');
+        message.className = 'alert alert-warning mt-4';
+        message.innerHTML = '<strong>Note:</strong> If you\'re seeing this message, you might need to create the gallery.json file. Use the generate-gallery-json.js script to create it.';
+        document.getElementById('gallery-loading').after(message);
+      }
+    }, 5000);
   </script>
 </body>
 </html>

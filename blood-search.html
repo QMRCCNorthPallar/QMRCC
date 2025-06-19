@@ -2,215 +2,521 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <title>രക്തദാതാക്കളെ തിരയുക - QMRCC</title>
-  <link rel="icon" type="image/png" href="images/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam&display=swap" rel="stylesheet">
+  <title>Blood Bank Search - QMRCC North Pallar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="description" content="Search for blood donors in the QMRCC blood bank database. Find donors by blood group and contact them for emergency needs.">
+  <meta name="author" content="QMRCC North Pallar">
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="wallet" />
+
+  <!-- # Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- # CSS Plugins -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <link rel="stylesheet" href="plugins/font-awesome/fontawesome.min.css">
+  <link rel="stylesheet" href="plugins/font-awesome/brands.css">
+  <link rel="stylesheet" href="plugins/font-awesome/solid.css">
+
+  <!-- # Main Style Sheet -->
+  <link rel="stylesheet" href="css/style.css">
   <style>
     body {
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
-      margin: 0;
-      padding: 0;
+      background: linear-gradient(135deg, #f5f5f5 0%, #e0f2f1 100%);
       color: #333;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
     }
-    .center-wrap {
+
+    .search-hero {
       display: flex;
-      flex: 1;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 60px 0 30px;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
     }
-    .main-card {
-      background: rgba(255,255,255,0.98);
-      padding: 32px 24px 24px 24px;
-      border-radius: 22px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-      text-align: center;
-      max-width: 600px;
+
+    .search-container {
+      max-width: 800px;
       width: 100%;
+      text-align: center;
       animation: fadeIn 0.8s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 0 20px;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: none; }
     }
+
+    .search-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
     .logo-img {
-      width: 80px;
-      margin-bottom: 10px;
+      width: 120px;
+      margin-bottom: 20px;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
     }
+
     .main-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: #00796b;
       font-weight: 800;
-      margin-bottom: 2px;
+      margin-bottom: 10px;
       letter-spacing: 1px;
       font-family: 'Anek Malayalam', sans-serif;
     }
+
     .main-org {
-      font-size: 1.08rem;
+      font-size: 1.2rem;
       color: #009688;
       font-weight: 700;
-      margin-bottom: 2px;
+      margin-bottom: 10px;
       font-family: 'Anek Malayalam', sans-serif;
     }
+
     .main-desc {
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       color: #555;
-      margin-bottom: 18px;
+      margin-bottom: 30px;
       font-family: 'Anek Malayalam', sans-serif;
     }
-    form {
+
+    .search-form {
       width: 100%;
-      margin-top: 10px;
+      max-width: 500px;
+      margin: 0 auto 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 100px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    select, button {
-      display: block;
+
+    select {
       width: 100%;
-      margin: 1em 0;
-      padding: 13px 18px;
-      font-size: 1.08rem;
-      border-radius: 8px;
-      border: 1.5px solid #b2dfdb;
-      background: #f7fafc;
+      padding: 18px 25px;
+      font-size: 1.1rem;
+      border: 1px solid #e0e0e0;
+      background: #fff;
       font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
-      box-sizing: border-box;
       outline: none;
-      transition: border 0.18s, box-shadow 0.18s;
+      border-radius: 100px 100px 0 0;
+      transition: all 0.3s ease;
     }
+
     select:focus {
       border-color: #009688;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,150,136,0.10);
+      box-shadow: 0 0 0 2px rgba(0,150,136,0.2);
     }
-    button {
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 15px;
       background: linear-gradient(90deg, #009688 60%, #00796b 100%);
       color: white;
       font-weight: 700;
       cursor: pointer;
       border: none;
-      margin-top: 18px;
-      transition: background 0.2s, box-shadow 0.2s;
+      font-family: 'Anek Malayalam', sans-serif;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border-radius: 0 0 100px 100px;
     }
-    button:hover, button:focus {
-      background: linear-gradient(90deg, #00796b 60%, #009688 100%);
-      box-shadow: 0 4px 16px rgba(0,150,136,0.10);
+
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #00796b 60%, #00695c 100%);
+      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
     }
+
+    .results-container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
     .actions {
       display: flex;
-      gap: 10px;
-      margin-top: 1em;
+      gap: 15px;
+      margin: 20px 0;
       flex-wrap: wrap;
+      justify-content: center;
     }
+
     .actions button {
       flex: 1;
-      padding: 10px;
-      background: #00695c;
+      min-width: 200px;
+      padding: 12px 18px;
+      background: #00796b;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 50px;
       cursor: pointer;
       font-size: 1rem;
-      margin: 0;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
     }
+
     .actions button:hover {
-      background: #004d40;
+      background: #00695c;
+      box-shadow: 0 4px 16px rgba(0,150,136,0.2);
+      transform: translateY(-2px);
     }
+
+    .actions button i {
+      margin-right: 8px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1em;
       background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
     }
+
     th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+      border: 1px solid #e0e0e0;
+      padding: 15px;
       text-align: left;
     }
+
     th {
-      background-color: #eee;
+      background-color: #f5f5f5;
+      font-weight: 600;
+      color: #00796b;
     }
+
+    tr:hover td {
+      background-color: #f5f5f5;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 30px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 25px;
+      background-color: #25D366;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+    }
+
+    .contact-btn:hover {
+      background-color: #128C7E;
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .contact-btn i {
+      margin-left: 8px;
+      font-size: 1.2rem;
+    }
+
+    .banner-img {
+      width: 100%;
+      max-width: 500px;
+      display: block;
+      margin: 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 2rem;
+      }
+      .main-desc {
+        font-size: 1.1rem;
+      }
+      .search-form {
+        border-radius: 20px;
+      }
+      select {
+        border-radius: 20px 20px 0 0;
+        padding: 15px 20px;
+      }
+      button[type="submit"] {
+        border-radius: 0 0 20px 20px;
+      }
+      .actions {
+        flex-direction: column;
+      }
+      .actions button {
+        width: 100%;
+      }
+    }
+
     @media print {
       body * {
         visibility: hidden;
       }
-      table, table * {
+      .results-container, .results-container * {
         visibility: visible;
       }
-      table {
+      .results-container {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
       }
-    }
-    .footer-simple {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.95rem;
-    }
-    @media (max-width: 600px) {
-      .main-card {
-        max-width: 98vw;
-        padding: 18px 6px 16px 6px;
-        border-radius: 14px;
+      .actions {
+        display: none;
       }
     }
   </style>
 </head>
+
 <body>
-  <img src="images/blood_banner.png" alt="Blood Donation Banner"
-    style="width:100%;max-width:500px;display:block;margin:24px auto 0 auto;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.08);" />
-  <div class="center-wrap">
-    <div class="main-card">
+<!-- navigation -->
+<header class="navigation bg-tertiary">
+  <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"> <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="how-it-works.html">How It Works</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item "> <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item " href="blog.html">Blog</a>
+              </li>
+              <li><a class="dropdown-item " href="blog-details.html">Blog Details</a>
+              </li>
+              <li><a class="dropdown-item " href="service-details.html">Service Details</a>
+              </li>
+              <li><a class="dropdown-item " href="search.html">Search</a>
+              </li>
+              <li><a class="dropdown-item " href="gallery.html">Gallery</a>
+              </li>
+              <li><a class="dropdown-item " href="faq.html">FAQ</a>
+              </li>
+              <li><a class="dropdown-item " href="terms.html">Terms &amp; Condition</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://wa.me/+919744057543" target="_blank" class="btn btn-outline-primary"><i class="fab fa-whatsapp me-2"></i>Contact Us</a>
+        <a href="#!" data-bs-toggle="modal" data-bs-target="#donationModal" class="btn btn-primary ms-2 ms-lg-3">Donate</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<img src="images/blood_banner.png" alt="Blood Donation Banner" class="banner-img mt-5" />
+
+<section class="search-hero">
+  <div class="search-container">
+    <div class="search-content">
       <img src="images/logo2.png" alt="QMRCC Logo" class="logo-img">
-      <div class="main-title">QMRCC</div>
+      <h1 class="main-title">QMRCC Blood Bank</h1>
       <div class="main-org">
         ഖാഇദെ മില്ലത്ത് റിലീഫ് &amp; കൾച്ചറൽ സെന്റർ, വടക്കെ പല്ലാർ
       </div>
       <div class="main-desc">
         രക്തദാതാക്കളെ തിരയൂ...
       </div>
-      <form id="searchForm">
-        <select name="group" required>
-          <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
-          <option>A+</option><option>A-</option>
-          <option>B+</option><option>B-</option>
-          <option>O+</option><option>O-</option>
-          <option>AB+</option><option>AB-</option>
-        </select>
-        <button type="submit">തിരയുക</button>
-      </form>
-      <div id="resultsSection" style="display:none; width:100%;">
-        <div class="actions">
-          <button id="excelBtn">എക്സൽ ഫയലായി ഡൗൺലോഡ് ചെയ്യുക</button>
-          <button id="pdfBtn">PDF ആയി ഡൗൺലോഡ് ചെയ്യുക</button>
+    </div>
+    
+    <form id="searchForm" class="search-form">
+      <select name="group" required>
+        <option value="">രക്തഗ്രൂപ്പ് തിരഞ്ഞെടുക്കുക</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option>
+        <option>AB+</option><option>AB-</option>
+      </select>
+      <button type="submit">തിരയുക</button>
+    </form>
+    
+    <div class="contact-buttons">
+      <a href="https://wa.me/+919744057543" target="_blank" class="contact-btn">
+        ഞങ്ങളെ കോണ്ടാക്ട് ചെയ്യാം <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" class="contact-btn">
+        QMRCC വാട്സപ്പ് ചാനൽ <i class="fab fa-whatsapp"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="results-container">
+  <div id="resultsSection" style="display:none; width:100%;">
+    <div class="actions">
+      <button id="excelBtn"><i class="fas fa-file-excel"></i> എക്സൽ ഫയലായി ഡൗൺലോഡ് ചെയ്യുക</button>
+      <button id="pdfBtn"><i class="fas fa-file-pdf"></i> PDF ആയി ഡൗൺലോഡ് ചെയ്യുക</button>
+    </div>
+    <div class="table-responsive">
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>പേര്</th>
+            <th>ഫോൺ</th>
+            <th>പ്രദേശം</th>
+            <th>രക്ത ഗ്രൂപ്പ്</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="section-sm bg-tertiary border-top mt-auto">
+  <div class="container">
+    <div class="row justify-content-between">
+      <!-- Services -->
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Services</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+            <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+            <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+            <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+            <li class="mb-2"><a href="search.html">Data Search</a></li>
+          </ul>
         </div>
-        <table id="resultsTable">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>പേര്</th>
-              <th>ഫോൺ</th>
-              <th>പ്രദേശം</th>
-              <th>രക്ത ഗ്രൂപ്പ്</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      </div>
+      <!-- About -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">About</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+            <li class="mb-2"><a href="about.html">About Us</a></li>
+          >
+          </ul>
+        </div>
+      </div>
+      <!-- Contact Us -->
+      <div class="col-lg-4 col-md-12 col-12 mb-4">
+        <div class="footer-widget">
+          <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="fas fa-envelope me-2 text-primary"></i>
+              <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-facebook me-2 text-primary"></i>
+              <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-instagram me-2 text-primary"></i>
+              <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-whatsapp me-2 text-primary"></i>
+              <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
+            </li>
+            <li class="mb-2">
+              <i class="fab fa-youtube me-2 text-primary"></i>
+              <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row align-items-center text-center text-md-start">
+      <div class="col-lg-6 mb-2 mb-lg-0">
+        <a href="index.html">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
+        </a>
+      </div>
+      <div class="col-lg-6 text-lg-end">
+        <small class="text-muted">
+          &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+          Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
+        </small>
       </div>
     </div>
   </div>
-  <div class="footer-simple">
-    © 2025 QMRCC.
+</footer>
+
+
+<!-- Modal -->
+<div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="donationModalLabel">സംഭാവന നൽകാം</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>QMRCC-യുടെ പ്രവർത്തനങ്ങൾക്ക് ഉദാരമായി സംഭാവന നൽകി സഹായിക്കാവുന്നതാണ്.</p>
+        <!-- Placeholder for payment details -->
+        <div class="text-center my-4">
+          <img src="images/QR_CODE_Example.jpeg" alt="QR Code" class="img-fluid" style="max-width: 200px;">
+          <p class="mt-2">UPI ID: exampleupi@bank</p>
+          <p>അല്ലെങ്കിൽ താഴെ കാണുന്ന ബട്ടൺ ക്ലിക്ക് ചെയ്യുക</p>
+        </div>
+        <div class="d-grid gap-2">
+          <a href="#" class="btn btn-success disabled">ഓൺലൈൻ പേയ്മെന്റ് (coming soon)</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">അടയ്ക്കുക</button>
+      </div>
+    </div>
   </div>
+</div>
+
+
+<!-- # JS Plugins -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<script src="plugins/slick/slick.min.js"></script>
+<script src="plugins/scrollmenu/scrollmenu.min.js"></script>
+
+<!-- Main Script -->
+<script src="js/script.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -224,7 +530,8 @@ const pdfBtn = document.getElementById("pdfBtn");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   resultsSection.style.display = "none";
-  resultsTable.innerHTML = "<tr><td colspan='5'>തെരയുന്നു...</td></tr>";
+  resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'><div class='spinner-border text-primary' role='status'></div><p class='mt-3'>തെരയുന്നു...</p></td></tr>";
+  resultsSection.style.display = "block";
 
   const group = form.group.value.trim();
   const url = `https://bloodbank-worker.qmrccnorthpallar.workers.dev/?q=${encodeURIComponent(group)}`;
@@ -234,8 +541,7 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {
-      resultsTable.innerHTML = "<tr><td colspan='5'>ഫലങ്ങൾ ഒന്നുമില്ല.</td></tr>";
-      resultsSection.style.display = "block";
+      resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4'>ഫലങ്ങൾ ഒന്നുമില്ല.</td></tr>";
       return;
     }
 
@@ -252,11 +558,8 @@ form.addEventListener("submit", async (e) => {
       `;
     });
 
-    resultsSection.style.display = "block";
-
   } catch (err) {
-    resultsTable.innerHTML = "<tr><td colspan='5'>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</td></tr>";
-    resultsSection.style.display = "block";
+    resultsTable.innerHTML = "<tr><td colspan='5' class='text-center py-4 text-danger'><i class='fas fa-exclamation-circle me-2'></i>പ്രശ്നമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക.</td></tr>";
     console.error(err);
   }
 });
