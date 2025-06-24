@@ -13,11 +13,12 @@
   <meta charset="utf-8">
   <title>QMRCC - About Us</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <meta name="description" content="Learn about QMRCC's mission, values and community service initiatives in North Pallar. Discover how we're making a difference in our community.">
+  <meta name="description"
+    content="Learn about QMRCC's mission, values and community service initiatives in North Pallar. Discover how we're making a difference in our community.">
   <meta name="author" content="QMRCC North Pallar">
   <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
   <link rel="icon" href="images/favicon.png" type="image/x-icon">
-  
+
   <!-- theme meta -->
   <meta name="theme-name" content="wallet" />
 
@@ -25,7 +26,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Gayathri:wght@400;700&display=swap"
+    rel="stylesheet">
 
   <!-- # CSS Plugins -->
   <link rel="stylesheet" href="plugins/slick/slick.css">
@@ -39,367 +42,604 @@
 
 <body style="font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;">
 
-<!-- navigation -->
-<header class="navigation bg-tertiary">
-  <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">
-        <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
-          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Pages
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="blog.html">Blog</a></li>
-              <li><a class="dropdown-item" href="blog-details.html">Blog Details</a></li>
-              <li><a class="dropdown-item" href="service-details.html">Service Details</a></li>
-              <li><a class="dropdown-item" href="search.html">Search</a></li>
-              <li><a class="dropdown-item" href="legal.html">Legal</a></li>
-              <li><a class="dropdown-item" href="terms.html">Terms &amp; Condition</a></li>
-              <li><a class="dropdown-item" href="privacy-policy.html">Privacy &amp; Policy</a></li>
-            </ul>
-          </li>
-        </ul>
-        <a href="#!" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
-        <a href="#!" class="btn btn-primary ms-2 ms-lg-3" data-bs-toggle="modal" data-bs-target="#volunteerModal">Volunteer</a>
-      </div>
-    </div>
-  </nav>
-</header>
-<!-- /navigation -->
-
-<!-- Donate Modal -->
-<div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-bottom-0">
-        <h4 class="modal-title" id="donateModalLabel">Support Our Mission</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="#!" method="post">
-          <div class="row">
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="donation_amount" class="form-label">Donation Amount</label>
-                <input type="number" class="form-control shadow-none" id="donation_amount" placeholder="ex: 1000">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="donation_type" class="form-label">Purpose</label>
-                <select class="form-control shadow-none" id="donation_type">
-                  <option value="general">General Fund</option>
-                  <option value="baithurahma">Baithurahma Housing</option>
-                  <option value="education">Education Support</option>
-                  <option value="medical">Medical Support</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="donor_name" class="form-label">Full Name</label>
-                <input type="text" class="form-control shadow-none" id="donor_name">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="donor_email" class="form-label">Email Address</label>
-                <input type="email" class="form-control shadow-none" id="donor_email">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="donor_phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control shadow-none" id="donor_phone">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="payment_method" class="form-label">Payment Method</label>
-                <select class="form-control shadow-none" id="payment_method">
-                  <option value="bank">Bank Transfer</option>
-                  <option value="upi">UPI</option>
-                  <option value="cash">Cash</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary w-100">Donate Now</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Volunteer Modal -->
-<div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-bottom-0">
-        <h4 class="modal-title" id="volunteerModalLabel">Join Our Volunteer Team</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="#!" method="post">
-          <div class="row">
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="volunteer_name" class="form-label">Full Name</label>
-                <input type="text" class="form-control shadow-none" id="volunteer_name">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="volunteer_email" class="form-label">Email Address</label>
-                <input type="email" class="form-control shadow-none" id="volunteer_email">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="volunteer_phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control shadow-none" id="volunteer_phone">
-              </div>
-            </div>
-            <div class="col-lg-6 mb-4 pb-2">
-              <div class="form-group">
-                <label for="availability" class="form-label">Availability</label>
-                <select class="form-control shadow-none" id="availability">
-                  <option value="weekends">Weekends</option>
-                  <option value="weekdays">Weekdays</option>
-                  <option value="evenings">Evenings</option>
-                  <option value="flexible">Flexible</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-lg-12 mb-4 pb-2">
-              <div class="form-group">
-                <label for="volunteer_skills" class="form-label">Skills / Interests</label>
-                <textarea class="form-control shadow-none" id="volunteer_skills" rows="3" placeholder="Please list any special skills or areas of interest"></textarea>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary w-100">Submit Application</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- About Section -->
-<section class="about-section section bg-tertiary position-relative overflow-hidden">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-5">
-        <div class="section-title">
-          <p class="text-primary text-uppercase fw-bold mb-3">About QMRCC</p>
-          <h1>Community Service &amp; Social Empowerment</h1>
-          <p class="lead mb-0 mt-4">
-            <p>Quaid-E-Millath Releif & Cultural Center (QMRCC) is a non-profit organization established to serve the underprivileged communities in North Pallar and surrounding areas. We believe in creating meaningful change through sustainable community development initiatives.</p>
-            <p>Our mission is to provide relief, support education, promote cultural values, and empower individuals through various social welfare programs. We focus on housing support through Baithurahma, healthcare assistance, educational initiatives, and emergency response services.</p>
-          </p>
-          <a class="btn btn-primary mt-4" href="#mission">Our Mission</a>
-        </div>
-      </div>
-      <div class="col-lg-7 text-center text-lg-end">
-        <img loading="preload" decoding="async" src="images/about-us.png" alt="About QMRCC" class="img-fluid">
-      </div>
-    </div>
-  </div>
-  <div class="has-shapes">
-    <svg class="shape shape-left text-light" viewBox="0 0 192 752" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-30.883 0C-41.3436 36.4248 -22.7145 75.8085 4.29154 102.398C31.2976 128.987 65.8677 146.199 97.6457 166.87C129.424 187.542 160.139 213.902 172.162 249.847C193.542 313.799 149.886 378.897 129.069 443.036C97.5623 540.079 122.109 653.229 191 728.495" stroke="currentColor" stroke-miterlimit="10" />
-      <path d="M-55.5959 7.52271C-66.0565 43.9475 -47.4274 83.3312 -20.4214 109.92C6.58466 136.51 41.1549 153.722 72.9328 174.393C104.711 195.064 135.426 221.425 147.449 257.37C168.829 321.322 125.174 386.42 104.356 450.559C72.8494 547.601 97.3965 660.752 166.287 736.018" stroke="currentColor" stroke-miterlimit="10" />
-      <path d="M-80.3302 15.0449C-90.7909 51.4697 -72.1617 90.8535 -45.1557 117.443C-18.1497 144.032 16.4205 161.244 48.1984 181.915C79.9763 202.587 110.691 228.947 122.715 264.892C144.095 328.844 100.439 393.942 79.622 458.081C48.115 555.123 72.6622 668.274 141.552 743.54" stroke="currentColor" stroke-miterlimit="10" />
-      <path d="M-105.045 22.5676C-115.506 58.9924 -96.8766 98.3762 -69.8706 124.965C-42.8646 151.555 -8.29436 168.767 23.4835 189.438C55.2615 210.109 85.9766 236.469 98.0001 272.415C119.38 336.367 75.7243 401.464 54.9072 465.604C23.4002 562.646 47.9473 675.796 116.838 751.063" stroke="currentColor" stroke-miterlimit="10" />
-    </svg>
-    <svg class="shape shape-right text-light" viewBox="0 0 731 746" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12.1794 745.14C1.80036 707.275 -5.75764 666.015 8.73984 629.537C27.748 581.745 80.4729 554.968 131.538 548.843C182.604 542.703 234.032 552.841 285.323 556.748C336.615 560.64 391.543 557.276 433.828 527.964C492.452 487.323 511.701 408.123 564.607 360.255C608.718 320.353 675.307 307.183 731.29 327.323" stroke="currentColor" stroke-miterlimit="10" />
-    </svg>
-  </div>
-</section>
-
-<!-- Mission and Vision Section -->
-<section class="section" id="mission">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="section-title">
-          <p class="text-primary text-uppercase fw-bold mb-3">Our Mission</p>
-          <h2>Making a Difference in Our Community</h2>
-          <p>QMRCC was founded with the mission to improve the lives of underserved populations through sustainable community development initiatives. We work collaboratively with local stakeholders to identify needs and develop appropriate solutions.</p>
-          <p>Our core values guide everything we do:</p>
-          <ul>
-            <li>Compassion and empathy for those in need</li>
-            <li>Integrity and transparency in all operations</li>
-            <li>Community participation and inclusivity</li>
-            <li>Sustainable development approaches</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-lg-6 mt-5 mt-lg-0">
-        <img loading="preload" decoding="async" src="images/about/about-11.jpg" alt="QMRCC Community Service" class="rounded w-100">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Team Section -->
-<section class="section teams">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <div class="section-title text-center">
-          <p class="text-primary text-uppercase fw-bold mb-3">Our Leadership</p>
-          <h1>People Behind Our Mission</h1>
-          <p class="mb-0">Meet the dedicated team of volunteers and community leaders who make our work possible and drive our mission forward.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row position-relative">
-      <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
-        <div class="card bg-transparent border-0 text-center">
-          <div class="card-img">
-            <img loading="preload" decoding="async" src="images/about/team-1.jpg" alt="Team Member" class="rounded w-100">
-            <ul class="card-social list-inline">
-              <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
-              <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h3>Mohammed Sadiq</h3>
-            <p>President</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
-        <div class="card bg-transparent border-0 text-center">
-          <div class="card-img">
-            <img loading="preload" decoding="async" src="images/about/team-2.jpg" alt="Team Member" class="rounded w-100">
-            <ul class="card-social list-inline">
-              <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
-              <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h3>Abdul Rahman</h3>
-            <p>Secretary</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
-        <div class="card bg-transparent border-0 text-center">
-          <div class="card-img">
-            <img loading="preload" decoding="async" src="images/about/team-3.jpg" alt="Team Member" class="rounded w-100">
-            <ul class="card-social list-inline">
-              <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
-              <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h3>Fathima Shahana</h3>
-            <p>Treasurer</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="section-sm bg-tertiary border-top mt-5">
-  <div class="container">
-    <div class="row justify-content-between">
-      <!-- Services -->
-      <div class="col-lg-3 col-md-6 col-12 mb-4">
-        <div class="footer-widget">
-          <h5 class="mb-4 text-primary font-secondary">Services</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
-            <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
-            <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
-            <li class="mb-2"><a href="service-details.html">Service Details</a></li>
-            <li class="mb-2"><a href="search.html">Data Search</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- About -->
-      <div class="col-lg-2 col-md-6 col-12 mb-4">
-        <div class="footer-widget">
-          <h5 class="mb-4 text-primary font-secondary">About</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="our-story.html">Our Story</a></li>
-            <li class="mb-2"><a href="about.html">About Us</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- Contact Us -->
-      <div class="col-lg-4 col-md-12 col-12 mb-4">
-        <div class="footer-widget">
-          <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2">
-              <i class="fas fa-envelope me-2 text-primary"></i>
-              <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
-            </li>
-            <li class="mb-2">
-              <i class="fab fa-facebook me-2 text-primary"></i>
-              <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank">Facebook</a>
-            </li>
-            <li class="mb-2">
-              <i class="fab fa-instagram me-2 text-primary"></i>
-              <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
-            </li>
-            <li class="mb-2">
-              <i class="fab fa-whatsapp me-2 text-primary"></i>
-              <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank">Whatsapp Channel</a>
-            </li>
-            <li class="mb-2">
-              <i class="fab fa-youtube me-2 text-primary"></i>
-              <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank">YouTube</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="row align-items-center text-center text-md-start">
-      <div class="col-lg-6 mb-2 mb-lg-0">
-        <a href="index.html">
-          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC Logo">
+  <!-- navigation -->
+  <header class="navigation bg-tertiary">
+    <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png" alt="QMRCC">
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
+            <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Pages
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                <li><a class="dropdown-item" href="blog-details.html">Blog Details</a></li>
+                <li><a class="dropdown-item" href="service-details.html">Service Details</a></li>
+                <li><a class="dropdown-item" href="search.html">Search</a></li>
+                <li><a class="dropdown-item" href="legal.html">Legal</a></li>
+                <li><a class="dropdown-item" href="terms.html">Terms &amp; Condition</a></li>
+                <li><a class="dropdown-item" href="privacy-policy.html">Privacy &amp; Policy</a></li>
+              </ul>
+            </li>
+          </ul>
+          <a href="#!" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
+          <a href="#!" class="btn btn-primary ms-2 ms-lg-3" data-bs-toggle="modal"
+            data-bs-target="#volunteerModal">Volunteer</a>
+        </div>
       </div>
-      <div class="col-lg-6 text-lg-end">
-        <small class="text-muted">
-          &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
-          Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT Licensed</a>
-        </small>
+    </nav>
+  </header>
+  <!-- /navigation -->
+
+  <!-- Donate Modal -->
+  <div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h4 class="modal-title" id="donateModalLabel">Support Our Mission</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#!" method="post">
+            <div class="row">
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donation_amount" class="form-label">Donation Amount</label>
+                  <input type="number" class="form-control shadow-none" id="donation_amount" placeholder="ex: 1000">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donation_type" class="form-label">Purpose</label>
+                  <select class="form-control shadow-none" id="donation_type">
+                    <option value="general">General Fund</option>
+                    <option value="baithurahma">Baithurahma Housing</option>
+                    <option value="education">Education Support</option>
+                    <option value="medical">Medical Support</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_name" class="form-label">Full Name</label>
+                  <input type="text" class="form-control shadow-none" id="donor_name">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control shadow-none" id="donor_email">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="donor_phone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control shadow-none" id="donor_phone">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="payment_method" class="form-label">Payment Method</label>
+                  <select class="form-control shadow-none" id="payment_method">
+                    <option value="bank">Bank Transfer</option>
+                    <option value="upi">UPI</option>
+                    <option value="cash">Cash</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary w-100">Donate Now</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</footer>
 
-<!-- # JS Plugins -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
-<script src="plugins/slick/slick.min.js"></script>
-<script src="plugins/scrollmenu/scrollmenu.min.js"></script>
-<!-- Main Script -->
-<script src="js/script.js"></script>
+  <!-- Volunteer Modal -->
+  <div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h4 class="modal-title" id="volunteerModalLabel">Join Our Volunteer Team</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#!" method="post">
+            <div class="row">
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_name" class="form-label">Full Name</label>
+                  <input type="text" class="form-control shadow-none" id="volunteer_name">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control shadow-none" id="volunteer_email">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_phone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control shadow-none" id="volunteer_phone">
+                </div>
+              </div>
+              <div class="col-lg-6 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="availability" class="form-label">Availability</label>
+                  <select class="form-control shadow-none" id="availability">
+                    <option value="weekends">Weekends</option>
+                    <option value="weekdays">Weekdays</option>
+                    <option value="evenings">Evenings</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4 pb-2">
+                <div class="form-group">
+                  <label for="volunteer_skills" class="form-label">Skills / Interests</label>
+                  <textarea class="form-control shadow-none" id="volunteer_skills" rows="3"
+                    placeholder="Please list any special skills or areas of interest"></textarea>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section class="about-section section bg-tertiary position-relative overflow-hidden">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <div class="section-title">
+            <p class="text-primary text-uppercase fw-bold mb-3">About QMRCC</p>
+            <h1>Community Service &amp; Social Empowerment</h1>
+            <div class="lead mb-0 mt-4">
+              <p>Quaid-E-Millath Relief &amp; Cultural Center (QMRCC) is a non-profit organization established to serve the
+                underprivileged communities in North Pallar and surrounding areas. We believe in creating meaningful
+                change through sustainable community development initiatives.</p>
+              <p>Our mission is to provide relief, support education, promote cultural values, and empower individuals
+                through various social welfare programs. We focus on housing support through Baithurahma, healthcare
+                assistance, educational initiatives, and emergency response services.</p>
+            </div>
+            <a class="btn btn-primary mt-4" href="#mission">Our Mission</a>
+          </div>
+        </div>
+        <div class="col-lg-7 text-center text-lg-end">
+          <img loading="preload" decoding="async" src="images/about-us.png" alt="About QMRCC" class="img-fluid">
+        </div>
+      </div>
+    </div>
+    <div class="has-shapes">
+      <svg class="shape shape-left text-light" viewBox="0 0 192 752" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M-30.883 0C-41.3436 36.4248 -22.7145 75.8085 4.29154 102.398C31.2976 128.987 65.8677 146.199 97.6457 166.87C129.424 187.542 160.139 213.902 172.162 249.847C193.542 313.799 149.886 378.897 129.069 443.036C97.5623 540.079 122.109 653.229 191 728.495"
+          stroke="currentColor" stroke-miterlimit="10" />
+        <path
+          d="M-55.5959 7.52271C-66.0565 43.9475 -47.4274 83.3312 -20.4214 109.92C6.58466 136.51 41.1549 153.722 72.9328 174.393C104.711 195.064 135.426 221.425 147.449 257.37C168.829 321.322 125.174 386.42 104.356 450.559C72.8494 547.601 97.3965 660.752 166.287 736.018"
+          stroke="currentColor" stroke-miterlimit="10" />
+        <path
+          d="M-80.3302 15.0449C-90.7909 51.4697 -72.1617 90.8535 -45.1557 117.443C-18.1497 144.032 16.4205 161.244 48.1984 181.915C79.9763 202.587 110.691 228.947 122.715 264.892C144.095 328.844 100.439 393.942 79.622 458.081C48.115 555.123 72.6622 668.274 141.552 743.54"
+          stroke="currentColor" stroke-miterlimit="10" />
+        <path
+          d="M-105.045 22.5676C-115.506 58.9924 -96.8766 98.3762 -69.8706 124.965C-42.8646 151.555 -8.29436 168.767 23.4835 189.438C55.2615 210.109 85.9766 236.469 98.0001 272.415C119.38 336.367 75.7243 401.464 54.9072 465.604C23.4002 562.646 47.9473 675.796 116.838 751.063"
+          stroke="currentColor" stroke-miterlimit="10" />
+      </svg>
+      <svg class="shape shape-right text-light" viewBox="0 0 731 746" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12.1794 745.14C1.80036 707.275 -5.75764 666.015 8.73984 629.537C27.748 581.745 80.4729 554.968 131.538 548.843C182.604 542.703 234.032 552.841 285.323 556.748C336.615 560.64 391.543 557.276 433.828 527.964C492.452 487.323 511.701 408.123 564.607 360.255C608.718 320.353 675.307 307.183 731.29 327.323"
+          stroke="currentColor" stroke-miterlimit="10" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- Mission and Vision Section -->
+  <section class="section" id="mission">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="section-title">
+            <p class="text-primary text-uppercase fw-bold mb-3">Our Mission</p>
+            <h2>Making a Difference in Our Community</h2>
+            <p>QMRCC was founded with the mission to improve the lives of underserved populations through sustainable
+              community development initiatives. We work collaboratively with local stakeholders to identify needs and
+              develop appropriate solutions.</p>
+            <p>Our core values guide everything we do:</p>
+            <ul>
+              <li>Compassion and empathy for those in need</li>
+              <li>Integrity and transparency in all operations</li>
+              <li>Community participation and inclusivity</li>
+              <li>Sustainable development approaches</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 mt-5 mt-lg-0">
+          <img loading="preload" decoding="async" src="images/about/about-11.jpg" alt="QMRCC Community Service"
+            class="rounded w-100">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="section teams">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="section-title text-center">
+            <p class="text-primary text-uppercase fw-bold mb-3">Our Leadership</p>
+            <h1>People Behind Our Mission</h1>
+            <p class="mb-0">Meet the dedicated team of volunteers and community leaders who make our work possible and
+              drive our mission forward.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row position-relative">
+        <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
+          <div class="card bg-transparent border-0 text-center">
+            <div class="card-img">
+              <img loading="preload" decoding="async" src="images/about/team-1.jpg" alt="Team Member"
+                class="rounded w-100">
+              <ul class="card-social list-inline">
+                <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <h3>Mohammed Sadiq</h3>
+              <p>President</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
+          <div class="card bg-transparent border-0 text-center">
+            <div class="card-img">
+              <img loading="preload" decoding="async" src="images/about/team-2.jpg" alt="Team Member"
+                class="rounded w-100">
+              <ul class="card-social list-inline">
+                <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <h3>Abdul Rahman</h3>
+              <p>Secretary</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
+          <div class="card bg-transparent border-0 text-center">
+            <div class="card-img">
+              <img loading="preload" decoding="async" src="images/about/team-3.jpg" alt="Team Member"
+                class="rounded w-100">
+              <ul class="card-social list-inline">
+                <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <h3>Fathima Shahana</h3>
+              <p>Treasurer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Committee Section -->
+    <section id="committee" class="section teams">
+      <div class="container">
+        <div class="row mb-5 text-center">
+          <div class="col-lg-12">
+            <p class="text-primary text-uppercase fw-bold mb-3">Committee Members and Advisors</p>
+            <h2 class="section-title">Qaid-E-Millath Relief & Cultural Center (QMRCC)</h2>
+            <p class="text-muted mt-3">2024–2026 Expanded Committee Members</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <!-- Office Bearers -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-1.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">M. K. Bava Haji</h5>
+                <p class="text-muted small mb-0">President</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-2.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Salam Haji K. P.</h5>
+                <p class="text-muted small mb-0">Vice President</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-3.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Kallan Basheer</h5>
+                <p class="text-muted small mb-0">Vice President</p>
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-4.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Abu Saheed K. P.</h5>
+                <p class="text-muted small mb-0">Vice President</p>
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-5.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Habib Rahman M. P.</h5>
+                <p class="text-muted small mb-0">General Secretary</p>
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-6.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Kallingal Bappu Haji</h5>
+                <p class="text-muted small mb-0">Joint Secretary</p>
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-7.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Kottarath Sharafudheen</h5>
+                <p class="text-muted small mb-0">Joint Secretary</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-8.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Al Amine K. P.</h5>
+                <p class="text-muted small mb-0">Joint Secretary</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <div class="card-img">
+                <img loading="preload" decoding="async" src="images/about/committee-9.jpg" alt="Committee Member"
+                  class="rounded w-100">
+                <ul class="card-social list-inline">
+                  <li class="list-inline-item"><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                  <li class="list-inline-item"><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mb-1">Abdul Muneer Chathery</h5>
+                <p class="text-muted small mb-0">Treasurer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Executive Members -->
+        <div class="row mt-5">
+          <div class="col-12">
+            <h5 class="text-center fw-semibold mb-3">Executive Members</h5>
+            <p class="text-muted text-center small">
+              Avaran Kutti M.P., Sulaiman M.K., Abdul Saleem K., Moideen Kutti P., Abdul Aziz M.P., Ashraf M., Sulaiman
+              K., Abdul Parappil, Ali Mannanthar, Parappil Khamarudheen, Parappur Kunjeethu, Faisal Soorppil, Kottarath
+              Saitalavi (Kunjeep), Ayub A.P.
+            </p>
+          </div>
+        </div>
+
+        <!-- Invitees -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5 class="text-center fw-semibold mb-3">Permanent Invitees</h5>
+            <p class="text-muted text-center small">
+              Ward IUML Committee Members, Ward MYL, MSF Committee Members
+            </p>
+          </div>
+        </div>
+
+        <!-- Advisory Board -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5 class="text-center fw-semibold mb-3">Advisory Board</h5>
+            <p class="text-muted text-center small">
+              Chairman: Syed Sainudheen Koya Thangal<br>
+              Shamsudheen Faisi, Parappur Enthin Haji, M.P. Kunja Haji, Moyyottil Mustafa (Kunjaappu), K.P. Alibava,
+              Soorppil Haneef Haji
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section-sm bg-tertiary border-top mt-5">
+      <div class="container">
+        <div class="row justify-content-between">
+          <!-- Services -->
+          <div class="col-lg-3 col-md-6 col-12 mb-4">
+            <div class="footer-widget">
+              <h5 class="mb-4 text-primary font-secondary">Services</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="baithurahma.html">Baithurahma</a></li>
+                <li class="mb-2"><a href="blood-search.html">Blood Bank</a></li>
+                <li class="mb-2"><a href="blood-form.html">Blood Bank Form</a></li>
+                <li class="mb-2"><a href="service-details.html">Service Details</a></li>
+                <li class="mb-2"><a href="search.html">Data Search</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- About -->
+          <div class="col-lg-2 col-md-6 col-12 mb-4">
+            <div class="footer-widget">
+              <h5 class="mb-4 text-primary font-secondary">About</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="our-story.html">Our Story</a></li>
+                <li class="mb-2"><a href="about.html">About Us</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- Contact Us -->
+          <div class="col-lg-4 col-md-12 col-12 mb-4">
+            <div class="footer-widget">
+              <h5 class="mb-4 text-primary font-secondary">Contact Us</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2">
+                  <i class="fas fa-envelope me-2 text-primary"></i>
+                  <a href="mailto:qmrccnorthpallar@gmail.com">qmrccnorthpallar@gmail.com</a>
+                </li>
+                <li class="mb-2">
+                  <i class="fab fa-facebook me-2 text-primary"></i>
+                  <a href="https://www.facebook.com/profile.php?id=61570991339044" target="_blank" rel="noopener noreferrer">Facebook</a>
+                </li>
+                <li class="mb-2">
+                  <i class="fab fa-instagram me-2 text-primary"></i>
+                  <a href="https://www.instagram.com/qmrcc_northpallar?igsh=MXB2N3Z4MWxhbWF4ZQ%3D%3D&utm_source=qr"
+                    target="_blank" rel="noopener noreferrer">Instagram</a>
+                </li>
+                <li class="mb-2">
+                  <i class="fab fa-whatsapp me-2 text-primary"></i>
+                  <a href="https://whatsapp.com/channel/0029Vb5dl055q08jvSalzI39" target="_blank" rel="noopener noreferrer">Whatsapp Channel</a>
+                </li>
+                <li class="mb-2">
+                  <i class="fab fa-youtube me-2 text-primary"></i>
+                  <a href="https://www.youtube.com/@QMRCCNorthPallar" target="_blank" rel="noopener noreferrer">YouTube</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row align-items-center text-center text-md-start">
+          <div class="col-lg-6 mb-2 mb-lg-0">
+            <a href="index.html">
+              <img loading="preload" decoding="async" class="img-fluid" width="160" src="images/logo.png"
+                alt="QMRCC Logo">
+            </a>
+          </div>
+          <div class="col-lg-6 text-lg-end">
+            <small class="text-muted">
+              &copy; 2025 QMRCC North Pallar. All rights reserved.<br>
+              Wallet Bootstrap Template is <a href="https://github.com/themefisher/wallet-bootstrap" target="_blank">MIT
+                Licensed</a>
+            </small>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- # JS Plugins -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="plugins/slick/slick.min.js"></script>
+    <script src="plugins/scrollmenu/scrollmenu.min.js"></script>
+    <!-- Main Script -->
+    <script src="js/script.js"></script>
 </body>
+
 </html>
