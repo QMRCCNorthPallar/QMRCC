@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>QMRCC Admin — Upload Frame</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <main class="main-content admin">
+    <header class="header">
+      <h1 class="title">Admin — Upload Default Frames</h1>
+      <p class="subtitle">Upload vertical or landscape frames for campaigns. This page is protected by HTTP Basic Auth.</p>
+    </header>
+
+    <section class="controls admin-controls">
+      <form id="uploadForm" class="upload-form">
+        <div class="control-row">
+          <label class="label">Select orientation</label>
+          <select id="orientationSelect">
+            <option value="vertical">Vertical (1080×1350)</option>
+            <option value="landscape">Landscape (16:9)</option>
+          </select>
+        </div>
+
+        <div class="control-row">
+          <label class="label">Choose frame image (PNG with transparency recommended)</label>
+          <input type="file" id="frameFile" accept="image/*" />
+        </div>
+
+        <div class="control-row">
+          <button type="submit" class="btn-primary">Upload Frame</button>
+        </div>
+      </form>
+
+      <section class="metrics-panel">
+        <h3>Campaign Metrics</h3>
+        <div id="metricsBox">
+          <p>Uploads: <span id="m-uploads">—</span></p>
+          <p>Uses: <span id="m-uses">—</span></p>
+          <p>Downloads: <span id="m-downloads">—</span></p>
+          <p>Orientation: V=<span id="m-orient-v">—</span> / L=<span id="m-orient-l">—</span></p>
+          <p>Last Upload At: <span id="m-last">—</span></p>
+        </div>
+
+        <h4>Current Frames</h4>
+        <div id="currentFrames" class="frame-list">Loading...</div>
+      </section>
+    </section>
+
+    <footer class="foot-note">
+      <small>Admin actions are logged in the server metrics.</small>
+    </footer>
+  </main>
+
+  <script>
+    // Admin page uses same JS file, but we will initialize admin area from app.js
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>QMRCC Photo Frame — Public</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;700&family=Manjari:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
+</head>
+<body>
+  <main class="main-content">
+    <header class="header">
+      <img src="images/logo.png" class="brand" alt="QMRCC logo" />
+      <h1 class="title">QMRCC Photo Frame</h1>
+      <p class="subtitle">Add our campaign frame — select orientation and download. All processing stays in your browser.</p>
+    </header>
+
+    <section class="controls">
+      <div class="control-row">
+        <label class="label">Orientation</label>
+        <div class="orientation-buttons">
+          <button class="btn-orientation active" data-orientation="vertical">Vertical (1080×1350)</button>
+          <button class="btn-orientation" data-orientation="landscape">Landscape (16:9)</button>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <label class="label">Choose photo (HEIC / JPG / PNG)</label>
+        <div class="uploader">
+          <input id="photoFrameImage" type="file" accept="image/png, image/jpeg, image/heic" class="d-none" />
+          <button id="uploadBtn" class="btn">Choose Photo</button>
+          <span id="fileName" class="file-name"></span>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <label class="label">Crop & Preview</label>
+        <div id="croppieModal" class="croppie-modal">
+          <div id="croppieContainer"></div>
+          <div class="croppie-actions">
+            <button id="croppieCancelBtn" class="btn-outline">Cancel</button>
+            <button id="croppieApplyBtn" class="btn-primary">Apply</button>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="photoFrameCanvas" width="1080" height="1350" class="photo-frame-canvas"></canvas>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <button id="downloadBtn" class="btn-download btn-primary">Download Image</button>
+        <div class="metrics-inline">
+          <small id="metricUses">Uses: —</small>
+          <small id="metricDownloads">Downloads: —</small>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot-note">
+      <small>Frames served from QMRCC backend. No images are uploaded unless you explicitly download/share them.</small>
+    </footer>
+  </main>
+
+  <!-- deps -->
+  <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
