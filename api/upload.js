@@ -1,24 +1,39 @@
-import { put } from '@vercel/blob';
+import { writeFile } from 'fs/promises';
+import path from 'path';
+import formidable from 'formidable';
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "yourPassword";
+
+export const config = {
+    api: {
+        bodyParser: false, // important for file uploads
+    },
+};
 
 export default async function handler(req, res) {
-  const auth = req.headers.authorization?.replace("Bearer ", "");
-  if (auth !== process.env.ADMIN_PASSWORD)
-    return res.status(401).json({ error: "Unauthorized" });
+    if (req.method !== "POST") {
+        res.status(405).json({ success: false, message: "Method not allowed" });
+        return;
+    }
 
-  if (req.method !== "POST")
-    return res.status(405).json({ error: "POST only" });
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+        if (err) return res.status(500).json({ success: false, message: err.message });
+        if (fields.password !== ADMIN_PASSWORD) return res.status(401).json({ success: false, message: "Unauthorized" });
 
-  const orientation = req.query.orientation;
-  const file = req.body;
+        const type = req.query.type || "frame";
+        const file = files.file;
+        if (!file) return res.status(400).json({ success: false, message: "No file uploaded" });
 
-  if (!file) return res.status(400).json({ error: "No file" });
+        const ext = path.extname(file.originalFilename);
+        const fileName = `${Date.now()}-${type}${ext}`;
+        const filePath = path.join("./public/uploads/", fileName);
 
-  const buffer = Buffer.from(file.split(",")[1], "base64");
-
-  const blob = await put(`frame_${orientation}.png`, buffer, {
-    access: "public",
-    contentType: "image/png",
-  });
-
-  res.json({ success: true, url: blob.url });
+        try {
+            await writeFile(filePath, await fs.promises.readFile(file.filepath));
+            res.status(200).json({ success: true, url: `/uploads/${fileName}` });
+        } catch (e) {
+            res.status(500).json({ success: false, message: e.message });
+        }
+    });
 }
