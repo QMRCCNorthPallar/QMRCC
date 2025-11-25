@@ -5,6 +5,7 @@ const TEXT_API = "https://qmrcc.vercel.app/api/text";
 const METRICS_API = "https://qmrcc.vercel.app/api/metrics";
 
 // DOM Elements
+const ADMIN_PASSWORD = "QMRCC@@";
 const loginSection = document.getElementById("login-section");
 const frameSection = document.getElementById("frame-section");
 const bannerSection = document.getElementById("banner-section");
