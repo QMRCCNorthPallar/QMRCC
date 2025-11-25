@@ -8,7 +8,7 @@ export default {
     }
 
     // Base Baserow URL — adjust table ID if needed
-    const baserowUrl = `https://api.baserow.io/api/${baserowEndpoint}`;
+    const baserowUrl = `https://api.baserow.io/api/752039`;
 
     try {
       const response = await fetch(baserowUrl, {
