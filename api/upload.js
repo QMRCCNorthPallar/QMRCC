@@ -1,39 +1,38 @@
-import { writeFile } from 'fs/promises';
-import path from 'path';
 import formidable from 'formidable';
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "yourPassword";
+import fs from 'fs';
+import { BLOB_PUBLIC_URL_BASE, BLOB_READ_WRITE_TOKEN, ADMIN_PASSWORD } from '../../config';
 
 export const config = {
     api: {
-        bodyParser: false, // important for file uploads
+        bodyParser: false,
     },
 };
 
+let frames = [];
+let banners = [];
+
 export default async function handler(req, res) {
-    if (req.method !== "POST") {
-        res.status(405).json({ success: false, message: "Method not allowed" });
-        return;
-    }
+    if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
-    const form = new formidable.IncomingForm();
+    const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(500).json({ success: false, message: err.message });
-        if (fields.password !== ADMIN_PASSWORD) return res.status(401).json({ success: false, message: "Unauthorized" });
+        if (err) return res.status(500).json({ message: 'Form parse error' });
+        if (fields.password !== ADMIN_PASSWORD) return res.status(401).json({ message: 'Unauthorized' });
 
-        const type = req.query.type || "frame";
         const file = files.file;
-        if (!file) return res.status(400).json({ success: false, message: "No file uploaded" });
+        const type = req.query.type || 'frame';
+        if (!file) return res.status(400).json({ message: 'No file uploaded' });
 
-        const ext = path.extname(file.originalFilename);
-        const fileName = `${Date.now()}-${type}${ext}`;
-        const filePath = path.join("./public/uploads/", fileName);
+        // Simulate upload to cloud (Vercel Blob or similar)
+        const newUrl = `${BLOB_PUBLIC_URL_BASE}/${file.originalFilename}`;
 
-        try {
-            await writeFile(filePath, await fs.promises.readFile(file.filepath));
-            res.status(200).json({ success: true, url: `/uploads/${fileName}` });
-        } catch (e) {
-            res.status(500).json({ success: false, message: e.message });
+        if (type === 'banner') {
+            banners.push({ url: newUrl });
+        } else {
+            const orientation = fields.orientation || 'vertical';
+            frames.push({ url: newUrl, orientation });
         }
+
+        res.status(200).json({ success: true, url: newUrl });
     });
 }
