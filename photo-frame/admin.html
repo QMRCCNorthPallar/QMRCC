@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QMRCC Frame Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+  <h1 class="title">Admin – Upload Frames</h1>
+
+  <div class="card">
+    <label class="label">Admin Password</label>
+    <input type="password" id="password" class="input" placeholder="Enter admin password">
+  </div>
+
+  <div class="card">
+    <label class="label">Select Orientation</label>
+    <select id="orientation" class="input">
+      <option value="vertical">Vertical 1080×1350</option>
+      <option value="landscape">Landscape 16:9</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <label class="label">Upload New Frame</label>
+    <input type="file" id="frameFile" accept="image/png" class="input">
+  </div>
+
+  <button id="uploadBtn" class="btn">Upload Frame</button>
+
+  <div id="status" class="status"></div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

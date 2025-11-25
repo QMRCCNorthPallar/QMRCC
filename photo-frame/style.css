@@ -1,0 +1,90 @@
+body {
+  background: #f7faf7;
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+}
+
+.container {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 28px rgba(31,164,99,0.12);
+}
+
+.title {
+  font-size: 2rem;
+  color: #1fa463;
+  margin-bottom: .3rem;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.card {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 1rem;
+  color: #1fa463;
+  font-weight: 600;
+  margin-bottom: .3rem;
+}
+
+.input {
+  width: 100%;
+  padding: .6rem;
+  border-radius: .6rem;
+  border: 1px solid #1fa463;
+}
+
+.preview-card {
+  background: #e7f5e7;
+  border-radius: .8rem;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#canvas {
+  max-width: 100%;
+  border-radius: .5rem;
+}
+
+.btn {
+  width: 100%;
+  padding: .8rem;
+  border: none;
+  border-radius: .6rem;
+  background: linear-gradient(90deg, #1fa463, #2be08a);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: .3rem;
+}
+
+.btn:hover {
+  opacity: .9;
+}
+
+.note {
+  text-align: center;
+  color: #777;
+  margin-top: 1rem;
+  font-size: .9rem;
+}
+
+.status {
+  margin-top: 1rem;
+  color: #1a3d2b;
+  text-align: center;
+  font-weight: bold;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QMRCC Photo Frame Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+  <h1 class="title">QMRCC Photo Frame</h1>
+  <p class="subtitle">Create your campaign-ready image in seconds</p>
+
+  <!-- Orientation Selector -->
+  <div class="card">
+    <label class="label">Select Orientation</label>
+    <select id="orientation" class="input">
+      <option value="vertical" selected>Vertical (1080×1350)</option>
+      <option value="landscape">Landscape (16:9)</option>
+    </select>
+  </div>
+
+  <!-- Upload -->
+  <div class="card">
+    <label class="label">Upload Your Photo</label>
+    <input type="file" id="upload" accept="image/*" class="input">
+  </div>
+
+  <!-- Preview Canvas -->
+  <div class="preview-card">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <!-- Download -->
+  <button id="downloadBtn" class="btn">Download Image</button>
+
+  <p class="note">All processing is done in your browser. Nothing is uploaded.</p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

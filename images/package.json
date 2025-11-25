@@ -1,0 +1,6 @@
+{
+  "name": "qmrcc-frame-tool",
+  "dependencies": {
+    "@vercel/blob": "latest"
+  }
+}
