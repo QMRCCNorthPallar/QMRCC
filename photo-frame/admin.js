@@ -5,7 +5,6 @@ const TEXT_API = "https://qmrcc.vercel.app/api/text";
 const METRICS_API = "https://qmrcc.vercel.app/api/metrics";
 
 // DOM Elements
-const ADMIN_PASSWORD = "QMRCC@@";
 const loginSection = document.getElementById("login-section");
 const frameSection = document.getElementById("frame-section");
 const bannerSection = document.getElementById("banner-section");
@@ -29,13 +28,14 @@ const updateTextBtn = document.getElementById("updateTextBtn");
 
 const metricsContainer = document.getElementById("metricsContainer");
 
-let ADMIN_PASSWORD = ""; // will store password after login
+// Store password after login
+let adminPassword = "";
 
 // --- Login ---
 loginBtn.addEventListener("click", () => {
     const pass = adminPasswordInput.value.trim();
     if (!pass) return alert("Enter password!");
-    ADMIN_PASSWORD = pass;
+    adminPassword = pass; // store it for API calls
 
     // Show all sections
     loginSection.style.display = "none";
@@ -74,7 +74,7 @@ uploadFrameBtn.addEventListener("click", async () => {
     const orientation = frameOrientation.value;
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("password", ADMIN_PASSWORD);
+    formData.append("password", adminPassword);
     formData.append("orientation", orientation);
 
     try {
@@ -115,7 +115,7 @@ uploadBannerBtn.addEventListener("click", async () => {
     if (!file) return alert("Select a banner file!");
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("password", ADMIN_PASSWORD);
+    formData.append("password", adminPassword);
 
     try {
         const res = await fetch(`${UPLOAD_API}?type=banner`, {
@@ -148,7 +148,7 @@ updateTextBtn.addEventListener("click", async () => {
         const res = await fetch(TEXT_API, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: frontText.value, password: ADMIN_PASSWORD })
+            body: JSON.stringify({ text: frontText.value, password: adminPassword })
         });
         const data = await res.json();
         if (data.success) alert("Text updated!");
