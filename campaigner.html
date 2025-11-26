@@ -1,122 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaign Frame Generator</title>
-    <style>
-        /* Reset some default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaign Frame Generator</title>
 
-        /* Body and overall container styles */
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<style>
+/* ------------------------ */
+/* GLOBAL RESET */
+/* ------------------------ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
 
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+/* ------------------------ */
+/* BACKGROUND */
+/* ------------------------ */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e293b, #0f172a, #1e3a8a);
+    background-size: 200% 200%;
+    animation: bgMove 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        h2 {
-            color: #333;
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-        }
+/* ------------------------ */
+/* GLASS CARD */
+/* ------------------------ */
+.container {
+    width: 100%;
+    max-width: 650px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 30px;
+    border-radius: 22px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.18);
+    text-align: center;
+    animation: fadeUp 0.8s ease;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
-        /* Banner image styles */
-        #bannerDisplay {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            object-fit: cover;
-            max-height: 200px;
-        }
+/* ------------------------ */
+/* HEADER */
+/* ------------------------ */
+h2 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
 
-        /* Select and input field styling */
-        select, input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
+/* ------------------------ */
+/* BANNER */
+/* ------------------------ */
+#bannerDisplay {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    display: none;
+    max-height: 220px;
+    object-fit: cover;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.35);
+}
 
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            color: #444;
-            text-align: left;
-            width: 100%;
-            display: inline-block;
-        }
+/* ------------------------ */
+/* INPUTS & SELECTS */
+/* ------------------------ */
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    color: #e2e8f0;
+    text-align: left;
+    font-size: 0.95rem;
+}
 
-        /* Button styling */
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+select, input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: 0.2s ease;
+}
+select:focus, input:focus {
+    background: rgba(255,255,255,0.25);
+}
 
-        button:hover {
-            background-color: #0056b3;
-        }
+/* ------------------------ */
+/* CANVAS */
+/* ------------------------ */
+canvas {
+    width: 100%;
+    border-radius: 16px;
+    margin-top: 25px;
+    display: none;
+    box-shadow: 0 6px 35px rgba(0,0,0,0.4);
+}
 
-        /* Canvas Styling */
-        canvas {
-            max-width: 100%;
-            border: 1px solid #ddd;
-            margin-top: 20px;
-            display: none;
-            border-radius: 8px;
-        }
+/* ------------------------ */
+/* BUTTON */
+/* ------------------------ */
+button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 16px;
+    font-size: 1.15rem;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    transition: 0.25s ease;
+}
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
 
-        /* Hidden Elements */
-        .hidden {
-            display: none;
-        }
+/* Hide sections */
+.hidden { display: none; }
 
-        /* Responsive Design for Mobile */
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-            
-            button {
-                font-size: 1.2rem;
-                padding: 16px;
-            }
-        }
-    </style>
+/* ------------------------ */
+/* MOBILE */
+/* ------------------------ */
+@media(max-width: 600px) {
+    h2 { font-size: 1.5rem; }
+    .container { padding: 20px; }
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
+
     <img id="bannerDisplay" alt="Campaign Banner">
 
     <h2>Campaign Frame Generator</h2>
@@ -140,123 +182,141 @@
     <canvas id="canvas"></canvas>
 
     <button id="downloadBtn" style="display:none;">Download Image</button>
+
 </div>
 
 <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const campaignSelect = document.getElementById('campaignSelect');
-    const formatSelect = document.getElementById('formatSelect');
-    const bannerDisplay = document.getElementById('bannerDisplay');
-    const controls = document.getElementById('controls');
-    
-    let campaigns = [];
-    let currentCampaign = null;
-    let frameImg = new Image();
-    let userImg = new Image();
-    let isFrameLoaded = false, isUserLoaded = false;
+/* ------------------------ */
+/* JS FUNCTIONALITY */
+/* ------------------------ */
 
-    // Load Data
-    fetch('config.json?t=' + Date.now())
-        .then(res => res.json())
-        .then(data => {
-            campaigns = data;
-            campaignSelect.innerHTML = '<option value="" disabled selected>Select a Campaign</option>';
-            data.forEach((c, i) => {
-                let opt = document.createElement('option');
-                opt.value = i;
-                opt.textContent = c.name;
-                campaignSelect.appendChild(opt);
-            });
-        });
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const campaignSelect = document.getElementById('campaignSelect');
+const formatSelect = document.getElementById('formatSelect');
+const bannerDisplay = document.getElementById('bannerDisplay');
+const controls = document.getElementById('controls');
 
-    // 1. Campaign Selected -> Show Banner & Load Formats
-    campaignSelect.addEventListener('change', (e) => {
-        currentCampaign = campaigns[e.target.value];
-        
-        // Show Banner
-        if(currentCampaign.bannerUrl) {
-            bannerDisplay.src = currentCampaign.bannerUrl;
-            bannerDisplay.style.display = "block";
-        } else {
-            bannerDisplay.style.display = "none";
-        }
+let campaigns = [];
+let currentCampaign = null;
 
-        // Setup Formats
-        formatSelect.innerHTML = '';
-        currentCampaign.frames.forEach((f, i) => {
+let frameImg = new Image();
+let userImg = new Image();
+
+let isFrameLoaded = false;
+let isUserLoaded = false;
+
+/* Load config */
+fetch('config.json?t=' + Date.now())
+    .then(res => res.json())
+    .then(data => {
+        campaigns = data;
+        campaignSelect.innerHTML = '<option value="" disabled selected>Select a Campaign</option>';
+        data.forEach((c, i) => {
             let opt = document.createElement('option');
             opt.value = i;
-            opt.textContent = f.type;
-            formatSelect.appendChild(opt);
+            opt.textContent = c.name;
+            campaignSelect.appendChild(opt);
         });
-
-        // Set Defaults
-        document.getElementById('userText').value = currentCampaign.defaultText || "";
-        controls.classList.remove('hidden');
-        loadFrame(0);
     });
 
-    formatSelect.addEventListener('change', (e) => loadFrame(e.target.value));
+/* Campaign Selected */
+campaignSelect.addEventListener('change', (e) => {
+    currentCampaign = campaigns[e.target.value];
 
-    function loadFrame(index) {
-        isFrameLoaded = false;
-        frameImg.src = currentCampaign.frames[index].url;
-        frameImg.onload = () => { isFrameLoaded = true; draw(); };
+    /* Banner */
+    if (currentCampaign.bannerUrl) {
+        bannerDisplay.src = currentCampaign.bannerUrl;
+        bannerDisplay.style.display = "block";
+    } else {
+        bannerDisplay.style.display = "none";
     }
 
-    document.getElementById('userImage').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            userImg.src = ev.target.result;
-            userImg.onload = () => { isUserLoaded = true; draw(); };
+    /* Frame Formats */
+    formatSelect.innerHTML = '';
+    currentCampaign.frames.forEach((f, i) => {
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = f.type;
+        formatSelect.appendChild(opt);
+    });
+
+    document.getElementById('userText').value = currentCampaign.defaultText || "";
+    controls.classList.remove('hidden');
+
+    loadFrame(0);
+});
+
+/* Load Frame */
+formatSelect.addEventListener('change', (e) => loadFrame(e.target.value));
+
+function loadFrame(index) {
+    isFrameLoaded = false;
+    frameImg.src = currentCampaign.frames[index].url;
+    frameImg.onload = () => { 
+        isFrameLoaded = true; 
+        draw(); 
+    };
+}
+
+/* Load User Image */
+document.getElementById('userImage').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        userImg.src = ev.target.result;
+        userImg.onload = () => {
+            isUserLoaded = true;
+            draw();
         };
-        reader.readAsDataURL(file);
-    });
+    };
+    reader.readAsDataURL(file);
+});
 
-    document.getElementById('userText').addEventListener('input', draw);
+document.getElementById('userText').addEventListener('input', draw);
 
-    function draw() {
-        if (!isFrameLoaded || !isUserLoaded) return;
+/* Draw to Canvas */
+function draw() {
+    if (!isFrameLoaded || !isUserLoaded) return;
 
-        canvas.width = frameImg.width;
-        canvas.height = frameImg.height;
+    canvas.width = frameImg.width;
+    canvas.height = frameImg.height;
 
-        // Draw User Image (Center Crop)
-        const ratio = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
-        const centerShift_x = (canvas.width - userImg.width * ratio) / 2;
-        const centerShift_y = (canvas.height - userImg.height * ratio) / 2;
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(userImg, 0, 0, userImg.width, userImg.height, 
-                      centerShift_x, centerShift_y, userImg.width * ratio, userImg.height * ratio);
+    const ratio = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
+    const shiftX = (canvas.width - userImg.width * ratio) / 2;
+    const shiftY = (canvas.height - userImg.height * ratio) / 2;
 
-        // Draw Frame
-        ctx.drawImage(frameImg, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw Text
-        const text = document.getElementById('userText').value;
-        if (text) {
-            ctx.font = `bold ${canvas.height * 0.05}px Arial`;
-            ctx.fillStyle = currentCampaign.textColor || "white";
-            ctx.textAlign = "center";
-            ctx.shadowColor="black";
-            ctx.shadowBlur=5;
-            ctx.fillText(text, canvas.width / 2, canvas.height - (canvas.height * 0.1));
-        }
+    ctx.drawImage(userImg, 0, 0, userImg.width, userImg.height,
+        shiftX, shiftY, userImg.width * ratio, userImg.height * ratio);
 
-        canvas.style.display = "block";
-        document.getElementById('downloadBtn').style.display = "inline-block";
+    ctx.drawImage(frameImg, 0, 0);
+
+    const text = document.getElementById('userText').value;
+    if (text) {
+        ctx.font = `bold ${canvas.height * 0.05}px Arial`;
+        ctx.fillStyle = currentCampaign.textColor || "white";
+        ctx.textAlign = "center";
+        ctx.shadowColor="black";
+        ctx.shadowBlur=6;
+        ctx.fillText(text, canvas.width / 2, canvas.height - (canvas.height * 0.1));
     }
 
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = 'badge.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    });
+    canvas.style.display = "block";
+    document.getElementById('downloadBtn').style.display = "inline-block";
+}
+
+/* Download Button */
+document.getElementById('downloadBtn').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'campaign_frame.png';
+    link.href = canvas.toDataURL();
+    link.click();
+});
+
 </script>
 
 </body>
