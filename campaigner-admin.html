@@ -5,94 +5,124 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Campaign Manager — Admin</title>
 <style>
-  body {
-    font-family: "Roboto", sans-serif;
-    background: #f5f5f5;
-    margin: 0;
-    padding: 0;
-    display: flex; justify-content: center; align-items: center; min-height: 100vh;
-    color: #202124;
-  }
-  .card {
-    width: 100%; max-width: 800px; padding: 24px;
-    background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
-  h1 { margin: 0 0 6px 0; font-size: 22px; color: #202124; }
-  p.lead { margin:0 0 16px 0; font-size: 14px; color:#5f6368; }
-  label { font-size: 13px; color: #3c4043; margin-bottom: 4px; display:block; }
-  input, select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #dadce0; border-radius: 8px; outline: none; }
-  input[type=color] { padding: 0; height: 36px; }
-  button { padding: 10px 16px; border-radius: 8px; border: none; cursor:pointer; font-weight:500; }
-  .btn-primary { background:#1a73e8; color:#fff; }
-  .btn-secondary { background:#f1f3f4; color:#202124; }
-  .btn-danger { background:#ea4335; color:#fff; }
-  .row { display:flex; gap:12px; }
-  .col { flex:1; }
-  .variants { margin-top:12px; display:flex; flex-direction: column; gap:10px; }
-  .variant { display:flex; gap:10px; align-items:center; border:1px solid #dadce0; padding:8px; border-radius:8px; }
-  .variant img { width: 60px; height:60px; object-fit:cover; border-radius:6px; }
-  .preview { margin-top:20px; border:1px solid #dadce0; border-radius:8px; padding:12px; background:#f8f9fa; }
-  .preview img { width:100%; height:160px; object-fit:cover; border-radius:6px; }
-  .status { margin-top:12px; font-size:13px; color:#3c4043; }
+/* --- GOOGLE-LIKE LIGHT UI --- */
+body {
+  font-family: "Roboto", sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  color: #202124;
+  padding: 20px;
+}
+.card {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+h1 { margin: 0 0 8px 0; font-size: 24px; color: #202124; }
+p.lead { margin:0 0 16px 0; font-size: 14px; color:#5f6368; }
+label { font-size: 13px; color: #3c4043; margin-bottom: 4px; display:block; }
+input, select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #dadce0; border-radius: 8px; outline: none; }
+input[type=color] { padding: 0; height: 36px; }
+button { padding: 10px 16px; border-radius: 8px; border: none; cursor:pointer; font-weight:500; transition:0.2s; }
+button:hover { opacity:0.9; }
+.btn-primary { background:#1a73e8; color:#fff; }
+.btn-secondary { background:#f1f3f4; color:#202124; }
+.btn-danger { background:#ea4335; color:#fff; }
+.row { display:flex; gap:12px; flex-wrap:wrap; }
+.col { flex:1; min-width:120px; }
+.variants { margin-top:12px; display:flex; flex-direction: column; gap:10px; }
+.variant { display:flex; gap:10px; align-items:center; border:1px solid #dadce0; padding:8px; border-radius:8px; flex-wrap:wrap; }
+.variant img { width: 60px; height:60px; object-fit:cover; border-radius:6px; }
+.preview { margin-top:12px; border:1px solid #dadce0; border-radius:8px; padding:12px; background:#f8f9fa; text-align:center; }
+.preview img { width:100%; height:160px; object-fit:cover; border-radius:6px; }
+.status { margin-top:12px; font-size:13px; color:#3c4043; }
+.campaign-list { margin-top:20px; display:flex; flex-direction:column; gap:10px; }
+.campaign-item { display:flex; justify-content:space-between; align-items:center; border:1px solid #dadce0; border-radius:8px; padding:8px; flex-wrap:wrap; }
+.campaign-item div { flex:1; min-width:100px; }
+.campaign-item button { margin-left:4px; }
+@media(max-width:600px){
+  .row { flex-direction:column; }
+  .variant { flex-direction:column; }
+  .campaign-item { flex-direction:column; align-items:flex-start; }
+  .campaign-item button { margin-top:6px; margin-left:0; }
+}
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Campaign Manager Admin</h1>
-    <p class="lead">Upload banners → <code>contents/banners/</code>, frames → <code>contents/frames/</code>. Config.json auto-updates.</p>
 
-    <div id="loginBlock">
-      <label>GitHub Personal Access Token</label>
-      <input id="githubToken" type="password" placeholder="Paste token">
-      <button class="btn-primary" id="loginBtn">Validate & Save</button>
-      <span id="loginMsg"></span>
-    </div>
+<div class="card">
+  <h1>Campaign Manager Admin</h1>
+  <p class="lead">Manage campaigns: upload banners, frames, and delete campaigns. Config.json auto-updates.</p>
 
-    <div id="uploadBlock" style="display:none;">
-      <label>Campaign Name</label>
-      <input id="campName" type="text" placeholder="E.g., Summer Fest">
-
-      <label>Default Overlay Text</label>
-      <input id="campText" type="text" placeholder="I'm Attending">
-
-      <div class="row">
-        <div class="col">
-          <label>Text Color</label>
-          <input id="textColor" type="color" value="#ffffff">
-        </div>
-        <div class="col">
-          <label>Preview Text</label>
-          <input id="textPreview" type="text" value="I'm Attending">
-        </div>
-      </div>
-
-      <label>Banner (JPG/PNG)</label>
-      <input id="campBanner" type="file" accept="image/*">
-      <div class="preview" id="bannerPreview">No banner selected</div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <label>Frame Variants</label>
-        <div>
-          <button class="btn-secondary" id="addVariantBtn">+ Add</button>
-          <button class="btn-secondary" id="clearVariantsBtn">Clear</button>
-        </div>
-      </div>
-      <div class="variants" id="variantsContainer"></div>
-
-      <button class="btn-primary" id="publishBtn">Publish Campaign</button>
-      <button class="btn-danger" id="logoutBtn" style="display:none;">Logout</button>
-
-      <div class="status" id="opStatus"></div>
-      <div class="status" id="configDesc"></div>
-    </div>
+  <!-- LOGIN -->
+  <div id="loginBlock">
+    <label>GitHub Personal Access Token</label>
+    <input id="githubToken" type="password" placeholder="Paste token">
+    <button class="btn-primary" id="loginBtn">Validate & Save</button>
+    <span id="loginMsg"></span>
   </div>
 
+  <!-- UPLOAD & MANAGEMENT -->
+  <div id="uploadBlock" style="display:none;">
+    <label>Campaign Name</label>
+    <input id="campName" type="text" placeholder="E.g., Summer Fest">
+
+    <label>Default Overlay Text</label>
+    <input id="campText" type="text" placeholder="I'm Attending">
+
+    <div class="row">
+      <div class="col">
+        <label>Text Color</label>
+        <input id="textColor" type="color" value="#ffffff">
+      </div>
+      <div class="col">
+        <label>Preview Text</label>
+        <input id="textPreview" type="text" value="I'm Attending">
+      </div>
+    </div>
+
+    <label>Banner (JPG/PNG)</label>
+    <input id="campBanner" type="file" accept="image/*">
+    <div class="preview" id="bannerPreview">No banner selected</div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+      <label>Frame Variants</label>
+      <div>
+        <button class="btn-secondary" id="addVariantBtn">+ Add</button>
+        <button class="btn-secondary" id="clearVariantsBtn">Clear</button>
+      </div>
+    </div>
+    <div class="variants" id="variantsContainer"></div>
+
+    <button class="btn-primary" id="publishBtn">Publish / Update Campaign</button>
+    <button class="btn-danger" id="logoutBtn" style="display:none;">Logout</button>
+
+    <div class="status" id="opStatus"></div>
+    <div class="status" id="configDesc"></div>
+
+    <!-- EXISTING CAMPAIGNS -->
+    <h3 style="margin-top:20px;">Existing Campaigns</h3>
+    <div class="campaign-list" id="campaignList"></div>
+  </div>
+</div>
+
 <script>
+// --- CONFIG ---
 const REPO_OWNER = 'QMRCCNorthPallar';
 const REPO_NAME = 'QMRCC';
 const BANNERS_DIR = 'contents/banners';
 const FRAMES_DIR  = 'contents/frames';
 
+// --- ELEMENTS ---
 const loginBtn = document.getElementById('loginBtn');
 const githubTokenInput = document.getElementById('githubToken');
 const loginMsg = document.getElementById('loginMsg');
@@ -112,9 +142,12 @@ const textColor = document.getElementById('textColor');
 const textPreview = document.getElementById('textPreview');
 const opStatus = document.getElementById('opStatus');
 const configDesc = document.getElementById('configDesc');
+const campaignList = document.getElementById('campaignList');
 
 let savedToken = localStorage.getItem('gh_token') || null;
+let configCache = [];
 
+// --- INIT ---
 document.addEventListener('DOMContentLoaded', init);
 loginBtn.addEventListener('click', handleLogin);
 logoutBtn.addEventListener('click', handleLogout);
@@ -124,11 +157,11 @@ campBanner.addEventListener('change', handleBannerSelect);
 publishBtn.addEventListener('click', publishCampaign);
 
 function init(){
-  if(savedToken){ showUploadUI(); }
+  if(savedToken){ showUploadUI(); loadCampaignList(); }
   addVariantRow();
-  loadConfigPreview();
 }
 
+// --- LOGIN / LOGOUT ---
 async function handleLogin(){
   const token = githubTokenInput.value.trim();
   if(!token){ loginMsg.textContent='Enter a token'; return; }
@@ -138,7 +171,7 @@ async function handleLogin(){
     if(!res.ok) throw new Error('Invalid token');
     savedToken=token; localStorage.setItem('gh_token', token);
     loginMsg.textContent='Token saved';
-    showUploadUI();
+    showUploadUI(); loadCampaignList();
   }catch(e){ loginMsg.textContent='Validation failed'; }
   finally{ loginBtn.disabled=false; }
 }
@@ -155,6 +188,7 @@ function showUploadUI(){
   logoutBtn.style.display='';
 }
 
+// --- VARIANTS ---
 function addVariantRow(initial={type:'',url:''}){
   const div=document.createElement('div'); div.className='variant';
   div.innerHTML=`<input class="var-name" placeholder="Frame type" value="${initial.type}"/>
@@ -165,14 +199,13 @@ function addVariantRow(initial={type:'',url:''}){
   removeBtn.addEventListener('click', ()=>{ div.remove(); });
   variantsContainer.appendChild(div);
 }
-
 function clearVariants(){ variantsContainer.innerHTML=''; addVariantRow(); }
-
 function handleBannerSelect(e){
   const f=e.target.files[0]; if(!f){ bannerPreview.innerHTML='No banner selected'; return; }
   bannerPreview.innerHTML=`<img src="${URL.createObjectURL(f)}" alt="banner">`;
 }
 
+// --- HELPER ---
 async function fileToBase64(file){
   return new Promise((res,rej)=>{
     const reader = new FileReader();
@@ -181,7 +214,6 @@ async function fileToBase64(file){
     reader.readAsDataURL(file);
   });
 }
-
 async function githubRequest(path, method='GET', token, body=null){
   const url=`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
   const options={ method, headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json','Accept':'application/vnd.github.v3+json' }};
@@ -196,6 +228,7 @@ async function githubRequest(path, method='GET', token, body=null){
   return text?JSON.parse(text):{};
 }
 
+// --- PUBLISH CAMPAIGN ---
 async function publishCampaign(){
   if(!savedToken){ alert('Login first'); return; }
   const name = campName.value.trim(); if(!name){ alert('Campaign name required'); return; }
@@ -204,11 +237,12 @@ async function publishCampaign(){
   publishBtn.disabled=true; opStatus.textContent='Uploading banner...';
 
   try{
+    // Banner
     const bannerPath = `${BANNERS_DIR}/${Date.now()}_${bannerFile.name.replace(/\s/g,'_')}`;
     const bannerBase64 = await fileToBase64(bannerFile);
     await githubRequest(bannerPath,'PUT',savedToken,{message:`Add banner ${bannerPath}`, content: bannerBase64.split(',')[1]});
 
-    // frames
+    // Frames
     const frames=[];
     const variantEls = Array.from(variantsContainer.querySelectorAll('.variant'));
     for(let i=0;i<variantEls.length;i++){
@@ -230,31 +264,69 @@ async function publishCampaign(){
       const res = await githubRequest('config.json','GET',savedToken);
       if(res && res.content){ currentConfig=JSON.parse(atob(res.content)); sha=res.sha; }
     }catch{}
-
     const existingIndex=currentConfig.findIndex(c=>c.name===name);
     const newCampaign={id:Date.now(), name, defaultText:campText.value, textColor:textColor.value, bannerUrl:bannerPath, frames};
     if(existingIndex>=0) currentConfig[existingIndex]=newCampaign; else currentConfig.push(newCampaign);
-
     await githubRequest('config.json','PUT',savedToken,{message:`Add/update campaign ${name}`, content:btoa(JSON.stringify(currentConfig,null,2)), sha:sha||undefined});
+
     opStatus.textContent='Campaign published successfully!';
-    configDesc.textContent=`Last uploaded: ${new Date().toLocaleString()}`;
+    loadCampaignList();
   }catch(err){
     console.error(err);
     opStatus.textContent='Error: '+(err.message||err);
   }finally{ publishBtn.disabled=false; }
 }
 
-// load existing campaigns for preview
-async function loadConfigPreview(){
+// --- LOAD EXISTING CAMPAIGNS ---
+async function loadCampaignList(){
   if(!savedToken) return;
+  campaignList.innerHTML='';
   try{
     const res=await githubRequest('config.json','GET',savedToken);
     if(res && res.content){
-      const arr=JSON.parse(atob(res.content));
-      configDesc.textContent=`Contains ${arr.length} campaign(s)`;
+      configCache = JSON.parse(atob(res.content));
+      configDesc.textContent=`Contains ${configCache.length} campaign(s)`;
+      configCache.forEach(c=>{
+        const div = document.createElement('div'); div.className='campaign-item';
+        div.innerHTML = `
+          <div><strong>${c.name}</strong></div>
+          <div>
+            <button class="btn-primary editBtn">Edit</button>
+            <button class="btn-danger deleteBtn">Delete</button>
+          </div>`;
+        div.querySelector('.editBtn').addEventListener('click',()=>editCampaign(c));
+        div.querySelector('.deleteBtn').addEventListener('click',()=>deleteCampaign(c));
+        campaignList.appendChild(div);
+      });
     }
   }catch(e){ configDesc.textContent='No config.json found'; }
 }
+
+// --- EDIT CAMPAIGN ---
+function editCampaign(c){
+  campName.value = c.name;
+  campText.value = c.defaultText||'';
+  textColor.value = c.textColor||'#ffffff';
+  bannerPreview.innerHTML = c.bannerUrl? `<img src="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${c.bannerUrl}" />`:'No banner selected';
+  variantsContainer.innerHTML='';
+  (c.frames||[]).forEach(f=>addVariantRow(f));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// --- DELETE CAMPAIGN ---
+async function deleteCampaign(c){
+  if(!confirm(`Delete campaign "${c.name}" permanently?`)) return;
+  try{
+    const res = await githubRequest('config.json','GET',savedToken);
+    let currentConfig = res.content? JSON.parse(atob(res.content)): [];
+    const sha = res.sha;
+    currentConfig = currentConfig.filter(item=>item.id!==c.id);
+    await githubRequest('config.json','PUT',savedToken,{message:`Delete campaign ${c.name}`, content:btoa(JSON.stringify(currentConfig,null,2)), sha});
+    opStatus.textContent=`Deleted campaign "${c.name}"`;
+    loadCampaignList();
+  }catch(e){ opStatus.textContent='Error deleting campaign'; console.error(e);}
+}
 </script>
+
 </body>
 </html>
