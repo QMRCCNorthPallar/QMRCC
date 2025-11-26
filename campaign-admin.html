@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Frame Generator</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #e9ecef; margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* BANNER STYLE */
+        #bannerDisplay { width: 100%; border-radius: 10px; margin-bottom: 20px; display: none; object-fit: cover; max-height: 200px; }
+        
+        select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        label { display: block; text-align: left; font-weight: bold; margin-top: 10px; color: #444; }
+        button { background-color: #007bff; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-size: 16px; margin-top: 10px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        canvas { max-width: 100%; border: 1px solid #ddd; margin-top: 20px; border-radius: 5px; display: none; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img id="bannerDisplay" alt="Campaign Banner">
+
+    <h2>Frame Generator</h2>
+
+    <label>1. Select Campaign</label>
+    <select id="campaignSelect">
+        <option value="" disabled selected>Loading...</option>
+    </select>
+
+    <div id="controls" class="hidden">
+        <label>2. Select Format</label>
+        <select id="formatSelect"></select>
+
+        <label>3. Enter Your Name</label>
+        <input type="text" id="userText" placeholder="Your Name">
+
+        <label>4. Upload Your Photo</label>
+        <input type="file" id="userImage" accept="image/*">
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <button id="downloadBtn" style="display:none;">Download Image</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const campaignSelect = document.getElementById('campaignSelect');
+    const formatSelect = document.getElementById('formatSelect');
+    const bannerDisplay = document.getElementById('bannerDisplay');
+    const controls = document.getElementById('controls');
+    
+    let campaigns = [];
+    let currentCampaign = null;
+    let frameImg = new Image();
+    let userImg = new Image();
+    let isFrameLoaded = false, isUserLoaded = false;
+
+    // Load Data
+    fetch('config.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            campaigns = data;
+            campaignSelect.innerHTML = '<option value="" disabled selected>Select a Campaign</option>';
+            data.forEach((c, i) => {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = c.name;
+                campaignSelect.appendChild(opt);
+            });
+        });
+
+    // 1. Campaign Selected -> Show Banner & Load Formats
+    campaignSelect.addEventListener('change', (e) => {
+        currentCampaign = campaigns[e.target.value];
+        
+        // Show Banner
+        if(currentCampaign.bannerUrl) {
+            bannerDisplay.src = currentCampaign.bannerUrl;
+            bannerDisplay.style.display = "block";
+        } else {
+            bannerDisplay.style.display = "none";
+        }
+
+        // Setup Formats
+        formatSelect.innerHTML = '';
+        currentCampaign.frames.forEach((f, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = f.type;
+            formatSelect.appendChild(opt);
+        });
+
+        // Set Defaults
+        document.getElementById('userText').value = currentCampaign.defaultText || "";
+        controls.classList.remove('hidden');
+        loadFrame(0);
+    });
+
+    formatSelect.addEventListener('change', (e) => loadFrame(e.target.value));
+
+    function loadFrame(index) {
+        isFrameLoaded = false;
+        frameImg.src = currentCampaign.frames[index].url;
+        frameImg.onload = () => { isFrameLoaded = true; draw(); };
+    }
+
+    document.getElementById('userImage').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            userImg.src = ev.target.result;
+            userImg.onload = () => { isUserLoaded = true; draw(); };
+        };
+        reader.readAsDataURL(file);
+    });
+
+    document.getElementById('userText').addEventListener('input', draw);
+
+    function draw() {
+        if (!isFrameLoaded || !isUserLoaded) return;
+
+        canvas.width = frameImg.width;
+        canvas.height = frameImg.height;
+
+        // Draw User Image (Center Crop)
+        const ratio = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
+        const centerShift_x = (canvas.width - userImg.width * ratio) / 2;
+        const centerShift_y = (canvas.height - userImg.height * ratio) / 2;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(userImg, 0, 0, userImg.width, userImg.height, 
+                      centerShift_x, centerShift_y, userImg.width * ratio, userImg.height * ratio);
+
+        // Draw Frame
+        ctx.drawImage(frameImg, 0, 0);
+
+        // Draw Text
+        const text = document.getElementById('userText').value;
+        if (text) {
+            ctx.font = `bold ${canvas.height * 0.05}px Arial`;
+            ctx.fillStyle = currentCampaign.textColor || "white";
+            ctx.textAlign = "center";
+            ctx.shadowColor="black";
+            ctx.shadowBlur=5;
+            ctx.fillText(text, canvas.width / 2, canvas.height - (canvas.height * 0.1));
+        }
+
+        canvas.style.display = "block";
+        document.getElementById('downloadBtn').style.display = "inline-block";
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'badge.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+</script>
+
+</body>
+</html>

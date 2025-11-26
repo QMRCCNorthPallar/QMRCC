@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - With Banners</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f4f4f9; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, button, select { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        .variant-box { border: 1px dashed #ccc; padding: 15px; background: #fafafa; margin-bottom: 10px; }
+        .section-title { margin-top: 20px; border-bottom: 2px solid #eee; padding-bottom: 5px; color: #555; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Admin Panel</h2>
+    
+    <div id="loginSection">
+        <label>Enter Secret Key (GitHub Token):</label>
+        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+        <button onclick="saveToken()">Login</button>
+    </div>
+
+    <div id="uploadSection" class="hidden">
+        
+        <h3 class="section-title">1. General Info</h3>
+        <input type="text" id="campName" placeholder="Campaign Name (e.g., Summer Fest)">
+        <input type="text" id="campText" placeholder="Default Overlay Text (e.g., I'm Attending)">
+        <input type="color" id="textColor" value="#ffffff" title="Text Color"> 
+
+        <h3 class="section-title">2. Website Banner</h3>
+        <label style="font-size:0.9em; color:#666;">Upload a header image for the website (JPG/PNG):</label>
+        <input type="file" id="campBanner" accept="image/*">
+
+        <h3 class="section-title">3. Photo Frames</h3>
+        <div id="variantsContainer"></div>
+        <button onclick="addVariantRow()" style="background:#6c757d;">+ Add Frame Variant</button>
+        
+        <br><br><hr>
+        <button onclick="publishCampaign()" id="publishBtn">PUBLISH CAMPAIGN</button>
+        <div id="status" style="margin-top:15px; font-weight:bold;"></div>
+    </div>
+</div>
+
+<script>
+    // --- CONFIGURATION ---
+    const REPO_OWNER = 'YOUR_GITHUB_USERNAME'; 
+    const REPO_NAME = 'YOUR_REPO_NAME';       
+    // ---------------------
+
+    if(localStorage.getItem('gh_token')) {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('uploadSection').classList.remove('hidden');
+        addVariantRow();
+    }
+
+    function saveToken() {
+        const token = document.getElementById('githubToken').value.trim();
+        if(token) { localStorage.setItem('gh_token', token); location.reload(); }
+    }
+
+    function addVariantRow() {
+        const div = document.createElement('div');
+        div.className = 'variant-box';
+        div.innerHTML = `
+            <label>Frame Type (e.g. Story, Square):</label>
+            <input type="text" class="var-name" placeholder="Type name">
+            <input type="file" class="var-file" accept="image/png">
+        `;
+        document.getElementById('variantsContainer').appendChild(div);
+    }
+
+    async function publishCampaign() {
+        const token = localStorage.getItem('gh_token');
+        const name = document.getElementById('campName').value;
+        const bannerInput = document.getElementById('campBanner');
+        const variantBoxes = document.querySelectorAll('.variant-box');
+        const status = document.getElementById('status');
+        const btn = document.getElementById('publishBtn');
+
+        if (!name || !bannerInput.files[0] || variantBoxes.length === 0) { 
+            alert("Please fill Name, upload a Banner, and at least one Frame."); 
+            return; 
+        }
+
+        btn.disabled = true;
+        status.innerText = "Step 1: Uploading Banner...";
+        
+        try {
+            // 1. Upload Banner
+            const bannerFile = bannerInput.files[0];
+            const bannerName = "banners/" + Date.now() + "_" + bannerFile.name;
+            const bannerBase64 = await toBase64(bannerFile);
+            
+            await githubRequest(`contents/${bannerName}`, "PUT", token, {
+                message: `Add banner: ${bannerName}`,
+                content: bannerBase64.split(',')[1]
+            });
+
+            // 2. Upload Frames
+            let framesList = [];
+            for (let i = 0; i < variantBoxes.length; i++) {
+                const box = variantBoxes[i];
+                const fName = box.querySelector('.var-name').value || "Default";
+                const fFile = box.querySelector('.var-file').files[0];
+                
+                if (fFile) {
+                    status.innerText = `Step 2: Uploading Frame ${i+1}...`;
+                    const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;
+                    const fBase64 = await toBase64(fFile);
+                    
+                    await githubRequest(`contents/${fPath}`, "PUT", token, {
+                        message: `Add frame: ${fPath}`,
+                        content: fBase64.split(',')[1]
+                    });
+                    framesList.push({ type: fName, url: fPath });
+                }
+            }
+
+            // 3. Update Config
+            status.innerText = "Step 3: Saving Config...";
+            let currentConfig = [];
+            let sha = null;
+            try {
+                const res = await githubRequest('contents/config.json', "GET", token);
+                currentConfig = JSON.parse(atob(res.content));
+                sha = res.sha;
+            } catch (e) {}
+
+            currentConfig.push({
+                id: Date.now(),
+                name: name,
+                defaultText: document.getElementById('campText').value,
+                textColor: document.getElementById('textColor').value,
+                bannerUrl: bannerName, // Save Banner Path
+                frames: framesList
+            });
+
+            await githubRequest('contents/config.json', "PUT", token, {
+                message: `Add campaign ${name}`,
+                content: btoa(JSON.stringify(currentConfig, null, 2)),
+                sha: sha
+            });
+
+            status.innerText = "DONE! Updates live in ~2 mins.";
+            setTimeout(() => location.reload(), 2000);
+
+        } catch (error) {
+            console.error(error);
+            status.innerText = "Error: " + error.message;
+            btn.disabled = false;
+        }
+    }
+
+    async function githubRequest(endpoint, method, token, body = null) {
+        const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/${endpoint}`;
+        const options = { method: method, headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' } };
+        if (body) options.body = JSON.stringify(body);
+        const res = await fetch(url, options);
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+    }
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+</script>
+</body>
+</html>
