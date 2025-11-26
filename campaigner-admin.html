@@ -421,6 +421,112 @@ function updateCounts(){ const c = variantsContainer.children.length; countFrame
 
 /* ---------- Demo btn ---------- */
 demoBtn.addEventListener('click', ()=>{ fillDemo(); variantsContainer.innerHTML=''; addVariantRow({type:'Square',url:''}); addVariantRow({type:'Story',url:''}); updateCounts(); });
+async function publishCampaign() {
+    if (!savedToken) { alert('Please login with a valid token first. return; }
+
+    const name = campName.value.trim();
+    if (!name) { alert('Campaign name required'); return; }
+
+    const bannerFile = campBanner.files[0];
+    if (!bannerFile) { alert('Please select a banner image.'); return; }
+
+    const variantEls = Array.from(variantsContainer.querySelectorAll('.variant'));
+    if (variantEls.length === 0) { alert('Add at least one frame variant'); return; }
+
+    publishBtn.disabled = true;
+    showOp('Preparing upload', 5);
+
+    try {
+        // 1️⃣ Upload banner
+        showOp('Uploading banner', 10, `Uploading banner: ${bannerFile.name}`);
+        const bannerPath = `${BANNERS_DIR}/${Date.now()}_${sanitizeFilename(bannerFile.name)}`;
+        const bannerBase64 = await fileToBase64(bannerFile);
+        await githubRequest(bannerPath, 'PUT', savedToken, {
+            message: `Add banner ${bannerPath}`,
+            content: bannerBase64.split(',')[1]
+        });
+
+        // 2️⃣ Upload frames
+        const framesList = [];
+        for (let i = 0; i < variantEls.length; i++) {
+            const el = variantEls[i];
+            const type = el.querySelector('.var-name').value.trim() || `Variant ${i+1}`;
+            const urlField = el.querySelector('.var-url').value.trim();
+            const fFile = el.querySelector('.var-file').files[0];
+
+            if (urlField) {
+                framesList.push({ type, url: urlField });
+                continue;
+            }
+            if (!fFile) {
+                framesList.push({ type, url: null });
+                continue;
+            }
+
+            showOp(`Uploading frame ${i + 1}/${variantEls.length}`, 30 + Math.round((i / variantEls.length) * 40));
+            const framePath = `${FRAMES_DIR}/${Date.now()}_${i}_${sanitizeFilename(fFile.name)}`;
+            const fBase64 = await fileToBase64(fFile);
+            await githubRequest(framePath, 'PUT', savedToken, {
+                message: `Add frame ${framePath}`,
+                content: fBase64.split(',')[1]
+            });
+            framesList.push({ type, url: framePath });
+        }
+
+        // 3️⃣ Fetch existing config.json safely
+        showOp('Fetching config', 75, 'Reading existing config.json');
+        let currentConfig = [];
+        let sha = null;
+        try {
+            const res = await githubRequest('config.json', 'GET', savedToken);
+            if (res && res.content) {
+                currentConfig = JSON.parse(atob(res.content));
+                sha = res.sha;
+            }
+        } catch (err) {
+            // If 404, start with empty array
+            currentConfig = [];
+        }
+
+        // 4️⃣ Check if campaign exists
+        const existingIndex = currentConfig.findIndex(c => c.name === name);
+        const newCampaign = {
+            id: Date.now(),
+            name,
+            defaultText: campText.value || '',
+            textColor: textColor.value || '#ffffff',
+            bannerUrl: bannerPath,
+            frames: framesList
+        };
+
+        if (existingIndex >= 0) {
+            // overwrite existing campaign
+            currentConfig[existingIndex] = newCampaign;
+        } else {
+            // append new campaign
+            currentConfig.push(newCampaign);
+        }
+
+        // 5️⃣ Upload updated config.json
+        showOp('Saving configuration', 90, 'Updating config.json');
+        const putBody = {
+            message: `Add/update campaign ${name}`,
+            content: btoa(JSON.stringify(currentConfig, null, 2))
+        };
+        if (sha) putBody.sha = sha;
+
+        await githubRequest('config.json', 'PUT', savedToken, putBody);
+        showOp('Done', 100, 'Campaign published successfully!');
+        configDesc.textContent = `Last uploaded: ${new Date().toLocaleString()}`;
+
+        setTimeout(() => { publishBtn.disabled = false; }, 900);
+
+    } catch (err) {
+        console.error(err);
+        showOp('Error', 0, 'Failed: ' + (err.message || err));
+        publishBtn.disabled = false;
+    }
+}
 
 </script>
 </body>
