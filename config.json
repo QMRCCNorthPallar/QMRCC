@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "id": 1764132681340,
+    "name": "Election Campaign",
+    "defaultText": "",
+    "textColor": "#ffffff",
+    "bannerUrl": "contents/banners/1764132675234_All_3_poster_2.png",
+    "frames": [
+      {
+        "type": "Vertical",
+        "url": "contents/frames/1764132677367_0_Vertical.png"
+      },
+      {
+        "type": "Horizontal",
+        "url": "contents/frames/1764132679088_1_Horizontal.png"
+      }
+    ]
+  }
+]
