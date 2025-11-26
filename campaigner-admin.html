@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Campaign Manager</title>
     <style>
-        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
             background: #f7f7f7;
@@ -27,112 +26,31 @@
             text-align: center;
             box-sizing: border-box;
         }
-        h1 {
-            color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
+        h1 { color: #333; font-size: 1.8rem; margin-bottom: 20px; }
         .section-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-top: 20px;
-            color: #333;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 5px;
+            font-size: 1.1rem; font-weight: bold; margin-top: 20px;
+            color: #333; border-bottom: 2px solid #e0e0e0; padding-bottom: 5px;
         }
         input, button, select {
-            width: 100%;
-            padding: 12px;
-            margin: 12px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 1rem;
+            width: 100%; padding: 12px; margin: 12px 0;
+            border-radius: 5px; border: 1px solid #ccc;
+            font-size: 1rem; box-sizing: border-box;
         }
-        input[type="color"] {
-            width: 30%;
-            margin-top: 8px;
-        }
+        input[type="color"] { width: 30%; margin-top: 8px; }
         button {
-            background: #4CAF50;
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-weight: bold;
-            border: none;
-            transition: background 0.3s ease;
+            background: #4CAF50; color: white; font-size: 1.1rem;
+            cursor: pointer; font-weight: bold; border: none;
+            transition: 0.3s ease;
         }
-        button:hover {
-            background: #45a049;
-        }
+        button:hover { background: #45a049; }
         .variant-box {
-            background: #f4f4f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 12px 0;
-            border: 1px dashed #ddd;
+            background: #f4f4f9; padding: 15px; border-radius: 8px;
+            margin: 12px 0; border: 1px dashed #ddd;
         }
-        .frame-title {
-            font-size: 1rem;
-            margin-bottom: 8px;
-        }
-        .status {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #555;
-        }
-        .hidden {
-            display: none;
-        }
-        .login-section {
-            text-align: center;
-        }
-        .login-section input {
-            width: 80%;
-            margin: 10px 0;
-        }
-        .logout-btn {
-            background: #f44336;
-            margin-top: 15px;
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 600px) {
-            .card {
-                padding: 15px;
-                max-width: 90%;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            .section-title {
-                font-size: 1rem;
-            }
-            input, button, select {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
-            button {
-                font-size: 1rem;
-                padding: 15px;
-            }
-            .frame-title {
-                font-size: 0.9rem;
-            }
-            input[type="color"] {
-                width: 40%;
-            }
-            .variant-box {
-                padding: 12px;
-            }
-        }
-
-        /* Tablet and Desktop Styles */
-        @media (min-width: 601px) {
-            .card {
-                max-width: 700px;
-            }
-        }
+        .frame-title { font-size: 1rem; margin-bottom: 8px; }
+        .status { margin-top: 15px; font-weight: bold; color: #555; }
+        .hidden { display: none; }
+        .logout-btn { background: #f44336; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -147,86 +65,69 @@
         <button onclick="saveToken()">Login</button>
     </div>
 
-    <!-- Upload Section (After Login) -->
+    <!-- Upload Section -->
     <div id="uploadSection" class="hidden">
         
-        <!-- General Info Section -->
         <h2 class="section-title">1. General Info</h2>
-        <input type="text" id="campName" placeholder="Campaign Name (e.g., Summer Fest)">
-        <input type="text" id="campText" placeholder="Default Overlay Text (e.g., I'm Attending)">
-        <input type="color" id="textColor" value="#ffffff" title="Text Color"> 
-        
-        <!-- Banner Section -->
+        <input type="text" id="campName" placeholder="Campaign Name">
+        <input type="text" id="campText" placeholder="Default Overlay Text">
+        <input type="color" id="textColor" value="#ffffff">
+
         <h2 class="section-title">2. Website Banner</h2>
-        <label for="campBanner" style="font-size:0.9em;">Upload a header image for the website (JPG/PNG):</label>
         <input type="file" id="campBanner" accept="image/*">
 
-        <!-- Frame Section -->
         <h2 class="section-title">3. Photo Frames</h2>
         <div id="variantsContainer"></div>
-        <button onclick="addVariantRow()" style="background: #007bff; color: white;">+ Add Frame Variant</button>
-        
+        <button onclick="addVariantRow()" style="background:#007bff;color:white;">+ Add Frame Variant</button>
+
         <br><br><hr>
-        
-        <!-- Publish Button -->
+
         <button onclick="publishCampaign()" id="publishBtn">PUBLISH CAMPAIGN</button>
         <div id="status" class="status"></div>
 
-        <!-- Logout Button -->
         <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 </div>
 
 <script>
-    // --- CONFIGURATION ---
-    const REPO_OWNER = 'QMRCCNorthPallar';  // Replace with your GitHub username
-    const REPO_NAME = 'QMRCCC';        // Replace with your GitHub repository name
-    // ---------------------
+    const REPO_OWNER = 'QMRCCNorthPallar';
+    const REPO_NAME  = 'QMRCCC';
 
-    // Check if already logged in
-    if(localStorage.getItem('gh_token')) {
+    if(localStorage.getItem('gh_token')){
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('uploadSection').classList.remove('hidden');
-        addVariantRow();  // Add an initial variant row
+        addVariantRow();
     }
 
-    // Save GitHub token to localStorage
-    function saveToken() {
+    function saveToken(){
         const token = document.getElementById('githubToken').value.trim();
-        if(token) { 
-            localStorage.setItem('gh_token', token); 
-            location.reload(); 
+        if(token){
+            localStorage.setItem('gh_token', token);
+            location.reload();
         }
     }
 
-    // Add a new frame variant row
-    function addVariantRow() {
+    function addVariantRow(){
         const div = document.createElement('div');
         div.className = 'variant-box';
         div.innerHTML = `
-            <div>
-                <label class="frame-title">Frame Type (e.g. Story, Square):</label>
-                <input type="text" class="var-name" placeholder="Type name">
-            </div>
-            <div>
-                <label class="frame-title">Upload Frame Image (PNG):</label>
-                <input type="file" class="var-file" accept="image/png">
-            </div>
+            <label class="frame-title">Frame Type:</label>
+            <input type="text" class="var-name" placeholder="Type name">
+            <label class="frame-title">Upload Frame (PNG):</label>
+            <input type="file" class="var-file" accept="image/png">
         `;
         document.getElementById('variantsContainer').appendChild(div);
     }
 
-    // Publish Campaign - Upload Banner, Frames, and Save Config
-    async function publishCampaign() {
+    async function publishCampaign(){
         const token = localStorage.getItem('gh_token');
-        const name = document.getElementById('campName').value;
+        const name  = document.getElementById('campName').value;
         const bannerInput = document.getElementById('campBanner');
         const variantBoxes = document.querySelectorAll('.variant-box');
         const status = document.getElementById('status');
         const btn = document.getElementById('publishBtn');
 
-        // Validation
-        if (!name || !bannerInput.files[0] || variantBoxes.length === 0) {
+        if(!name || !bannerInput.files[0] || variantBoxes.length === 0){
             alert("Please fill Name, upload a Banner, and at least one Frame.");
             return;
         }
@@ -234,112 +135,100 @@
         btn.disabled = true;
         status.innerText = "Step 1: Uploading Banner...";
 
-        try {
-            // Step 1: Upload the Banner
+        try{
             const bannerFile = bannerInput.files[0];
-            const bannerName = "banners/" + Date.now() + "_" + bannerFile.name;  // Unique filename for the banner
+            const bannerName = "banners/" + Date.now() + "_" + bannerFile.name;
             const bannerBase64 = await toBase64(bannerFile);
-            
+
             await githubRequest(`contents/${bannerName}`, "PUT", token, {
                 message: `Add banner: ${bannerName}`,
                 content: bannerBase64.split(',')[1]
             });
 
-            // Step 2: Upload the Frames
-            let framesList = [];  // This will store information about the frames (type and URL)
-            for (let i = 0; i <
-            for (let i = 0; i < variantBoxes.length; i++) {
-                const box = variantBoxes[i];
-                const fName = box.querySelector('.var-name').value || "Default";  // Get frame type (name)
-                const fFile = box.querySelector('.var-file').files[0];  // Get the frame file
+            let framesList = [];
 
-                if (fFile) {
-                    status.innerText = `Step 2: Uploading Frame ${i + 1}...`;
-                    const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;  // Unique filename for each frame
+            for(let i = 0; i < variantBoxes.length; i++){
+                const box  = variantBoxes[i];
+                const fName = box.querySelector('.var-name').value || "Default";
+                const fFile = box.querySelector('.var-file').files[0];
+
+                if(fFile){
+                    status.innerText = `Step 2: Uploading Frame ${i+1}...`;
+                    const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;
                     const fBase64 = await toBase64(fFile);
 
-                    // Upload the frame
                     await githubRequest(`contents/${fPath}`, "PUT", token, {
                         message: `Add frame: ${fPath}`,
                         content: fBase64.split(',')[1]
                     });
 
-                    // Store frame info (name/type and URL/path) for the config file
                     framesList.push({ type: fName, url: fPath });
                 }
             }
 
-            // Step 3: Save the Config with the campaign info
             status.innerText = "Step 3: Saving Config...";
+
             let currentConfig = [];
             let sha = null;
 
-            // Try to get the current config file (if it exists)
-            try {
+            try{
                 const res = await githubRequest('contents/config.json', "GET", token);
-                currentConfig = JSON.parse(atob(res.content));  // Decode the base64 content
-                sha = res.sha;  // The current SHA is needed to update the file
-            } catch (e) {
-                // If the config doesn't exist yet, just start with an empty array
+                currentConfig = JSON.parse(atob(res.content));
+                sha = res.sha;
+            } catch(e){
                 currentConfig = [];
-                sha = null;
             }
 
-            // Add the new campaign to the config
             currentConfig.push({
                 id: Date.now(),
                 name: name,
                 defaultText: document.getElementById('campText').value,
                 textColor: document.getElementById('textColor').value,
-                bannerUrl: bannerName,  // Save the banner's file path
-                frames: framesList      // Save the frames' file paths and types
+                bannerUrl: bannerName,
+                frames: framesList
             });
 
-            // Update the config.json file in the repository
             await githubRequest('contents/config.json', "PUT", token, {
                 message: `Add campaign ${name}`,
-                content: btoa(JSON.stringify(currentConfig, null, 2)),  // Convert to base64
-                sha: sha  // Include the sha value to update the file
+                content: btoa(JSON.stringify(currentConfig, null, 2)),
+                sha: sha
             });
 
-            status.innerText = "DONE! Updates live in ~2 mins.";
+            status.innerText = "DONE! Changes will reflect in ~2 mins.";
             setTimeout(() => location.reload(), 2000);
 
-        } catch (error) {
+        } catch(error){
             console.error(error);
             status.innerText = "Error: " + error.message;
             btn.disabled = false;
         }
     }
 
-    // GitHub API request function
-    async function githubRequest(endpoint, method, token, body = null) {
+    async function githubRequest(endpoint, method, token, body=null){
         const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/${endpoint}`;
         const options = {
             method: method,
             headers: {
-                'Authorization': `token ${token}`,
+                'Authorization': `Bearer ${token}`,   // ✅ FIXED
                 'Content-Type': 'application/json'
             }
         };
-        if (body) options.body = JSON.stringify(body);
+        if(body) options.body = JSON.stringify(body);
         const res = await fetch(url, options);
-        if (!res.ok) throw new Error(await res.text());
+        if(!res.ok) throw new Error(await res.text());
         return res.json();
     }
 
-    // Convert file to base64
-    const toBase64 = file => new Promise((resolve, reject) => {
+    const toBase64 = file => new Promise((resolve, reject)=>{
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload  = () => resolve(reader.result);
         reader.onerror = error => reject(error);
     });
 
-    // Logout Function
-    function logout() {
+    function logout(){
         localStorage.removeItem('gh_token');
-        location.reload();  // Refresh the page to prompt login again
+        location.reload();
     }
 </script>
 
