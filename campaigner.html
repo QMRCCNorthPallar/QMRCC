@@ -86,7 +86,7 @@ select:focus, input:focus {
 }
 
 /* ------------------------ */
-/* CANVAS */
+/* CANVAS & BUTTONS */
 /* ------------------------ */
 canvas {
     width: 100%;
@@ -97,22 +97,23 @@ canvas {
 }
 
 button {
-    margin-top: 20px;
+    margin-top: 15px;
     width: 100%;
     padding: 14px;
     font-size: 1rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    background-color: #1a73e8;
     color: white;
     font-weight: 500;
     transition: 0.25s;
 }
 
-button:hover {
-    background-color: #1669c1;
-}
+#downloadBtn { background-color: #1a73e8; }
+#downloadBtn:hover { background-color: #1669c1; }
+
+#whatsappBtn { background-color: #25D366; }
+#whatsappBtn:hover { background-color: #1ebe57; }
 
 .hidden { display: none; }
 
@@ -146,6 +147,8 @@ button:hover {
     <canvas id="canvas"></canvas>
 
     <button id="downloadBtn" style="display:none;">Download Image</button>
+    <button id="whatsappBtn" style="display:none;">Share on WhatsApp</button>
+
 </div>
 
 <script>
@@ -156,6 +159,7 @@ const formatSelect = document.getElementById('formatSelect');
 const bannerDisplay = document.getElementById('bannerDisplay');
 const controls = document.getElementById('controls');
 const downloadBtn = document.getElementById('downloadBtn');
+const whatsappBtn = document.getElementById('whatsappBtn');
 
 let campaigns = [];
 let currentCampaign = null;
@@ -229,12 +233,11 @@ document.getElementById('userImage').addEventListener('change', e => {
 });
 
 // ---------------------------------------------
-// FIXED AUTO-FIT DRAW FUNCTION
+// AUTO-FIT DRAW FUNCTION
 // ---------------------------------------------
 function draw() {
     if (!isFrameLoaded || !isUserLoaded) return;
 
-    // Set canvas size to frame's actual pixels
     canvas.width = frameImg.naturalWidth;
     canvas.height = frameImg.naturalHeight;
 
@@ -248,13 +251,11 @@ function draw() {
 
     let drawW, drawH;
 
-    // Like CSS background-size: cover
+    // background-size: cover logic
     if (imgRatio > frameRatio) {
-        // User image is wider
         drawH = canvasH;
         drawW = drawH * imgRatio;
     } else {
-        // User image is taller
         drawW = canvasW;
         drawH = drawW / imgRatio;
     }
@@ -264,17 +265,17 @@ function draw() {
 
     ctx.clearRect(0, 0, canvasW, canvasH);
 
-    // Draw user image (auto-fit)
     ctx.drawImage(userImg, offsetX, offsetY, drawW, drawH);
-
-    // Draw frame
     ctx.drawImage(frameImg, 0, 0, canvasW, canvasH);
 
     canvas.style.display = "block";
     downloadBtn.style.display = "inline-block";
+    whatsappBtn.style.display = "inline-block";
 }
 
-// Download button
+// -----------------------
+// DOWNLOAD BUTTON
+// -----------------------
 downloadBtn.addEventListener('click', () => {
     const dataURL = canvas.toDataURL('image/png');
 
@@ -288,6 +289,30 @@ downloadBtn.addEventListener('click', () => {
     link.download = 'campaign_frame.png';
     link.href = dataURL;
     link.click();
+});
+
+// -----------------------
+// WHATSAPP SHARE BUTTON
+// -----------------------
+whatsappBtn.addEventListener('click', async () => {
+    canvas.toBlob(async (blob) => {
+        const file = new File([blob], "campaign_frame.png", { type: "image/png" });
+
+        // Mobile native share
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: "Campaign Frame",
+                text: "Check out my campaign frame!"
+            });
+            return;
+        }
+
+        // Desktop fallback
+        const dataURL = canvas.toDataURL("image/png");
+        const encoded = encodeURIComponent("Here's my campaign frame: " + dataURL);
+        window.open("https://wa.me/?text=" + encoded, "_blank");
+    }, "image/png");
 });
 </script>
 </body>
