@@ -6,80 +6,76 @@
 <title>Campaign Frame Generator</title>
 <style>
 /* ------------------------ */
-/* GOOGLE-LIKE UI RESET */
+/* GOOGLE-LIKE UI & RESET */
+/* ------------------------ */
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Roboto","Segoe UI",sans-serif; }
-body { background:#f1f3f4; display:flex; justify-content:center; padding:20px; min-height:100vh; }
+body { background:#f1f3f4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:20px; }
+.container { width:100%; max-width:720px; background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.15); padding:30px; text-align:center; margin-top:30px; }
+h2 { font-size:1.8rem; font-weight:500; color:#202124; margin-bottom:20px; }
+label { display:block; text-align:left; font-size:0.9rem; color:#3c4043; margin:12px 0 6px 0; }
+select,input[type="file"] { width:100%; padding:12px; border-radius:8px; border:1px solid #dadce0; outline:none; font-size:1rem; transition:0.2s; }
+select:focus,input:focus { border-color:#1a73e8; box-shadow:0 0 0 2px rgba(26,115,232,0.15); }
 
-/* ------------------------ */
-/* CARD */
-.container {
-  width:100%; max-width:720px; background:#fff;
-  border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.15);
-  padding:24px; text-align:center; display:flex; flex-direction:column; align-items:center;
-}
+/* Banner */
+#bannerDisplay { width:100%; max-height:250px; object-fit:contain; border-radius:12px; margin-bottom:20px; display:none; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
 
-h2 { font-weight:500; color:#202124; margin-bottom:20px; font-size:1.7rem; }
+/* Canvas */
+canvas { width:100%; margin-top:20px; border-radius:12px; display:none; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
 
-/* ------------------------ */
-/* BANNER */
-.banner-wrapper {
-  width:100%; max-height:250px; border-radius:12px;
-  overflow:hidden; margin-bottom:20px; display:flex; justify-content:center; align-items:center;
-  background:#e0e0e0; position:relative;
-}
-.banner-wrapper img { width:100%; height:100%; object-fit:contain; }
+/* Frame Thumbnails */
+#frameThumbnails { display:flex; gap:10px; overflow-x:auto; margin-top:15px; padding-bottom:5px; }
+#frameThumbnails img { width:80px; height:80px; object-fit:cover; cursor:pointer; border:2px solid transparent; border-radius:6px; transition:0.2s; }
+#frameThumbnails img.selected { border-color:#1a73e8; }
 
-/* ------------------------ */
-/* INPUTS */
-label { display:block; text-align:left; color:#3c4043; font-size:0.9rem; margin-top:12px; margin-bottom:6px; }
-select,input[type="file"] {
-  width:100%; padding:12px; border-radius:8px; border:1px solid #dadce0; font-size:1rem;
-}
-select:focus,input:focus { border-color:#1a73e8; box-shadow:0 0 0 2px rgba(26,115,232,0.15); outline:none; }
+/* Button */
+button { margin-top:20px; width:100%; padding:14px; font-size:1rem; border-radius:8px; border:none; cursor:pointer; background-color:#1a73e8; color:white; font-weight:500; transition:0.25s; }
+button:hover { background-color:#1669c1; }
 
-/* ------------------------ */
-/* CANVAS */
-canvas { width:100%; margin-top:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); cursor:grab; }
+/* Hide controls initially */
+.hidden { display:none; }
 
-/* ------------------------ */
-/* BUTTON */
-button {
-  margin-top:20px; width:100%; padding:14px; font-size:1rem; border-radius:8px; border:none;
-  cursor:pointer; background:#1a73e8; color:white; font-weight:500; transition:0.25s;
-}
-button:hover { background:#1669c1; }
-
-/* ------------------------ */
-/* MOBILE */
-@media(max-width:600px){ .container{padding:20px;} h2{font-size:1.5rem;} }
+/* Mobile */
+@media(max-width:600px){ .container { padding:20px; } h2 { font-size:1.5rem; } #frameThumbnails img { width:60px; height:60px; } }
 </style>
 </head>
+
 <body>
-
 <div class="container">
-  <h2>Campaign Frame Generator</h2>
+    <h2>Campaign Frame Generator</h2>
 
-  <div class="banner-wrapper">
     <img id="bannerDisplay" alt="Campaign Banner">
-  </div>
 
-  <label for="campaignSelect">Select Campaign</label>
-  <select id="campaignSelect"><option disabled selected>Loading campaigns...</option></select>
+    <label for="campaignSelect">1. Select Campaign</label>
+    <select id="campaignSelect">
+        <option value="" disabled selected>Loading campaigns...</option>
+    </select>
 
-  <label for="userImage">Upload Your Image</label>
-  <input type="file" id="userImage" accept="image/*">
+    <div id="controls" class="hidden">
+        <label>2. Select Frame</label>
+        <div id="frameThumbnails"></div>
 
-  <canvas id="canvas"></canvas>
+        <label>3. Upload Your Photo</label>
+        <input type="file" id="userImage" accept="image/*">
 
-  <button id="downloadBtn" style="display:none;">Download Image</button>
+        <label>4. Adjust Image</label>
+        <p style="font-size:0.8rem;color:#5f6368;">Drag to move, pinch/scroll to zoom</p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <button id="downloadBtn" style="display:none;">Download Image</button>
 </div>
 
 <script>
+/* ------------------------ */
+/* VARIABLES */
+/* ------------------------ */
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const campaignSelect = document.getElementById('campaignSelect');
 const bannerDisplay = document.getElementById('bannerDisplay');
-const userInput = document.getElementById('userImage');
+const controls = document.getElementById('controls');
+const frameThumbnails = document.getElementById('frameThumbnails');
+const userImageInput = document.getElementById('userImage');
 const downloadBtn = document.getElementById('downloadBtn');
 
 let campaigns = [];
@@ -87,107 +83,138 @@ let currentCampaign = null;
 
 let frameImg = new Image();
 let userImg = new Image();
-let userPos = { x:0, y:0, scale:1 };
-let isDragging = false;
-let dragStart = {x:0, y:0};
+let isFrameLoaded = false;
+let isUserLoaded = false;
 
-// Load campaigns from config.json
+// For image adjustments
+let imgPos = {x:0,y:0,scale:1};
+let dragging = false;
+let lastMouse = {x:0,y:0};
+
+/* ------------------------ */
+/* LOAD CAMPAIGNS */
 fetch('config.json?t=' + Date.now())
-  .then(r => r.json())
-  .then(data => {
+.then(res => res.json())
+.then(data => {
     campaigns = data;
-    campaignSelect.innerHTML='<option disabled selected>Select Campaign</option>';
-    data.forEach((c,i)=>{
-      const opt=document.createElement('option');
-      opt.value=i; opt.textContent=c.name;
-      campaignSelect.appendChild(opt);
+    campaignSelect.innerHTML = '<option value="" disabled selected>Select a Campaign</option>';
+    campaigns.forEach((c,i)=>{
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = c.name;
+        campaignSelect.appendChild(opt);
     });
-  });
-
-// Campaign selection
-campaignSelect.addEventListener('change', e=>{
-  currentCampaign = campaigns[e.target.value];
-  if(currentCampaign.bannerUrl){
-    bannerDisplay.src=currentCampaign.bannerUrl;
-    frameImg.src=currentCampaign.frames[0].url;
-    bannerDisplay.onload = ()=> { bannerDisplay.style.display='block'; resizeCanvas(); }
-    frameImg.onload = ()=> resizeCanvas();
-  }
 });
 
-// User image upload
-userInput.addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev=>{
-    userImg.src = ev.target.result;
-    userImg.onload = ()=>{
-      userPos = { x: canvas.width/2, y: canvas.height/2, scale: Math.min(canvas.width/userImg.width, canvas.height/userImg.height)*0.8 };
-      drawCanvas();
+/* ------------------------ */
+/* CAMPAIGN SELECT */
+campaignSelect.addEventListener('change', e => {
+    currentCampaign = campaigns[e.target.value];
+    controls.classList.remove('hidden');
+
+    // Banner
+    if(currentCampaign.bannerUrl){
+        bannerDisplay.src = currentCampaign.bannerUrl;
+        bannerDisplay.onload = ()=> bannerDisplay.style.display='block';
+    } else bannerDisplay.style.display='none';
+
+    loadFrameThumbnails();
+    loadFrame(0);
+});
+
+/* ------------------------ */
+/* FRAME THUMBNAILS */
+function loadFrameThumbnails(){
+    frameThumbnails.innerHTML='';
+    currentCampaign.frames.forEach((f,i)=>{
+        const img = document.createElement('img');
+        img.src = f.url;
+        if(i===0) img.classList.add('selected');
+        img.addEventListener('click', ()=>{
+            loadFrame(i);
+            document.querySelectorAll('#frameThumbnails img').forEach(im=>im.classList.remove('selected'));
+            img.classList.add('selected');
+        });
+        frameThumbnails.appendChild(img);
+    });
+}
+
+/* ------------------------ */
+/* LOAD FRAME */
+function loadFrame(index){
+    isFrameLoaded = false;
+    frameImg.src = currentCampaign.frames[index].url;
+    frameImg.onload = ()=> { isFrameLoaded = true; draw(); }
+}
+
+/* ------------------------ */
+/* LOAD USER IMAGE */
+userImageInput.addEventListener('change', e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev=>{
+        userImg.src = ev.target.result;
+        userImg.onload = ()=> {
+            isUserLoaded = true;
+            // Reset position
+            imgPos = {x:canvas.width/2, y:canvas.height/2, scale:1};
+            draw();
+        };
     }
-  }
-  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
 });
 
-// Resize canvas
-function resizeCanvas(){
-  if(!frameImg.width) return;
-  canvas.width = frameImg.width;
-  canvas.height = frameImg.height;
-  drawCanvas();
-}
-window.addEventListener('resize', resizeCanvas);
-
-// Draw canvas
-function drawCanvas(){
-  if(!frameImg.width) return;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  if(userImg.width){
-    const w=userImg.width*userPos.scale;
-    const h=userImg.height*userPos.scale;
-    ctx.drawImage(userImg, userPos.x - w/2, userPos.y - h/2, w, h);
-  }
-
-  if(frameImg.width) ctx.drawImage(frameImg, 0,0,canvas.width,canvas.height);
-  canvas.style.display='block';
-  downloadBtn.style.display='inline-block';
-}
-
-// Drag & move
-canvas.addEventListener('mousedown', e=>{
-  const rect=canvas.getBoundingClientRect();
-  isDragging=true;
-  dragStart={x:e.clientX - rect.left - userPos.x, y:e.clientY - rect.top - userPos.y};
-  canvas.style.cursor='grabbing';
-});
+/* ------------------------ */
+/* IMAGE ADJUSTMENTS (DRAG & ZOOM) */
+canvas.addEventListener('mousedown', e=>{ dragging=true; lastMouse={x:e.offsetX, y:e.offsetY}; });
 canvas.addEventListener('mousemove', e=>{
-  if(!isDragging) return;
-  const rect=canvas.getBoundingClientRect();
-  userPos.x = e.clientX - rect.left - dragStart.x;
-  userPos.y = e.clientY - rect.top - dragStart.y;
-  drawCanvas();
+    if(dragging){
+        imgPos.x += e.offsetX - lastMouse.x;
+        imgPos.y += e.offsetY - lastMouse.y;
+        lastMouse = {x:e.offsetX, y:e.offsetY};
+        draw();
+    }
 });
-canvas.addEventListener('mouseup', e=>{ isDragging=false; canvas.style.cursor='grab'; });
-canvas.addEventListener('mouseleave', e=>{ isDragging=false; canvas.style.cursor='grab'; });
-
-// Zoom with wheel
+canvas.addEventListener('mouseup', ()=>dragging=false);
+canvas.addEventListener('mouseleave', ()=>dragging=false);
 canvas.addEventListener('wheel', e=>{
-  e.preventDefault();
-  const scaleAmount = e.deltaY<0 ? 1.05 : 0.95;
-  userPos.scale *= scaleAmount;
-  drawCanvas();
+    e.preventDefault();
+    const scaleAmount = e.deltaY>0?0.95:1.05;
+    imgPos.scale *= scaleAmount;
+    draw();
 });
 
-// Download
+/* ------------------------ */
+/* DRAW FUNCTION */
+function draw(){
+    if(!isFrameLoaded || !isUserLoaded) return;
+
+    canvas.width = frameImg.width;
+    canvas.height = frameImg.height;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Draw user image
+    const iw = userImg.width * imgPos.scale;
+    const ih = userImg.height * imgPos.scale;
+    ctx.drawImage(userImg, 0,0,userImg.width,userImg.height, imgPos.x - iw/2, imgPos.y - ih/2, iw, ih);
+
+    // Draw frame
+    ctx.drawImage(frameImg,0,0);
+
+    canvas.style.display='block';
+    downloadBtn.style.display='inline-block';
+}
+
+/* ------------------------ */
+/* DOWNLOAD BUTTON */
 downloadBtn.addEventListener('click', ()=>{
-  const link=document.createElement('a');
-  link.download='campaign_frame.png';
-  link.href=canvas.toDataURL();
-  link.click();
+    const link = document.createElement('a');
+    link.download = 'campaign_frame.png';
+    link.href = canvas.toDataURL();
+    link.click();
 });
 </script>
-
 </body>
 </html>
