@@ -1,0 +1,8 @@
+currentConfig.push({
+    id: Date.now(),
+    name: name,
+    defaultText: document.getElementById('campText').value,
+    textColor: document.getElementById('textColor').value,
+    bannerUrl: bannerName,
+    frames: framesList
+});
