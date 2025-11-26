@@ -1,8 +1,19 @@
-currentConfig.push({
-    id: Date.now(),
-    name: name,
-    defaultText: document.getElementById('campText').value,
-    textColor: document.getElementById('textColor').value,
-    bannerUrl: bannerName,
-    frames: framesList
-});
+[
+  {
+    "id": 0,
+    "name": "Sample Campaign",
+    "defaultText": "I'm Attending",
+    "textColor": "#ffffff",
+    "bannerUrl": "contents/banners/sample_banner.png",
+    "frames": [
+      {
+        "type": "vertical",
+        "url": "contents/frames/sample_vertical.png"
+      },
+      {
+        "type": "horizontal",
+        "url": "contents/frames/sample_horizontal.png"
+      }
+    ]
+  }
+]
