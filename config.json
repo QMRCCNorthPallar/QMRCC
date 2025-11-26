@@ -1,18 +1,18 @@
 [
   {
-    "id": 1764132681340,
+    "id": 1764136741126,
     "name": "Election Campaign",
     "defaultText": "",
     "textColor": "#ffffff",
-    "bannerUrl": "contents/banners/1764132675234_All_3_poster_2.png",
+    "bannerUrl": "contents/banners/1764136736756_All_3_poster_1.png",
     "frames": [
       {
-        "type": "Vertical",
-        "url": "contents/frames/1764132677367_0_Vertical.png"
+        "type": "Horizontal",
+        "url": "contents/frames/1764136739236_0_Horizontal.png"
       },
       {
-        "type": "Horizontal",
-        "url": "contents/frames/1764132679088_1_Horizontal.png"
+        "type": "Variant 2",
+        "url": "Vertical"
       }
     ]
   }
