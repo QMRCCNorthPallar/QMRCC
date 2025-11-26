@@ -3,78 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - With Banners</title>
+    <title>Admin Panel - Campaign Manager</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f4f4f9; }
-        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        input, button, select { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; border: 1px solid #ddd; border-radius: 5px; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0056b3; }
-        .variant-box { border: 1px dashed #ccc; padding: 15px; background: #fafafa; margin-bottom: 10px; }
-        .section-title { margin-top: 20px; border-bottom: 2px solid #eee; padding-bottom: 5px; color: #555; }
-        .hidden { display: none; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f7f7f7; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh;
+        }
+        .card { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            width: 100%; 
+            max-width: 700px; 
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        input, button, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input[type="color"] {
+            width: auto;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .variant-box {
+            background: #f4f4f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px dashed #ddd;
+        }
+        .frame-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .frame-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .frame-container > div {
+            width: 48%;
+        }
+        .status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+        .hidden {
+            display: none;
+        }
+        .login-section {
+            text-align: center;
+        }
+        .login-section input {
+            width: 80%;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Admin Panel</h2>
+    <h1>Campaign Manager</h1>
     
-    <div id="loginSection">
-        <label>Enter Secret Key (GitHub Token):</label>
-        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+    <!-- Login Section -->
+    <div id="loginSection" class="login-section">
+        <label for="githubToken">Enter Secret Key (GitHub Token):</label>
+        <input type="password" id="githubToken" placeholder="Enter GitHub Token">
         <button onclick="saveToken()">Login</button>
     </div>
 
+    <!-- Upload Section (After Login) -->
     <div id="uploadSection" class="hidden">
         
-        <h3 class="section-title">1. General Info</h3>
+        <!-- General Info Section -->
+        <h2 class="section-title">1. General Info</h2>
         <input type="text" id="campName" placeholder="Campaign Name (e.g., Summer Fest)">
         <input type="text" id="campText" placeholder="Default Overlay Text (e.g., I'm Attending)">
         <input type="color" id="textColor" value="#ffffff" title="Text Color"> 
-
-        <h3 class="section-title">2. Website Banner</h3>
-        <label style="font-size:0.9em; color:#666;">Upload a header image for the website (JPG/PNG):</label>
+        
+        <!-- Banner Section -->
+        <h2 class="section-title">2. Website Banner</h2>
+        <label for="campBanner" style="font-size:0.9em;">Upload a header image for the website (JPG/PNG):</label>
         <input type="file" id="campBanner" accept="image/*">
 
-        <h3 class="section-title">3. Photo Frames</h3>
+        <!-- Frame Section -->
+        <h2 class="section-title">3. Photo Frames</h2>
         <div id="variantsContainer"></div>
-        <button onclick="addVariantRow()" style="background:#6c757d;">+ Add Frame Variant</button>
+        <button onclick="addVariantRow()" style="background: #007bff; color: white;">+ Add Frame Variant</button>
         
         <br><br><hr>
+        
+        <!-- Publish Button -->
         <button onclick="publishCampaign()" id="publishBtn">PUBLISH CAMPAIGN</button>
-        <div id="status" style="margin-top:15px; font-weight:bold;"></div>
+        <div id="status" class="status"></div>
     </div>
 </div>
 
 <script>
     // --- CONFIGURATION ---
-    const REPO_OWNER = 'YOUR_GITHUB_USERNAME'; 
-    const REPO_NAME = 'YOUR_REPO_NAME';       
+    const REPO_OWNER = 'QMRCCNorthPallar';  // Replace with your GitHub username
+    const REPO_NAME = 'QMRCCC';        // Replace with your GitHub repository name
     // ---------------------
 
+    // Check if already logged in
     if(localStorage.getItem('gh_token')) {
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('uploadSection').classList.remove('hidden');
-        addVariantRow();
+        addVariantRow();  // Add an initial variant row
     }
 
+    // Save GitHub token to localStorage
     function saveToken() {
         const token = document.getElementById('githubToken').value.trim();
-        if(token) { localStorage.setItem('gh_token', token); location.reload(); }
+        if(token) { 
+            localStorage.setItem('gh_token', token); 
+            location.reload(); 
+        }
     }
 
+    // Add a new frame variant row
     function addVariantRow() {
         const div = document.createElement('div');
         div.className = 'variant-box';
         div.innerHTML = `
-            <label>Frame Type (e.g. Story, Square):</label>
-            <input type="text" class="var-name" placeholder="Type name">
-            <input type="file" class="var-file" accept="image/png">
+            <div>
+                <label class="frame-title">Frame Type (e.g. Story, Square):</label>
+                <input type="text" class="var-name" placeholder="Type name">
+            </div>
+            <div>
+                <label class="frame-title">Upload Frame Image (PNG):</label>
+                <input type="file" class="var-file" accept="image/png">
+            </div>
         `;
         document.getElementById('variantsContainer').appendChild(div);
     }
 
+    // Publish Campaign - Upload Banner, Frames, and Save Config
     async function publishCampaign() {
         const token = localStorage.getItem('gh_token');
         const name = document.getElementById('campName').value;
@@ -83,18 +184,19 @@
         const status = document.getElementById('status');
         const btn = document.getElementById('publishBtn');
 
-        if (!name || !bannerInput.files[0] || variantBoxes.length === 0) { 
-            alert("Please fill Name, upload a Banner, and at least one Frame."); 
-            return; 
+        // Validation
+        if (!name || !bannerInput.files[0] || variantBoxes.length === 0) {
+            alert("Please fill Name, upload a Banner, and at least one Frame.");
+            return;
         }
 
         btn.disabled = true;
         status.innerText = "Step 1: Uploading Banner...";
-        
+
         try {
-            // 1. Upload Banner
+            // Step 1: Upload the Banner
             const bannerFile = bannerInput.files[0];
-            const bannerName = "banners/" + Date.now() + "_" + bannerFile.name;
+            const bannerName = "banners/" + Date.now() + "_" + bannerFile.name;  // Unique filename for the banner
             const bannerBase64 = await toBase64(bannerFile);
             
             await githubRequest(`contents/${bannerName}`, "PUT", token, {
@@ -102,49 +204,60 @@
                 content: bannerBase64.split(',')[1]
             });
 
-            // 2. Upload Frames
-            let framesList = [];
+            // Step 2: Upload the Frames
+            let framesList = [];  // This will store information about the frames (type and URL)
             for (let i = 0; i < variantBoxes.length; i++) {
                 const box = variantBoxes[i];
-                const fName = box.querySelector('.var-name').value || "Default";
-                const fFile = box.querySelector('.var-file').files[0];
-                
+                const fName = box.querySelector('.var-name').value || "Default";  // Get frame type (name)
+                const fFile = box.querySelector('.var-file').files[0];  // Get the frame file
+
                 if (fFile) {
                     status.innerText = `Step 2: Uploading Frame ${i+1}...`;
-                    const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;
+                    const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;  // Unique filename for each frame
                     const fBase64 = await toBase64(fFile);
                     
+                    // Upload the frame
                     await githubRequest(`contents/${fPath}`, "PUT", token, {
                         message: `Add frame: ${fPath}`,
                         content: fBase64.split(',')[1]
                     });
+
+                    // Store frame info (name/type and URL/path) for the config file
                     framesList.push({ type: fName, url: fPath });
                 }
             }
 
-            // 3. Update Config
+            // Step 3: Save the Config with the campaign info
             status.innerText = "Step 3: Saving Config...";
             let currentConfig = [];
             let sha = null;
+
+            // Try to get the current config file (if it exists)
             try {
                 const res = await githubRequest('contents/config.json', "GET", token);
-                currentConfig = JSON.parse(atob(res.content));
-                sha = res.sha;
-            } catch (e) {}
+                currentConfig = JSON.parse(atob(res.content));  // Decode the base64 content
+                sha = res.sha;  // The current SHA is needed to update the file
+            } catch (e) {
+                // If the config doesn't exist yet, just start with an empty array
+                currentConfig = [];
+                sha = null;
+            }
 
+            // Add the new campaign to the config
             currentConfig.push({
                 id: Date.now(),
                 name: name,
                 defaultText: document.getElementById('campText').value,
                 textColor: document.getElementById('textColor').value,
-                bannerUrl: bannerName, // Save Banner Path
-                frames: framesList
+                bannerUrl: bannerName,  // Save the banner's file path
+                frames: framesList      // Save the frames' file paths and types
             });
 
+            // Update the config.json file in the repository
             await githubRequest('contents/config.json', "PUT", token, {
                 message: `Add campaign ${name}`,
-                content: btoa(JSON.stringify(currentConfig, null, 2)),
-                sha: sha
+                content: btoa(JSON.stringify(currentConfig, null, 2)),  // Convert to base64
+                sha: sha  // Include the sha value to update the file
             });
 
             status.innerText = "DONE! Updates live in ~2 mins.";
@@ -157,14 +270,23 @@
         }
     }
 
+    // GitHub API request function
     async function githubRequest(endpoint, method, token, body = null) {
         const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/${endpoint}`;
-        const options = { method: method, headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' } };
+        const options = { 
+            method: method, 
+            headers: { 
+                'Authorization': `token ${token}`, 
+                'Content-Type': 'application/json' 
+            }
+        };
         if (body) options.body = JSON.stringify(body);
         const res = await fetch(url, options);
         if (!res.ok) throw new Error(await res.text());
         return res.json();
     }
+
+    // Convert file to base64
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -172,5 +294,6 @@
         reader.onerror = error => reject(error);
     });
 </script>
+
 </body>
 </html>
