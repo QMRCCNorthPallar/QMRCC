@@ -126,7 +126,7 @@ button:hover {
 <body>
 <div class="container">
 
-    <h2>QMRCC Campaigner</h2>
+    <h2>Campaign Frame Generator</h2>
 
     <img id="bannerDisplay" alt="Campaign Banner">
 
@@ -198,15 +198,10 @@ campaignSelect.addEventListener('change', e => {
     });
 
     controls.classList.remove('hidden');
-
-    // FIX: Ensure options load before loading first frame
-    setTimeout(() => loadFrame(0), 0);
+    loadFrame(0);
 });
 
-// FIX: Convert value to number
-formatSelect.addEventListener('change', e => {
-    loadFrame(Number(e.target.value));
-});
+formatSelect.addEventListener('change', e => loadFrame(e.target.value));
 
 function loadFrame(index) {
     isFrameLoaded = false;
@@ -233,10 +228,13 @@ document.getElementById('userImage').addEventListener('change', e => {
     reader.readAsDataURL(file);
 });
 
-// DRAW FUNCTION
+// ---------------------------------------------
+// FIXED AUTO-FIT DRAW FUNCTION
+// ---------------------------------------------
 function draw() {
     if (!isFrameLoaded || !isUserLoaded) return;
 
+    // Set canvas size to frame's actual pixels
     canvas.width = frameImg.naturalWidth;
     canvas.height = frameImg.naturalHeight;
 
@@ -250,10 +248,13 @@ function draw() {
 
     let drawW, drawH;
 
+    // Like CSS background-size: cover
     if (imgRatio > frameRatio) {
+        // User image is wider
         drawH = canvasH;
         drawW = drawH * imgRatio;
     } else {
+        // User image is taller
         drawW = canvasW;
         drawH = drawW / imgRatio;
     }
@@ -262,7 +263,11 @@ function draw() {
     const offsetY = (canvasH - drawH) / 2;
 
     ctx.clearRect(0, 0, canvasW, canvasH);
+
+    // Draw user image (auto-fit)
     ctx.drawImage(userImg, offsetX, offsetY, drawW, drawH);
+
+    // Draw frame
     ctx.drawImage(frameImg, 0, 0, canvasW, canvasH);
 
     canvas.style.display = "block";
