@@ -1,0 +1,11 @@
+{
+  "id": 1738000000000,
+  "name": "Eid 2025 Special",
+  "defaultText": "Your Name",
+  "textColor": "#ffffff",
+  "bannerUrl": "contents/banners/17380000_banner.png",
+  "frames": [
+    { "type": "Square", "url": "images/frames/17380000_0.png" },
+    { "type": "Portrait", "url": "images/frames/17380000_1.png" }
+  ]
+}
