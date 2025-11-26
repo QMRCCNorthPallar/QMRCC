@@ -1,14 +1,14 @@
 [
   {
-    "id": 1764136741126,
+    "id": 1764136919235,
     "name": "Election Campaign",
     "defaultText": "",
     "textColor": "#ffffff",
-    "bannerUrl": "contents/banners/1764136736756_All_3_poster_1.png",
+    "bannerUrl": "contents/banners/1764136914445_All_3_poster_1.png",
     "frames": [
       {
         "type": "Horizontal",
-        "url": "contents/frames/1764136739236_0_Horizontal.png"
+        "url": "contents/frames/1764136916987_0_Horizontal.png"
       },
       {
         "type": "Variant 2",
