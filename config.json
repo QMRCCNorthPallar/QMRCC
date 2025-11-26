@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "id": 1764137861660,
+    "name": "Election Campaign 2025",
+    "defaultText": "",
+    "textColor": "#ffffff",
+    "bannerUrl": "contents/banners/1764137844295_Sticker_002.png",
+    "frames": [
+      {
+        "type": "Vertical",
+        "url": "contents/frames/1764137857156_0_Vertical.png"
+      },
+      {
+        "type": "Horizontal",
+        "url": "contents/frames/1764137860006_1_Horizontal.png"
+      }
+    ]
+  }
+]
