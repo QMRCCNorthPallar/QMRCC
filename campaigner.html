@@ -6,7 +6,7 @@
 <title>Campaign Frame Generator</title>
 <style>
 /* ------------------------ */
-/* GLOBAL RESET & GOOGLE-LIKE UI */
+/* GOOGLE-LIKE UI */
 /* ------------------------ */
 * {
     margin: 0;
@@ -25,7 +25,7 @@ body {
 }
 
 /* ------------------------ */
-/* CARD CONTAINER */
+/* CARD */
 /* ------------------------ */
 .container {
     width: 100%;
@@ -46,7 +46,7 @@ h2 {
 }
 
 /* ------------------------ */
-/* BANNER IMAGE */
+/* BANNER */
 /* ------------------------ */
 #bannerDisplay {
     width: 100%;
@@ -59,7 +59,7 @@ h2 {
 }
 
 /* ------------------------ */
-/* INPUTS & SELECTS */
+/* INPUTS */
 /* ------------------------ */
 label {
     display: block;
@@ -86,7 +86,7 @@ select:focus, input:focus {
 }
 
 /* ------------------------ */
-/* CANVAS & BUTTON */
+/* CANVAS */
 /* ------------------------ */
 canvas {
     width: 100%;
@@ -114,11 +114,8 @@ button:hover {
     background-color: #1669c1;
 }
 
-/* Hide controls initially */
 .hidden { display: none; }
 
-/* ------------------------ */
-/* MOBILE */
 @media(max-width: 600px){
     .container { padding: 20px; }
     h2 { font-size: 1.5rem; }
@@ -185,11 +182,9 @@ fetch('config.json?t=' + Date.now())
 campaignSelect.addEventListener('change', e => {
     currentCampaign = campaigns[e.target.value];
 
-    if(currentCampaign.bannerUrl){
+    if (currentCampaign.bannerUrl) {
         bannerDisplay.src = currentCampaign.bannerUrl;
-        bannerDisplay.onload = () => {
-            bannerDisplay.style.display = 'block';
-        }
+        bannerDisplay.style.display = 'block';
     } else {
         bannerDisplay.style.display = 'none';
     }
@@ -208,10 +203,10 @@ campaignSelect.addEventListener('change', e => {
 
 formatSelect.addEventListener('change', e => loadFrame(e.target.value));
 
-function loadFrame(index){
+function loadFrame(index) {
     isFrameLoaded = false;
     frameImg.src = currentCampaign.frames[index].url;
-    frameImg.onload = ()=>{
+    frameImg.onload = () => {
         isFrameLoaded = true;
         draw();
     };
@@ -220,7 +215,7 @@ function loadFrame(index){
 // User Image upload
 document.getElementById('userImage').addEventListener('change', e => {
     const file = e.target.files[0];
-    if(!file) return;
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = ev => {
@@ -228,54 +223,67 @@ document.getElementById('userImage').addEventListener('change', e => {
         userImg.onload = () => {
             isUserLoaded = true;
             draw();
-        }
-    }
+        };
+    };
     reader.readAsDataURL(file);
 });
 
-// Draw canvas
-function draw(){
-    if(!isFrameLoaded || !isUserLoaded) return;
+// ---------------------------------------------
+// FIXED AUTO-FIT DRAW FUNCTION
+// ---------------------------------------------
+function draw() {
+    if (!isFrameLoaded || !isUserLoaded) return;
 
-    canvas.width = frameImg.width;
-    canvas.height = frameImg.height;
+    // Set canvas size to frame's actual pixels
+    canvas.width = frameImg.naturalWidth;
+    canvas.height = frameImg.naturalHeight;
 
-    // Auto-fit user image to frame
-    const frameRatio = canvas.width / canvas.height;
-    const imgRatio = userImg.width / userImg.height;
+    const canvasW = canvas.width;
+    const canvasH = canvas.height;
+    const imgW = userImg.naturalWidth;
+    const imgH = userImg.naturalHeight;
 
-    let drawWidth, drawHeight;
-    if(imgRatio > frameRatio){
-        drawWidth = canvas.width;
-        drawHeight = canvas.width / imgRatio;
+    const frameRatio = canvasW / canvasH;
+    const imgRatio = imgW / imgH;
+
+    let drawW, drawH;
+
+    // Like CSS background-size: cover
+    if (imgRatio > frameRatio) {
+        // User image is wider
+        drawH = canvasH;
+        drawW = drawH * imgRatio;
     } else {
-        drawHeight = canvas.height;
-        drawWidth = canvas.height * imgRatio;
+        // User image is taller
+        drawW = canvasW;
+        drawH = drawW / imgRatio;
     }
 
-    const offsetX = (canvas.width - drawWidth) / 2;
-    const offsetY = (canvas.height - drawHeight) / 2;
+    const offsetX = (canvasW - drawW) / 2;
+    const offsetY = (canvasH - drawH) / 2;
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(userImg, 0,0,userImg.width,userImg.height, offsetX, offsetY, drawWidth, drawHeight);
-    ctx.drawImage(frameImg, 0,0);
+    ctx.clearRect(0, 0, canvasW, canvasH);
 
-    canvas.style.display = 'block';
-    downloadBtn.style.display = 'inline-block';
+    // Draw user image (auto-fit)
+    ctx.drawImage(userImg, offsetX, offsetY, drawW, drawH);
+
+    // Draw frame
+    ctx.drawImage(frameImg, 0, 0, canvasW, canvasH);
+
+    canvas.style.display = "block";
+    downloadBtn.style.display = "inline-block";
 }
 
-// Mobile-friendly download
-downloadBtn.addEventListener('click', ()=>{
+// Download button
+downloadBtn.addEventListener('click', () => {
     const dataURL = canvas.toDataURL('image/png');
 
-    if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)){
-        // Open in new tab so user can long-press to save
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         const win = window.open();
         win.document.write('<img src="' + dataURL + '" style="width:100%">');
         return;
     }
 
-    // Desktop download
     const link = document.createElement('a');
     link.download = 'campaign_frame.png';
     link.href = dataURL;
