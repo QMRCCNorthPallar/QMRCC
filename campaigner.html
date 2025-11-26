@@ -6,276 +6,209 @@
 <title>Campaign Frame Generator</title>
 <style>
 /* ------------------------ */
-/* GLOBAL RESET & GOOGLE-LIKE UI */
-/* ------------------------ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Roboto", "Segoe UI", sans-serif;
-}
-
-body {
-    min-height: 100vh;
-    background: #f1f3f4;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-}
+/* RESET & FONT */
+* { margin:0; padding:0; box-sizing:border-box; font-family: "Roboto", sans-serif; }
+body { background: #f1f3f4; display:flex; justify-content:center; padding:20px; }
 
 /* ------------------------ */
-/* CARD CONTAINER */
-/* ------------------------ */
+/* CONTAINER CARD */
 .container {
     width: 100%;
-    max-width: 700px;
+    max-width: 720px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    padding: 30px;
-    text-align: center;
-    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 24px;
+    display:flex; flex-direction:column; align-items:center;
 }
 
-h2 {
-    font-size: 1.8rem;
-    font-weight: 500;
-    color: #202124;
-    margin-bottom: 20px;
+h2 { font-weight:500; color:#202124; margin-bottom:20px; }
+
+/* ------------------------ */
+/* BANNER */
+.banner-wrapper {
+    width:100%; max-height: 250px;
+    overflow:hidden; border-radius:12px;
+    margin-bottom:20px; position:relative;
+    background:#e0e0e0; display:flex; justify-content:center; align-items:center;
+}
+.banner-wrapper img {
+    max-width:100%; max-height:100%;
+    object-fit:contain;
 }
 
 /* ------------------------ */
-/* BANNER IMAGE */
-/* ------------------------ */
-#bannerDisplay {
-    width: 100%;
-    max-height: 250px;
-    object-fit: contain;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    display: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+/* SELECT & FILE INPUT */
+label { font-size:0.9rem; color:#3c4043; margin-bottom:6px; text-align:left; width:100%; margin-top:12px; }
+select,input[type="file"] {
+    width:100%; padding:12px; border:1px solid #dadce0; border-radius:8px; font-size:1rem;
 }
+select:focus,input:focus { border-color:#1a73e8; box-shadow:0 0 0 2px rgba(26,115,232,0.15); outline:none; }
 
 /* ------------------------ */
-/* INPUTS & SELECTS */
-/* ------------------------ */
-label {
-    display: block;
-    font-size: 0.9rem;
-    color: #3c4043;
-    margin-bottom: 6px;
-    text-align: left;
-    margin-top: 12px;
-}
-
-select, input[type="text"], input[type="file"] {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #dadce0;
-    font-size: 1rem;
-    outline: none;
-    transition: 0.2s;
-}
-
-select:focus, input:focus {
-    border-color: #1a73e8;
-    box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
-}
+/* CANVAS */
+canvas { width:100%; border-radius:12px; margin-top:20px; background:#eee; cursor:grab; }
 
 /* ------------------------ */
-/* CANVAS & BUTTON */
-/* ------------------------ */
-canvas {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 12px;
-    display: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
+/* BUTTON */
 button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 14px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    background-color: #1a73e8;
-    color: white;
-    font-weight: 500;
-    transition: 0.25s;
+    margin-top:16px; padding:14px;
+    width:100%; border:none; border-radius:8px;
+    background:#1a73e8; color:#fff; font-weight:500; font-size:1rem; cursor:pointer; transition:0.25s;
 }
-
-button:hover {
-    background-color: #1669c1;
-}
-
-/* Hide controls initially */
-.hidden { display: none; }
+button:hover { background:#1669c1; }
 
 /* ------------------------ */
 /* MOBILE */
-@media(max-width: 600px){
-    .container { padding: 20px; }
-    h2 { font-size: 1.5rem; }
-}
+@media(max-width:600px){ .container{padding:16px;} h2{font-size:1.5rem;} }
 </style>
 </head>
-
 <body>
+
 <div class="container">
 
     <h2>Campaign Frame Generator</h2>
 
-    <img id="bannerDisplay" alt="Campaign Banner">
-
-    <label for="campaignSelect">1. Select Campaign</label>
-    <select id="campaignSelect">
-        <option value="" disabled selected>Loading campaigns...</option>
-    </select>
-
-    <div id="controls" class="hidden">
-        <label for="formatSelect">2. Select Format</label>
-        <select id="formatSelect"></select>
-
-        <label for="userText">3. Enter Your Name</label>
-        <input type="text" id="userText" placeholder="Your Name">
-
-        <label for="userImage">4. Upload Your Photo</label>
-        <input type="file" id="userImage" accept="image/*">
+    <div class="banner-wrapper">
+        <img id="bannerDisplay" alt="Campaign Banner">
     </div>
+
+    <label for="campaignSelect">Select Campaign</label>
+    <select id="campaignSelect"><option disabled selected>Loading...</option></select>
+
+    <label for="userImage">Upload Your Image</label>
+    <input type="file" id="userImage" accept="image/*">
 
     <canvas id="canvas"></canvas>
 
-    <button id="downloadBtn" style="display:none;">Download Image</button>
+    <button id="downloadBtn" style="display:none;">Download Frame</button>
+
 </div>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const campaignSelect = document.getElementById('campaignSelect');
-const formatSelect = document.getElementById('formatSelect');
 const bannerDisplay = document.getElementById('bannerDisplay');
-const controls = document.getElementById('controls');
+const userInput = document.getElementById('userImage');
+const downloadBtn = document.getElementById('downloadBtn');
 
 let campaigns = [];
 let currentCampaign = null;
 
 let frameImg = new Image();
 let userImg = new Image();
+let userImgPos = { x:0, y:0, scale:1 };
+let isDragging = false;
+let dragStart = {x:0, y:0};
 
-let isFrameLoaded = false;
-let isUserLoaded = false;
-
-// Load config.json
-fetch('config.json?t=' + Date.now())
-.then(res => res.json())
-.then(data => {
+// Load config
+fetch('config.json?t='+Date.now()).then(r=>r.json()).then(data=>{
     campaigns = data;
-    campaignSelect.innerHTML = '<option value="" disabled selected>Select a Campaign</option>';
-    data.forEach((c, i) => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = c.name;
+    campaignSelect.innerHTML='<option disabled selected>Select Campaign</option>';
+    data.forEach((c,i)=>{
+        const opt=document.createElement('option');
+        opt.value=i; opt.textContent=c.name;
         campaignSelect.appendChild(opt);
     });
 });
 
 // Campaign selection
-campaignSelect.addEventListener('change', e => {
+campaignSelect.addEventListener('change', e=>{
     currentCampaign = campaigns[e.target.value];
-
     if(currentCampaign.bannerUrl){
-        bannerDisplay.src = currentCampaign.bannerUrl;
-        bannerDisplay.onload = ()=> {
-            bannerDisplay.style.display = 'block';
-            bannerDisplay.style.height = 'auto';
-        }
-    } else {
-        bannerDisplay.style.display = 'none';
+        bannerDisplay.src=currentCampaign.bannerUrl;
+        frameImg.src = currentCampaign.frames[0].url;
+        bannerDisplay.style.display='block';
+        frameImg.onload = ()=> drawCanvas();
     }
-
-    formatSelect.innerHTML = '';
-    currentCampaign.frames.forEach((f, i) => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = f.type;
-        formatSelect.appendChild(opt);
-    });
-
-    document.getElementById('userText').value = currentCampaign.defaultText || "";
-    controls.classList.remove('hidden');
-
-    loadFrame(0);
 });
 
-formatSelect.addEventListener('change', e => loadFrame(e.target.value));
-
-function loadFrame(index){
-    isFrameLoaded = false;
-    frameImg.src = currentCampaign.frames[index].url;
-    frameImg.onload = ()=>{
-        isFrameLoaded = true;
-        draw();
-    };
-}
-
-document.getElementById('userImage').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if(!file) return;
-
+// User image upload
+userInput.addEventListener('change', e=>{
+    const file = e.target.files[0]; if(!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
+    reader.onload = ev=>{
         userImg.src = ev.target.result;
-        userImg.onload = ()=> {
-            isUserLoaded = true;
-            draw();
+        userImg.onload = ()=>{
+            userImgPos={x:canvas.width/2, y:canvas.height/2, scale:1};
+            drawCanvas();
         }
     }
     reader.readAsDataURL(file);
 });
 
-document.getElementById('userText').addEventListener('input', draw);
+// -------------------------
+// Canvas resize
+function resizeCanvas(){
+    if(!frameImg.width) return;
+    canvas.width = frameImg.width;
+    canvas.height = frameImg.height;
+    drawCanvas();
+}
+window.addEventListener('resize', resizeCanvas);
 
-function draw(){
-    if(!isFrameLoaded || !isUserLoaded) return;
+// -------------------------
+// Draw canvas
+function drawCanvas(){
+    if(!frameImg.width || !userImg.width) return;
 
     canvas.width = frameImg.width;
     canvas.height = frameImg.height;
 
-    // Resize user image proportionally
-    const ratio = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
-    const shiftX = (canvas.width - userImg.width * ratio)/2;
-    const shiftY = (canvas.height - userImg.height * ratio)/2;
-
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.drawImage(userImg, 0,0,userImg.width,userImg.height,
-        shiftX, shiftY, userImg.width*ratio, userImg.height*ratio);
+    // Draw user image
+    const w = userImg.width * userImgPos.scale;
+    const h = userImg.height * userImgPos.scale;
+    ctx.drawImage(userImg, userImgPos.x - w/2, userImgPos.y - h/2, w, h);
 
-    ctx.drawImage(frameImg, 0,0);
+    // Draw frame
+    ctx.drawImage(frameImg, 0,0, canvas.width, canvas.height);
 
-    const text = document.getElementById('userText').value;
-    if(text){
-        ctx.font = `bold ${canvas.height * 0.05}px Arial`;
-        ctx.fillStyle = currentCampaign.textColor || "white";
-        ctx.textAlign = "center";
-        ctx.shadowColor="black";
-        ctx.shadowBlur=6;
-        ctx.fillText(text, canvas.width/2, canvas.height - (canvas.height*0.1));
-    }
-
-    canvas.style.display = 'block';
-    document.getElementById('downloadBtn').style.display = 'inline-block';
+    downloadBtn.style.display='block';
 }
 
-document.getElementById('downloadBtn').addEventListener('click', () => {
+// -------------------------
+// Drag & Move
+canvas.addEventListener('mousedown', e=>{
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    if(mx>0 && mx<canvas.width && my>0 && my<canvas.height){
+        isDragging=true;
+        dragStart={x:mx - userImgPos.x, y:my - userImgPos.y};
+        canvas.style.cursor='grabbing';
+    }
+});
+canvas.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const rect=canvas.getBoundingClientRect();
+    userImgPos.x=e.clientX - rect.left - dragStart.x;
+    userImgPos.y=e.clientY - rect.top - dragStart.y;
+    drawCanvas();
+});
+canvas.addEventListener('mouseup', e=>{
+    isDragging=false; canvas.style.cursor='grab';
+});
+canvas.addEventListener('mouseleave', e=>{
+    isDragging=false; canvas.style.cursor='grab';
+});
+
+// -------------------------
+// Zoom with mouse wheel
+canvas.addEventListener('wheel', e=>{
+    e.preventDefault();
+    const scaleAmount = e.deltaY<0 ? 1.05 : 0.95;
+    userImgPos.scale *= scaleAmount;
+    drawCanvas();
+});
+
+// -------------------------
+// Download
+downloadBtn.addEventListener('click', ()=>{
     const link = document.createElement('a');
-    link.download = 'campaign_frame.png';
+    link.download='campaign_frame.png';
     link.href = canvas.toDataURL();
     link.click();
 });
