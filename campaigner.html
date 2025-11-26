@@ -56,9 +56,6 @@ button:hover { background-color:#1669c1; }
 
         <label>3. Upload Your Photo</label>
         <input type="file" id="userImage" accept="image/*">
-
-        <label>4. Adjust Image</label>
-        <p style="font-size:0.8rem;color:#5f6368;">Drag to move, pinch/scroll to zoom</p>
     </div>
 
     <canvas id="canvas"></canvas>
@@ -66,9 +63,6 @@ button:hover { background-color:#1669c1; }
 </div>
 
 <script>
-/* ------------------------ */
-/* VARIABLES */
-/* ------------------------ */
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const campaignSelect = document.getElementById('campaignSelect');
@@ -80,19 +74,12 @@ const downloadBtn = document.getElementById('downloadBtn');
 
 let campaigns = [];
 let currentCampaign = null;
-
 let frameImg = new Image();
 let userImg = new Image();
 let isFrameLoaded = false;
 let isUserLoaded = false;
 
-// For image adjustments
-let imgPos = {x:0,y:0,scale:1};
-let dragging = false;
-let lastMouse = {x:0,y:0};
-
-/* ------------------------ */
-/* LOAD CAMPAIGNS */
+// Load campaigns
 fetch('config.json?t=' + Date.now())
 .then(res => res.json())
 .then(data => {
@@ -106,13 +93,11 @@ fetch('config.json?t=' + Date.now())
     });
 });
 
-/* ------------------------ */
-/* CAMPAIGN SELECT */
-campaignSelect.addEventListener('change', e => {
+// Campaign select
+campaignSelect.addEventListener('change', e=>{
     currentCampaign = campaigns[e.target.value];
     controls.classList.remove('hidden');
 
-    // Banner
     if(currentCampaign.bannerUrl){
         bannerDisplay.src = currentCampaign.bannerUrl;
         bannerDisplay.onload = ()=> bannerDisplay.style.display='block';
@@ -122,8 +107,7 @@ campaignSelect.addEventListener('change', e => {
     loadFrame(0);
 });
 
-/* ------------------------ */
-/* FRAME THUMBNAILS */
+// Frame thumbnails
 function loadFrameThumbnails(){
     frameThumbnails.innerHTML='';
     currentCampaign.frames.forEach((f,i)=>{
@@ -139,54 +123,26 @@ function loadFrameThumbnails(){
     });
 }
 
-/* ------------------------ */
-/* LOAD FRAME */
+// Load frame
 function loadFrame(index){
     isFrameLoaded = false;
     frameImg.src = currentCampaign.frames[index].url;
-    frameImg.onload = ()=> { isFrameLoaded = true; draw(); }
+    frameImg.onload = ()=> { isFrameLoaded=true; draw(); }
 }
 
-/* ------------------------ */
-/* LOAD USER IMAGE */
+// Load user image
 userImageInput.addEventListener('change', e=>{
     const file = e.target.files[0];
     if(!file) return;
     const reader = new FileReader();
     reader.onload = ev=>{
         userImg.src = ev.target.result;
-        userImg.onload = ()=> {
-            isUserLoaded = true;
-            // Reset position
-            imgPos = {x:canvas.width/2, y:canvas.height/2, scale:1};
-            draw();
-        };
+        userImg.onload = ()=> { isUserLoaded=true; draw(); };
     }
     reader.readAsDataURL(file);
 });
 
-/* ------------------------ */
-/* IMAGE ADJUSTMENTS (DRAG & ZOOM) */
-canvas.addEventListener('mousedown', e=>{ dragging=true; lastMouse={x:e.offsetX, y:e.offsetY}; });
-canvas.addEventListener('mousemove', e=>{
-    if(dragging){
-        imgPos.x += e.offsetX - lastMouse.x;
-        imgPos.y += e.offsetY - lastMouse.y;
-        lastMouse = {x:e.offsetX, y:e.offsetY};
-        draw();
-    }
-});
-canvas.addEventListener('mouseup', ()=>dragging=false);
-canvas.addEventListener('mouseleave', ()=>dragging=false);
-canvas.addEventListener('wheel', e=>{
-    e.preventDefault();
-    const scaleAmount = e.deltaY>0?0.95:1.05;
-    imgPos.scale *= scaleAmount;
-    draw();
-});
-
-/* ------------------------ */
-/* DRAW FUNCTION */
+// Draw
 function draw(){
     if(!isFrameLoaded || !isUserLoaded) return;
 
@@ -195,20 +151,19 @@ function draw(){
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // Draw user image
-    const iw = userImg.width * imgPos.scale;
-    const ih = userImg.height * imgPos.scale;
-    ctx.drawImage(userImg, 0,0,userImg.width,userImg.height, imgPos.x - iw/2, imgPos.y - ih/2, iw, ih);
+    // Auto-fit user image to frame
+    const scale = Math.max(canvas.width/userImg.width, canvas.height/userImg.height);
+    const x = (canvas.width - userImg.width*scale)/2;
+    const y = (canvas.height - userImg.height*scale)/2;
 
-    // Draw frame
+    ctx.drawImage(userImg, 0,0,userImg.width,userImg.height, x,y,userImg.width*scale, userImg.height*scale);
     ctx.drawImage(frameImg,0,0);
 
     canvas.style.display='block';
     downloadBtn.style.display='inline-block';
 }
 
-/* ------------------------ */
-/* DOWNLOAD BUTTON */
+// Download
 downloadBtn.addEventListener('click', ()=>{
     const link = document.createElement('a');
     link.download = 'campaign_frame.png';
