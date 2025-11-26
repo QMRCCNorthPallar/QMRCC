@@ -5,28 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Campaign Manager</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f7f7f7; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
-        .card { 
-            background: #fff; 
-            padding: 30px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-            width: 100%; 
-            max-width: 700px; 
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
             text-align: center;
+            box-sizing: border-box;
         }
         h1 {
             color: #333;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
         }
         .section-title {
@@ -40,14 +43,15 @@
         input, button, select {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
+            margin: 12px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
             font-size: 1rem;
         }
         input[type="color"] {
-            width: auto;
+            width: 30%;
+            margin-top: 8px;
         }
         button {
             background: #4CAF50;
@@ -63,22 +67,14 @@
         }
         .variant-box {
             background: #f4f4f9;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin: 15px 0;
+            margin: 12px 0;
             border: 1px dashed #ddd;
         }
         .frame-title {
             font-size: 1rem;
             margin-bottom: 8px;
-        }
-        .frame-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .frame-container > div {
-            width: 48%;
         }
         .status {
             margin-top: 15px;
@@ -94,6 +90,48 @@
         .login-section input {
             width: 80%;
             margin: 10px 0;
+        }
+        .logout-btn {
+            background: #f44336;
+            margin-top: 15px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            .card {
+                padding: 15px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1rem;
+            }
+            input, button, select {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+            button {
+                font-size: 1rem;
+                padding: 15px;
+            }
+            .frame-title {
+                font-size: 0.9rem;
+            }
+            input[type="color"] {
+                width: 40%;
+            }
+            .variant-box {
+                padding: 12px;
+            }
+        }
+
+        /* Tablet and Desktop Styles */
+        @media (min-width: 601px) {
+            .card {
+                max-width: 700px;
+            }
         }
     </style>
 </head>
@@ -133,6 +171,9 @@
         <!-- Publish Button -->
         <button onclick="publishCampaign()" id="publishBtn">PUBLISH CAMPAIGN</button>
         <div id="status" class="status"></div>
+
+        <!-- Logout Button -->
+        <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 </div>
 
@@ -206,16 +247,17 @@
 
             // Step 2: Upload the Frames
             let framesList = [];  // This will store information about the frames (type and URL)
+            for (let i = 0; i <
             for (let i = 0; i < variantBoxes.length; i++) {
                 const box = variantBoxes[i];
                 const fName = box.querySelector('.var-name').value || "Default";  // Get frame type (name)
                 const fFile = box.querySelector('.var-file').files[0];  // Get the frame file
 
                 if (fFile) {
-                    status.innerText = `Step 2: Uploading Frame ${i+1}...`;
+                    status.innerText = `Step 2: Uploading Frame ${i + 1}...`;
                     const fPath = "frames/" + Date.now() + "_" + i + "_" + fFile.name;  // Unique filename for each frame
                     const fBase64 = await toBase64(fFile);
-                    
+
                     // Upload the frame
                     await githubRequest(`contents/${fPath}`, "PUT", token, {
                         message: `Add frame: ${fPath}`,
@@ -273,11 +315,11 @@
     // GitHub API request function
     async function githubRequest(endpoint, method, token, body = null) {
         const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/${endpoint}`;
-        const options = { 
-            method: method, 
-            headers: { 
-                'Authorization': `token ${token}`, 
-                'Content-Type': 'application/json' 
+        const options = {
+            method: method,
+            headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json'
             }
         };
         if (body) options.body = JSON.stringify(body);
@@ -293,6 +335,12 @@
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
     });
+
+    // Logout Function
+    function logout() {
+        localStorage.removeItem('gh_token');
+        location.reload();  // Refresh the page to prompt login again
+    }
 </script>
 
 </body>

@@ -5,18 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campaign Frame Generator</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #e9ecef; margin: 0; padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
-        /* BANNER STYLE */
-        #bannerDisplay { width: 100%; border-radius: 10px; margin-bottom: 20px; display: none; object-fit: cover; max-height: 200px; }
-        
-        select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        label { display: block; text-align: left; font-weight: bold; margin-top: 10px; color: #444; }
-        button { background-color: #007bff; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-size: 16px; margin-top: 10px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        canvas { max-width: 100%; border: 1px solid #ddd; margin-top: 20px; border-radius: 5px; display: none; }
-        .hidden { display: none; }
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and overall container styles */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        /* Banner image styles */
+        #bannerDisplay {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            object-fit: cover;
+            max-height: 200px;
+        }
+
+        /* Select and input field styling */
+        select, input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #444;
+            text-align: left;
+            width: 100%;
+            display: inline-block;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Canvas Styling */
+        canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            display: none;
+            border-radius: 8px;
+        }
+
+        /* Hidden Elements */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            button {
+                font-size: 1.2rem;
+                padding: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -24,25 +119,26 @@
 <div class="container">
     <img id="bannerDisplay" alt="Campaign Banner">
 
-    <h2>Frame Generator</h2>
+    <h2>Campaign Frame Generator</h2>
 
-    <label>1. Select Campaign</label>
+    <label for="campaignSelect">1. Select Campaign</label>
     <select id="campaignSelect">
         <option value="" disabled selected>Loading...</option>
     </select>
 
     <div id="controls" class="hidden">
-        <label>2. Select Format</label>
+        <label for="formatSelect">2. Select Format</label>
         <select id="formatSelect"></select>
 
-        <label>3. Enter Your Name</label>
+        <label for="userText">3. Enter Your Name</label>
         <input type="text" id="userText" placeholder="Your Name">
 
-        <label>4. Upload Your Photo</label>
+        <label for="userImage">4. Upload Your Photo</label>
         <input type="file" id="userImage" accept="image/*">
     </div>
 
     <canvas id="canvas"></canvas>
+
     <button id="downloadBtn" style="display:none;">Download Image</button>
 </div>
 
@@ -164,4 +260,4 @@
 </script>
 
 </body>
-</html> 
+</html>
