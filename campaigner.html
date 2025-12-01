@@ -302,15 +302,15 @@ whatsappBtn.addEventListener('click', async () => {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
                 files: [file],
-                title: "ഓരോ വോട്ടും യുഡിഎഫിനാകട്ടെ...",
-                text: "എന്നും ജനങ്ങളോടൊപ്പം...!"
+                title: "Campaign Frame",
+                text: "Check out my campaign frame!"
             });
             return;
         }
 
         // Desktop fallback
         const dataURL = canvas.toDataURL("image/png");
-        const encoded = encodeURIComponent("എന്നും ജനങ്ങളോടൊപ്പം...!: " + dataURL);
+        const encoded = encodeURIComponent("Here's my campaign frame: " + dataURL);
         window.open("https://wa.me/?text=" + encoded, "_blank");
     }, "image/png");
 });
