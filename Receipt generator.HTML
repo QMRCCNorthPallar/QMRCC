@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Generator Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Access Screen (shown by default) -->
+    <div id="access-screen">
+        <div class="access-card">
+            <h1>🔐 Authorization Required</h1>
+            <p>Please enter the access code to continue.</p>
+            <input type="password" id="access-code-input" placeholder="Enter Code">
+            <button id="access-submit-btn">Unlock</button>
+            <p id="access-error-message" class="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Main App Container (hidden by default) -->
+    <div id="app-container" class="app-container hidden">
+        <header class="app-header">
+            <div class="header-content">
+                <div>
+                    <h1>Receipt Generator Pro</h1>
+                    <p>Upload, customize, and download receipts instantly.</p>
+                </div>
+                <!-- Dark Mode Toggle -->
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                    <span class="theme-switch-label">Dark Mode</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- Left Column: Form -->
+            <section class="form-panel card">
+                <h2>Receipt Details</h2>
+                <form id="receiptForm">
+                    <div class="form-group">
+                        <label for="templateUpload">1. Receipt Template (PNG)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="templateUpload" accept="image/png" required>
+                            <span class="file-input-label">Choose file...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payerName">2. Payer's Name</label>
+                        <input type="text" id="payerName" placeholder="e.g., Jane Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amountPaid">3. Amount Paid</label>
+                        <input type="number" id="amountPaid" placeholder="e.g., 1500" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currencySelector">4. Currency</label>
+                        <select id="currencySelector" required>
+                            <option value="INR" selected>INR - Indian Rupee (₹)</option>
+                            <option value="AED">AED - UAE Dirham (د.إ)</option>
+                            <option value="SAR">SAR - Saudi Riyal (﷼)</option>
+                        </select>
+                    </div>
+
+                    <button type="button" id="generateBtn" class="primary-button">
+                        <span class="button-text">Generate Receipt</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Column: Output -->
+            <section class="output-panel card">
+                <h2>Preview</h2>
+                <div class="preview-container">
+                    <p id="placeholderText">Your generated receipt will appear here.</p>
+                    <img id="receiptImage" src="#" alt="Generated Receipt">
+                </div>
+                <div class="download-btn-container">
+                    <a id="downloadBtn" href="#" download="receipt.png" class="secondary-button">Download Receipt</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Hidden canvas for drawing the receipt -->
+    <canvas id="receiptCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
