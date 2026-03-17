@@ -343,13 +343,16 @@ body {
     box-shadow: var(--shadow);
 }
 
-/* Template Card */
+/* ========================================
+   Template Card Styles
+   ======================================== */
 .template-card {
     background: white;
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     padding: 1rem;
     transition: var(--transition);
+    position: relative;
 }
 
 .template-card:hover {
@@ -364,10 +367,33 @@ body {
     border-radius: calc(var(--radius) - 4px);
 }
 
+.template-serial-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
 .template-card .template-name {
     font-weight: 600;
     margin-top: 0.75rem;
     font-size: 0.95rem;
+}
+
+.template-card .template-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .template-card .template-actions {
@@ -569,6 +595,76 @@ body {
 
 .badge.bg-info {
     background-color: var(--info-color) !important;
+}
+
+/* Template Stats Summary */
+.template-stats-summary {
+    background: var(--light-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+
+.template-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.template-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.template-stat-serial {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.template-stat-count {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+}
+
+/* Template Serial in Entry */
+.template-serial-small {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Entry Details */
+.entry-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.entry-payer, .entry-template {
+    display: flex;
+    align-items: center;
+}
+
+.entry-amount {
+    text-align: right;
+    min-width: 120px;
+}
+
+.amount-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--success-color);
 }
 
 /* ========================================

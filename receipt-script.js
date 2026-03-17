@@ -1,6 +1,11 @@
 /**
  * QMRCC Receipt Generator Pro
  * Client-side application using localStorage
+ * 
+ * Features:
+ * - Template management with serial prefixes
+ * - Unique receipt numbers per template
+ * - Receipt history tracking
  */
 
 (function() {
@@ -14,8 +19,10 @@
         PASSWORD_KEY: 'qmrcc_password',
         TEMPLATES_KEY: 'qmrcc_templates',
         ENTRIES_KEY: 'qmrcc_entries',
+        SETTINGS_KEY: 'qmrcc_settings',
         DEFAULT_PASSWORD: 'admin123',
         SESSION_DURATION: 24 * 60 * 60 * 1000, // 24 hours
+        ORG_PREFIX: 'QMRCC', // Organization prefix for receipts
     };
 
     // Currency symbols
@@ -69,6 +76,11 @@
         });
     }
 
+    // Pad number with zeros
+    function padNumber(num, length = 4) {
+        return String(num).padStart(length, '0');
+    }
+
     // ========================================
     // Storage Functions
     // ========================================
@@ -101,6 +113,29 @@
             console.error('Storage delete error:', e);
             return false;
         }
+    }
+
+    // ========================================
+    // Settings Functions
+    // ========================================
+
+    function getSettings() {
+        return getFromStorage(CONFIG.SETTINGS_KEY) || {
+            orgPrefix: CONFIG.ORG_PREFIX,
+            nextTemplateSerial: 1,
+        };
+    }
+
+    function saveSettings(settings) {
+        return saveToStorage(CONFIG.SETTINGS_KEY, settings);
+    }
+
+    function getNextTemplateSerial() {
+        const settings = getSettings();
+        const serial = settings.nextTemplateSerial;
+        settings.nextTemplateSerial += 1;
+        saveSettings(settings);
+        return serial;
     }
 
     // ========================================
@@ -167,15 +202,23 @@
         return saveToStorage(CONFIG.TEMPLATES_KEY, templates);
     }
 
+    function generateTemplateSerial() {
+        const serialNum = getNextTemplateSerial();
+        return `${CONFIG.ORG_PREFIX}-${padNumber(serialNum, 3)}`;
+    }
+
     function addTemplate(name, imageData, mimeType = 'image/png') {
         const templates = getTemplates();
+        const serial = generateTemplateSerial();
         const newTemplate = {
             id: generateToken(),
             name,
+            serial, // Unique serial like "QMRCC-001"
             imageData,
             mimeType,
             isActive: true,
-            usageCount: 0, // Track usage
+            usageCount: 0,
+            receiptCounter: 0, // Counter for receipts generated with this template
             createdAt: new Date().toISOString(),
         };
         templates.push(newTemplate);
@@ -201,13 +244,21 @@
     }
 
     function incrementTemplateUsage(templateId) {
-        if (!templateId) return;
+        if (!templateId) return null;
         const templates = getTemplates();
         const index = templates.findIndex(t => t.id === templateId);
         if (index !== -1) {
             templates[index].usageCount = (templates[index].usageCount || 0) + 1;
+            templates[index].receiptCounter = (templates[index].receiptCounter || 0) + 1;
             saveTemplates(templates);
+            return templates[index];
         }
+        return null;
+    }
+
+    function getTemplateById(id) {
+        const templates = getTemplates();
+        return templates.find(t => t.id === id);
     }
 
     // ========================================
@@ -231,17 +282,20 @@
             amount: data.amount,
             currency: data.currency,
             formattedAmount: data.formattedAmount,
+            date: data.date,
+            time: data.time,
             templateId: data.templateId,
             templateName: data.templateName,
+            templateSerial: data.templateSerial,
             createdAt: new Date().toISOString(),
         };
         entries.unshift(newEntry); // Add to beginning
         saveEntries(entries);
         
-        // Increment template usage
-        incrementTemplateUsage(data.templateId);
+        // Increment template usage and counter
+        const updatedTemplate = incrementTemplateUsage(data.templateId);
         
-        return newEntry;
+        return { entry: newEntry, template: updatedTemplate };
     }
 
     function deleteEntry(id) {
@@ -267,15 +321,59 @@
             return acc;
         }, {});
         
-        return { totalEntries, totalAmount, byCurrency };
+        // Get entries by template
+        const byTemplate = entries.reduce((acc, entry) => {
+            const key = entry.templateSerial || 'CUSTOM';
+            if (!acc[key]) {
+                acc[key] = { count: 0, total: 0, name: entry.templateName || 'Custom Template' };
+            }
+            acc[key].count += 1;
+            acc[key].total += parseFloat(entry.amount || 0);
+            return acc;
+        }, {});
+        
+        return { totalEntries, totalAmount, byCurrency, byTemplate };
     }
 
     // ========================================
     // Receipt Generation
     // ========================================
 
-    function generateReceiptNumber() {
-        return `RCP-${Date.now().toString(36).toUpperCase()}`;
+    function generateReceiptNumber(template) {
+        // Get current date and time components
+        const now = new Date();
+        const year = String(now.getFullYear()).slice(2); // Last 2 digits
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        // Format: YYMMDDHHMMSS (e.g., 250316154530)
+        const dateTimeStr = `${year}${month}${day}${hours}${minutes}${seconds}`;
+        
+        if (template && template.serial) {
+            // Use template's serial + date/time + counter for uniqueness
+            const counter = (template.receiptCounter || 0) + 1;
+            // Format: QMRCC-001-250316154530-0001
+            return `${template.serial}-${dateTimeStr}-${padNumber(counter, 4)}`;
+        } else {
+            // For custom templates, use timestamp-based number
+            // Format: CUSTOM-250316154530
+            return `CUSTOM-${dateTimeStr}`;
+        }
+    }
+
+    function formatDateTimeForDisplay(isoString) {
+        const date = new Date(isoString);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
     }
 
     function formatDate() {
@@ -283,6 +381,14 @@
             year: 'numeric',
             month: 'long',
             day: 'numeric',
+        });
+    }
+
+    function formatTime() {
+        return new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
         });
     }
 
@@ -326,6 +432,9 @@
                 // Draw date
                 ctx.font = `${Math.max(12, canvas.width * 0.015)}px 'Rubik', sans-serif`;
                 ctx.fillText(`Date: ${data.date}`, canvas.width - rightMargin, startY + lineHeight);
+
+                // Draw time
+                ctx.fillText(`Time: ${data.time}`, canvas.width - rightMargin, startY + lineHeight * 2);
 
                 // Draw payer name
                 ctx.textAlign = 'left';
@@ -371,14 +480,15 @@
         container.innerHTML = templates.map(template => `
             <div class="col-md-6 col-lg-4">
                 <div class="template-card">
+                    <div class="template-serial-badge">${template.serial}</div>
                     <img src="${template.imageData}" alt="${template.name}">
                     <div class="template-name">${template.name}</div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="template-meta">
                         <span class="badge ${template.isActive ? 'bg-success' : 'bg-secondary'}">
                             ${template.isActive ? 'Active' : 'Inactive'}
                         </span>
                         <span class="badge bg-info">
-                            <i class="fas fa-chart-bar me-1"></i>${template.usageCount || 0} uses
+                            <i class="fas fa-file-invoice me-1"></i>${template.receiptCounter || 0} receipts
                         </span>
                     </div>
                     <div class="template-actions">
@@ -409,7 +519,7 @@
 
         document.querySelectorAll('.delete-template').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to delete this template?')) {
+                if (confirm('Are you sure you want to delete this template? All receipt history for this template will be preserved.')) {
                     deleteTemplate(btn.dataset.id);
                     renderTemplatesList();
                     renderTemplateSelect();
@@ -424,7 +534,7 @@
         const select = document.getElementById('templateSelect');
 
         select.innerHTML = '<option value="">-- Choose from saved templates --</option>' +
-            templates.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            templates.map(t => `<option value="${t.id}">[${t.serial}] ${t.name}</option>`).join('');
     }
 
     function renderEntriesList() {
@@ -439,6 +549,16 @@
             const currencyStats = Object.entries(stats.byCurrency)
                 .map(([currency, amount]) => `${CURRENCY_SYMBOLS[currency] || currency}${amount.toFixed(2)}`)
                 .join(' | ');
+            
+            // Template stats
+            const templateStatsHtml = Object.entries(stats.byTemplate)
+                .slice(0, 3)
+                .map(([serial, data]) => `
+                    <div class="template-stat-item">
+                        <span class="template-stat-serial">${serial}</span>
+                        <span class="template-stat-count">${data.count} receipts</span>
+                    </div>
+                `).join('');
             
             statsContainer.innerHTML = `
                 <div class="row g-3">
@@ -470,6 +590,14 @@
                         </div>
                     </div>
                 </div>
+                ${Object.keys(stats.byTemplate).length > 0 ? `
+                <div class="template-stats-summary mt-3">
+                    <h6 class="text-muted mb-2"><i class="fas fa-chart-pie me-1"></i>By Template:</h6>
+                    <div class="template-stats-row">
+                        ${templateStatsHtml}
+                    </div>
+                </div>
+                ` : ''}
             `;
         }
 
@@ -486,7 +614,7 @@
                     <div class="entry-info">
                         <div class="entry-header">
                             <span class="entry-number">${entry.receiptNumber}</span>
-                            <span class="entry-date">${formatDateTime(entry.createdAt)}</span>
+                            <span class="entry-date"><i class="fas fa-calendar-alt me-1"></i>${entry.date || ''} <i class="fas fa-clock ms-2 me-1"></i>${entry.time || ''}</span>
                         </div>
                         <div class="entry-details">
                             <div class="entry-payer">
@@ -495,7 +623,7 @@
                             </div>
                             <div class="entry-template">
                                 <i class="fas fa-image me-2 text-muted"></i>
-                                ${entry.templateName || 'Custom Template'}
+                                <span class="template-serial-small">${entry.templateSerial || 'CUSTOM'}</span> ${entry.templateName || 'Custom Template'}
                             </div>
                         </div>
                     </div>
@@ -587,12 +715,12 @@
 
         const reader = new FileReader();
         reader.onload = () => {
-            addTemplate(name, reader.result);
+            const newTemplate = addTemplate(name, reader.result);
             document.getElementById('templateForm').reset();
             document.getElementById('templatePreviewContainer').classList.add('hidden');
             renderTemplatesList();
             renderTemplateSelect();
-            showToast('Template added successfully', 'success');
+            showToast(`Template "${name}" added with serial: ${newTemplate.serial}`, 'success');
         };
         reader.readAsDataURL(file);
     });
@@ -655,34 +783,42 @@
             return;
         }
 
-        // Get template image and name
+        // Get template image and details
         let templateImage = customTemplateData;
         let templateName = 'Custom Template';
+        let templateSerial = null;
+        let template = null;
+
         if (templateId) {
-            const templates = getTemplates();
-            const template = templates.find(t => t.id === templateId);
+            template = getTemplateById(templateId);
             if (template) {
                 templateImage = template.imageData;
                 templateName = template.name;
+                templateSerial = template.serial;
             }
         }
 
+        // Generate receipt number based on template
+        const receiptNumber = generateReceiptNumber(template);
+
         // Prepare receipt data
         const receiptData = {
-            receiptNumber: generateReceiptNumber(),
+            receiptNumber,
             date: formatDate(),
+            time: formatTime(),
             payerName,
             amount: amountPaid,
             currency,
             formattedAmount: formatAmount(amountPaid, currency),
             templateId: templateId || null,
             templateName,
+            templateSerial,
         };
 
         // Generate receipt
         await drawReceipt(templateImage, receiptData);
 
-        // Save entry
+        // Save entry and increment counters
         addEntry(receiptData);
 
         // Show preview
@@ -690,10 +826,11 @@
         document.getElementById('receiptCanvas').classList.remove('hidden');
         document.getElementById('downloadBtn').classList.remove('hidden');
 
-        // Refresh entries list if on admin tab
+        // Refresh lists
         renderEntriesList();
+        renderTemplatesList();
 
-        showToast('Receipt generated successfully!', 'success');
+        showToast(`Receipt generated: ${receiptNumber}`, 'success');
     });
 
     // Download Button
@@ -725,6 +862,14 @@
     async function init() {
         // Initialize password
         await initializePassword();
+
+        // Initialize settings if not exists
+        if (!getFromStorage(CONFIG.SETTINGS_KEY)) {
+            saveSettings({
+                orgPrefix: CONFIG.ORG_PREFIX,
+                nextTemplateSerial: 1,
+            });
+        }
 
         // Check session
         if (verifySession()) {
