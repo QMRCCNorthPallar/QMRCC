@@ -19,18 +19,19 @@
         PASSWORD_KEY: 'qmrcc_password',
         TEMPLATES_KEY: 'qmrcc_templates',
         ENTRIES_KEY: 'qmrcc_entries',
-        SETTINGS_KEY: 'qmrcc_text_settings',
+        SETTINGS_KEY: 'qmrcc_settings',
+        TEXT_SETTINGS_KEY: 'qmrcc_text_settings', // Separate key for text settings
         DEFAULT_PASSWORD: 'admin123',
         SESSION_DURATION: 24 * 60 * 60 * 1000, // 24 hours
         ORG_PREFIX: 'QMRCC', // Organization prefix for receipts
     };
 
-    // Default text settings
+    // Default text settings - Updated per user requirements
     const DEFAULT_TEXT_SETTINGS = {
-        refId: { show: true, x: 210, y: 215, fontSize: 16 },
-        date: { show: true, x: 1050, y: 215, fontSize: 16 },
-        donorName: { show: true, x: 450, y: 365, fontSize: 16 },
-        amount: { show: true, x: 450, y: 410, fontSize: 16 },
+        refId: { show: true, x: 290, y: 260, fontSize: 30 },
+        date: { show: true, x: 1290, y: 260, fontSize: 30 },
+        donorName: { show: true, x: 560, y: 420, fontSize: 35 },
+        amount: { show: true, x: 560, y: 480, fontSize: 35 },
     };
 
     // Currency symbols
@@ -151,16 +152,25 @@
     // ========================================
 
     function getTextSettings() {
-        const saved = getFromStorage(CONFIG.SETTINGS_KEY);
-        return saved ? { ...DEFAULT_TEXT_SETTINGS, ...saved } : { ...DEFAULT_TEXT_SETTINGS };
+        const saved = getFromStorage(CONFIG.TEXT_SETTINGS_KEY);
+        if (saved && typeof saved === 'object') {
+            // Merge with defaults to ensure all fields exist
+            return {
+                refId: { ...DEFAULT_TEXT_SETTINGS.refId, ...saved.refId },
+                date: { ...DEFAULT_TEXT_SETTINGS.date, ...saved.date },
+                donorName: { ...DEFAULT_TEXT_SETTINGS.donorName, ...saved.donorName },
+                amount: { ...DEFAULT_TEXT_SETTINGS.amount, ...saved.amount },
+            };
+        }
+        return { ...DEFAULT_TEXT_SETTINGS };
     }
 
     function saveTextSettings(settings) {
-        return saveToStorage(CONFIG.SETTINGS_KEY, settings);
+        return saveToStorage(CONFIG.TEXT_SETTINGS_KEY, settings);
     }
 
     function resetTextSettings() {
-        return saveToStorage(CONFIG.SETTINGS_KEY, { ...DEFAULT_TEXT_SETTINGS });
+        return saveToStorage(CONFIG.TEXT_SETTINGS_KEY, { ...DEFAULT_TEXT_SETTINGS });
     }
 
     // Populate text settings form
@@ -197,27 +207,27 @@
         return {
             refId: {
                 show: document.getElementById('showRefId').checked,
-                x: parseInt(document.getElementById('refIdX').value) || 210,
-                y: parseInt(document.getElementById('refIdY').value) || 215,
-                fontSize: parseInt(document.getElementById('refIdFontSize').value) || 16,
+                x: parseInt(document.getElementById('refIdX').value) || DEFAULT_TEXT_SETTINGS.refId.x,
+                y: parseInt(document.getElementById('refIdY').value) || DEFAULT_TEXT_SETTINGS.refId.y,
+                fontSize: parseInt(document.getElementById('refIdFontSize').value) || DEFAULT_TEXT_SETTINGS.refId.fontSize,
             },
             date: {
                 show: document.getElementById('showDate').checked,
-                x: parseInt(document.getElementById('dateX').value) || 1050,
-                y: parseInt(document.getElementById('dateY').value) || 215,
-                fontSize: parseInt(document.getElementById('dateFontSize').value) || 16,
+                x: parseInt(document.getElementById('dateX').value) || DEFAULT_TEXT_SETTINGS.date.x,
+                y: parseInt(document.getElementById('dateY').value) || DEFAULT_TEXT_SETTINGS.date.y,
+                fontSize: parseInt(document.getElementById('dateFontSize').value) || DEFAULT_TEXT_SETTINGS.date.fontSize,
             },
             donorName: {
                 show: document.getElementById('showDonorName').checked,
-                x: parseInt(document.getElementById('donorNameX').value) || 450,
-                y: parseInt(document.getElementById('donorNameY').value) || 365,
-                fontSize: parseInt(document.getElementById('donorNameFontSize').value) || 16,
+                x: parseInt(document.getElementById('donorNameX').value) || DEFAULT_TEXT_SETTINGS.donorName.x,
+                y: parseInt(document.getElementById('donorNameY').value) || DEFAULT_TEXT_SETTINGS.donorName.y,
+                fontSize: parseInt(document.getElementById('donorNameFontSize').value) || DEFAULT_TEXT_SETTINGS.donorName.fontSize,
             },
             amount: {
                 show: document.getElementById('showAmount').checked,
-                x: parseInt(document.getElementById('amountX').value) || 450,
-                y: parseInt(document.getElementById('amountY').value) || 410,
-                fontSize: parseInt(document.getElementById('amountFontSize').value) || 16,
+                x: parseInt(document.getElementById('amountX').value) || DEFAULT_TEXT_SETTINGS.amount.x,
+                y: parseInt(document.getElementById('amountY').value) || DEFAULT_TEXT_SETTINGS.amount.y,
+                fontSize: parseInt(document.getElementById('amountFontSize').value) || DEFAULT_TEXT_SETTINGS.amount.fontSize,
             },
         };
     }
@@ -972,6 +982,113 @@
     }
 
     // ========================================
+    // Export/Import Functions
+    // ========================================
+
+    function exportAllData() {
+        const data = {
+            version: '1.0',
+            exportedAt: new Date().toISOString(),
+            templates: getTemplates(),
+            textSettings: getTextSettings(),
+            settings: getSettings(),
+            // Note: entries and password are NOT exported for privacy/security
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `qmrcc-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        
+        return data;
+    }
+
+    function importAllData(jsonData) {
+        try {
+            const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+            
+            if (!data.version) {
+                throw new Error('Invalid backup file format');
+            }
+            
+            // Import templates
+            if (data.templates && Array.isArray(data.templates)) {
+                const existingTemplates = getTemplates();
+                const existingIds = new Set(existingTemplates.map(t => t.id));
+                const newTemplates = data.templates.filter(t => !existingIds.has(t.id));
+                
+                if (newTemplates.length > 0) {
+                    saveTemplates([...existingTemplates, ...newTemplates]);
+                }
+            }
+            
+            // Import text settings
+            if (data.textSettings) {
+                saveTextSettings(data.textSettings);
+            }
+            
+            // Import settings (template serial counter)
+            if (data.settings) {
+                const currentSettings = getSettings();
+                // Keep the higher serial number to avoid duplicates
+                if (data.settings.nextTemplateSerial > currentSettings.nextTemplateSerial) {
+                    currentSettings.nextTemplateSerial = data.settings.nextTemplateSerial;
+                    saveSettings(currentSettings);
+                }
+            }
+            
+            return { success: true, templatesImported: data.templates?.length || 0 };
+        } catch (error) {
+            console.error('Import error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Export Button
+    const exportDataBtn = document.getElementById('exportData');
+    if (exportDataBtn) {
+        exportDataBtn.addEventListener('click', () => {
+            exportAllData();
+            showToast('Data exported successfully!', 'success');
+        });
+    }
+
+    // Import Button
+    const importDataBtn = document.getElementById('importData');
+    const importFileInput = document.getElementById('importFile');
+    
+    if (importDataBtn && importFileInput) {
+        importDataBtn.addEventListener('click', () => {
+            importFileInput.click();
+        });
+        
+        importFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const result = importAllData(event.target.result);
+                if (result.success) {
+                    renderTemplatesList();
+                    renderTemplateSelect();
+                    loadTextSettingsForm();
+                    showToast(`Imported ${result.templatesImported} templates and settings!`, 'success');
+                } else {
+                    showToast(`Import failed: ${result.error}`, 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            importFileInput.value = '';
+        });
+    }
+
+    // ========================================
     // Initialization
     // ========================================
 
@@ -979,8 +1096,8 @@
         // Initialize password
         await initializePassword();
 
-        // Initialize text settings if not exists
-        if (!getFromStorage(CONFIG.SETTINGS_KEY)) {
+        // Initialize text settings if not exists (separate from general settings)
+        if (!getFromStorage(CONFIG.TEXT_SETTINGS_KEY)) {
             saveTextSettings({ ...DEFAULT_TEXT_SETTINGS });
         }
 
