@@ -561,8 +561,8 @@ body {
 }
 
 .entry-amount .amount-value {
-    font-size: 1rem;
-    font-weight: 200;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--success-color);
 }
 

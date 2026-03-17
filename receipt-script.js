@@ -19,10 +19,18 @@
         PASSWORD_KEY: 'qmrcc_password',
         TEMPLATES_KEY: 'qmrcc_templates',
         ENTRIES_KEY: 'qmrcc_entries',
-        SETTINGS_KEY: 'qmrcc_settings',
+        SETTINGS_KEY: 'qmrcc_text_settings',
         DEFAULT_PASSWORD: 'admin123',
         SESSION_DURATION: 24 * 60 * 60 * 1000, // 24 hours
         ORG_PREFIX: 'QMRCC', // Organization prefix for receipts
+    };
+
+    // Default text settings
+    const DEFAULT_TEXT_SETTINGS = {
+        refId: { show: true, x: 210, y: 215, fontSize: 16 },
+        date: { show: true, x: 1050, y: 215, fontSize: 16 },
+        donorName: { show: true, x: 450, y: 365, fontSize: 16 },
+        amount: { show: true, x: 450, y: 410, fontSize: 16 },
     };
 
     // Currency symbols
@@ -136,6 +144,82 @@
         settings.nextTemplateSerial += 1;
         saveSettings(settings);
         return serial;
+    }
+
+    // ========================================
+    // Text Settings Functions
+    // ========================================
+
+    function getTextSettings() {
+        const saved = getFromStorage(CONFIG.SETTINGS_KEY);
+        return saved ? { ...DEFAULT_TEXT_SETTINGS, ...saved } : { ...DEFAULT_TEXT_SETTINGS };
+    }
+
+    function saveTextSettings(settings) {
+        return saveToStorage(CONFIG.SETTINGS_KEY, settings);
+    }
+
+    function resetTextSettings() {
+        return saveToStorage(CONFIG.SETTINGS_KEY, { ...DEFAULT_TEXT_SETTINGS });
+    }
+
+    // Populate text settings form
+    function loadTextSettingsForm() {
+        const settings = getTextSettings();
+        
+        // Ref ID
+        document.getElementById('showRefId').checked = settings.refId.show;
+        document.getElementById('refIdX').value = settings.refId.x;
+        document.getElementById('refIdY').value = settings.refId.y;
+        document.getElementById('refIdFontSize').value = settings.refId.fontSize;
+        
+        // Date
+        document.getElementById('showDate').checked = settings.date.show;
+        document.getElementById('dateX').value = settings.date.x;
+        document.getElementById('dateY').value = settings.date.y;
+        document.getElementById('dateFontSize').value = settings.date.fontSize;
+        
+        // Donor Name
+        document.getElementById('showDonorName').checked = settings.donorName.show;
+        document.getElementById('donorNameX').value = settings.donorName.x;
+        document.getElementById('donorNameY').value = settings.donorName.y;
+        document.getElementById('donorNameFontSize').value = settings.donorName.fontSize;
+        
+        // Amount
+        document.getElementById('showAmount').checked = settings.amount.show;
+        document.getElementById('amountX').value = settings.amount.x;
+        document.getElementById('amountY').value = settings.amount.y;
+        document.getElementById('amountFontSize').value = settings.amount.fontSize;
+    }
+
+    // Get text settings from form
+    function getTextSettingsFromForm() {
+        return {
+            refId: {
+                show: document.getElementById('showRefId').checked,
+                x: parseInt(document.getElementById('refIdX').value) || 210,
+                y: parseInt(document.getElementById('refIdY').value) || 215,
+                fontSize: parseInt(document.getElementById('refIdFontSize').value) || 16,
+            },
+            date: {
+                show: document.getElementById('showDate').checked,
+                x: parseInt(document.getElementById('dateX').value) || 1050,
+                y: parseInt(document.getElementById('dateY').value) || 215,
+                fontSize: parseInt(document.getElementById('dateFontSize').value) || 16,
+            },
+            donorName: {
+                show: document.getElementById('showDonorName').checked,
+                x: parseInt(document.getElementById('donorNameX').value) || 450,
+                y: parseInt(document.getElementById('donorNameY').value) || 365,
+                fontSize: parseInt(document.getElementById('donorNameFontSize').value) || 16,
+            },
+            amount: {
+                show: document.getElementById('showAmount').checked,
+                x: parseInt(document.getElementById('amountX').value) || 450,
+                y: parseInt(document.getElementById('amountY').value) || 410,
+                fontSize: parseInt(document.getElementById('amountFontSize').value) || 16,
+            },
+        };
     }
 
     // ========================================
@@ -405,6 +489,7 @@
     async function drawReceipt(templateImage, data) {
         const canvas = document.getElementById('receiptCanvas');
         const ctx = canvas.getContext('2d');
+        const settings = getTextSettings();
 
         return new Promise((resolve) => {
             const img = new Image();
@@ -420,22 +505,29 @@
                 ctx.textBaseline = 'top';
                 ctx.textAlign = 'left';
 
-                // Font size
-                const fontSize = 16;
-                ctx.font = `${fontSize}px 'Rubik', Arial, sans-serif`;
+                // Draw Ref ID
+                if (settings.refId.show) {
+                    ctx.font = `${settings.refId.fontSize}px 'Rubik', Arial, sans-serif`;
+                    ctx.fillText(data.refId || data.receiptNumber, settings.refId.x, settings.refId.y);
+                }
 
-                // Draw fields at exact coordinates
-                // Ref ID: x=210, y=215
-                ctx.fillText(data.refId || data.receiptNumber, 210, 215);
+                // Draw Date
+                if (settings.date.show) {
+                    ctx.font = `${settings.date.fontSize}px 'Rubik', Arial, sans-serif`;
+                    ctx.fillText(data.date, settings.date.x, settings.date.y);
+                }
 
-                // Date: x=1050, y=215
-                ctx.fillText(data.date, 1050, 215);
+                // Draw Donor Name
+                if (settings.donorName.show) {
+                    ctx.font = `${settings.donorName.fontSize}px 'Rubik', Arial, sans-serif`;
+                    ctx.fillText(data.donorName, settings.donorName.x, settings.donorName.y);
+                }
 
-                // Donor Name: x=450, y=365
-                ctx.fillText(data.donorName, 450, 365);
-
-                // Amount in Figures: x=450, y=410
-                ctx.fillText(data.formattedAmount, 450, 410);
+                // Draw Amount
+                if (settings.amount.show) {
+                    ctx.font = `${settings.amount.fontSize}px 'Rubik', Arial, sans-serif`;
+                    ctx.fillText(data.formattedAmount, settings.amount.x, settings.amount.y);
+                }
 
                 resolve();
             };
@@ -849,6 +941,36 @@
         });
     }
 
+    // Save Text Settings Button
+    const saveTextSettingsBtn = document.getElementById('saveTextSettings');
+    if (saveTextSettingsBtn) {
+        saveTextSettingsBtn.addEventListener('click', () => {
+            const settings = getTextSettingsFromForm();
+            saveTextSettings(settings);
+            showToast('Text settings saved successfully!', 'success');
+        });
+    }
+
+    // Reset Text Settings Button
+    const resetTextSettingsBtn = document.getElementById('resetTextSettings');
+    if (resetTextSettingsBtn) {
+        resetTextSettingsBtn.addEventListener('click', () => {
+            if (confirm('Reset all text settings to default values?')) {
+                resetTextSettings();
+                loadTextSettingsForm();
+                showToast('Text settings reset to defaults', 'success');
+            }
+        });
+    }
+
+    // Load text settings when admin tab is shown
+    const adminTab = document.getElementById('admin-tab');
+    if (adminTab) {
+        adminTab.addEventListener('shown.bs.tab', () => {
+            loadTextSettingsForm();
+        });
+    }
+
     // ========================================
     // Initialization
     // ========================================
@@ -857,12 +979,9 @@
         // Initialize password
         await initializePassword();
 
-        // Initialize settings if not exists
+        // Initialize text settings if not exists
         if (!getFromStorage(CONFIG.SETTINGS_KEY)) {
-            saveSettings({
-                orgPrefix: CONFIG.ORG_PREFIX,
-                nextTemplateSerial: 1,
-            });
+            saveTextSettings({ ...DEFAULT_TEXT_SETTINGS });
         }
 
         // Check session
@@ -871,6 +990,7 @@
             renderTemplatesList();
             renderTemplateSelect();
             renderEntriesList();
+            loadTextSettingsForm();
         } else {
             showLogin();
         }

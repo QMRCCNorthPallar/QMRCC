@@ -264,6 +264,134 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Text Position Settings -->
+                            <div class="col-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0"><i class="fas fa-text-height me-2 text-primary"></i>Text Position Settings</h5>
+                                        <button type="button" id="resetTextSettings" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-undo me-1"></i>Reset to Default
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="text-muted small mb-4">Adjust the position (X, Y), font size, and visibility for each text field on the receipt.</p>
+                                        
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Field</th>
+                                                        <th class="text-center" style="width: 80px;">Show</th>
+                                                        <th style="width: 100px;">X Position</th>
+                                                        <th style="width: 100px;">Y Position</th>
+                                                        <th style="width: 100px;">Font Size</th>
+                                                        <th>Preview</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Ref ID -->
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-info">Ref ID</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="form-check form-switch d-flex justify-content-center">
+                                                                <input class="form-check-input" type="checkbox" id="showRefId" checked>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="refIdX" class="form-control form-control-sm" value="210">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="refIdY" class="form-control form-control-sm" value="215">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="refIdFontSize" class="form-control form-control-sm" value="16" min="8" max="72">
+                                                        </td>
+                                                        <td>
+                                                            <code class="text-muted">x=210, y=215</code>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Date -->
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-primary">Date</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="form-check form-switch d-flex justify-content-center">
+                                                                <input class="form-check-input" type="checkbox" id="showDate" checked>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="dateX" class="form-control form-control-sm" value="1050">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="dateY" class="form-control form-control-sm" value="215">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="dateFontSize" class="form-control form-control-sm" value="16" min="8" max="72">
+                                                        </td>
+                                                        <td>
+                                                            <code class="text-muted">x=1050, y=215</code>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Donor Name -->
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-success">Donor Name</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="form-check form-switch d-flex justify-content-center">
+                                                                <input class="form-check-input" type="checkbox" id="showDonorName" checked>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="donorNameX" class="form-control form-control-sm" value="450">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="donorNameY" class="form-control form-control-sm" value="365">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="donorNameFontSize" class="form-control form-control-sm" value="16" min="8" max="72">
+                                                        </td>
+                                                        <td>
+                                                            <code class="text-muted">x=450, y=365</code>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Amount -->
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-warning text-dark">Amount</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="form-check form-switch d-flex justify-content-center">
+                                                                <input class="form-check-input" type="checkbox" id="showAmount" checked>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="amountX" class="form-control form-control-sm" value="450">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="amountY" class="form-control form-control-sm" value="410">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" id="amountFontSize" class="form-control form-control-sm" value="16" min="8" max="72">
+                                                        </td>
+                                                        <td>
+                                                            <code class="text-muted">x=450, y=410</code>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <button type="button" id="saveTextSettings" class="btn btn-primary w-100 mt-3">
+                                            <i class="fas fa-save me-2"></i>Save Text Settings
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
