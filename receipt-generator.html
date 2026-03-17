@@ -43,7 +43,7 @@
                 <p id="loginError" class="error-message"></p>
             </form>
             <div class="login-footer">
-                <p>Default password: <code>QMRCC123</code></p>
+                <p>Default password: <code>admin123</code></p>
             </div>
         </div>
     </div>
@@ -137,12 +137,12 @@
                                             <div class="mb-4">
                                                 <label class="form-label fw-semibold">2. Receipt Information</label>
                                                 <div class="mb-3">
-                                                    <label for="payerName" class="form-label">Payer's Name</label>
-                                                    <input type="text" id="payerName" class="form-control" placeholder="e.g., Jane Doe" required>
+                                                    <label for="donorName" class="form-label">Donor Name</label>
+                                                    <input type="text" id="donorName" class="form-control" placeholder="e.g., Jane Doe" required>
                                                 </div>
-                                                <div class="row g-2">
+                                                <div class="row g-2 mb-3">
                                                     <div class="col-7">
-                                                        <label for="amountPaid" class="form-label">Amount</label>
+                                                        <label for="amountPaid" class="form-label">Amount in Figures</label>
                                                         <input type="number" id="amountPaid" class="form-control" placeholder="e.g., 1500" step="0.01" required>
                                                     </div>
                                                     <div class="col-5">
@@ -153,6 +153,10 @@
                                                             <option value="SAR">SAR (﷼)</option>
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="refId" class="form-label">Ref ID</label>
+                                                    <input type="text" id="refId" class="form-control" placeholder="e.g., REF-001 (optional)">
                                                 </div>
                                             </div>
 
