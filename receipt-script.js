@@ -21,9 +21,13 @@
         ENTRIES_KEY: 'qmrcc_entries',
         SETTINGS_KEY: 'qmrcc_settings',
         TEXT_SETTINGS_KEY: 'qmrcc_text_settings', // Separate key for text settings
+        GITHUB_CONFIG_KEY: 'qmrcc_github_config', // GitHub API configuration
+        GITHUB_DATA_KEY: 'qmrcc_github_data', // Cached GitHub data
         DEFAULT_PASSWORD: 'admin123',
         SESSION_DURATION: 24 * 60 * 60 * 1000, // 24 hours
         ORG_PREFIX: 'QMRCC', // Organization prefix for receipts
+        GITHUB_API: 'https://api.github.com',
+        GITHUB_DATA_FILE: 'data/qmrcc-data.json', // File path in repo for data storage
     };
 
     // Default text settings - Updated per user requirements
@@ -125,6 +129,312 @@
     }
 
     // ========================================
+    // GitHub API Functions
+    // ========================================
+
+    function getGitHubConfig() {
+        return getFromStorage(CONFIG.GITHUB_CONFIG_KEY) || {
+            enabled: false,
+            token: '',
+            owner: '',
+            repo: '',
+            branch: 'main',
+            lastSync: null,
+        };
+    }
+
+    function saveGitHubConfig(config) {
+        return saveToStorage(CONFIG.GITHUB_CONFIG_KEY, config);
+    }
+
+    function isGitHubEnabled() {
+        const config = getGitHubConfig();
+        return config.enabled && config.token && config.owner && config.repo;
+    }
+
+    // GitHub API request wrapper
+    async function githubRequest(endpoint, method = 'GET', data = null) {
+        const config = getGitHubConfig();
+        if (!config.token) {
+            throw new Error('GitHub token not configured');
+        }
+
+        const options = {
+            method,
+            headers: {
+                'Authorization': `token ${config.token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+            },
+        };
+
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+
+        const url = endpoint.startsWith('http') ? endpoint : `${CONFIG.GITHUB_API}${endpoint}`;
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.message || `GitHub API error: ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    // Get file from GitHub
+    async function getGitHubFile(path) {
+        const config = getGitHubConfig();
+        const endpoint = `/repos/${config.owner}/${config.repo}/contents/${path}?ref=${config.branch}`;
+        
+        try {
+            const result = await githubRequest(endpoint);
+            return {
+                sha: result.sha,
+                content: JSON.parse(atob(result.content)),
+                exists: true,
+            };
+        } catch (error) {
+            if (error.message.includes('404')) {
+                return { sha: null, content: null, exists: false };
+            }
+            throw error;
+        }
+    }
+
+    // Save file to GitHub
+    async function saveGitHubFile(path, content, message = 'Update data', sha = null) {
+        const config = getGitHubConfig();
+        const endpoint = `/repos/${config.owner}/${config.repo}/contents/${path}`;
+        
+        const data = {
+            message,
+            branch: config.branch,
+            content: btoa(JSON.stringify(content, null, 2)),
+        };
+
+        if (sha) {
+            data.sha = sha;
+        }
+
+        return githubRequest(endpoint, 'PUT', data);
+    }
+
+    // Sync all data to GitHub
+    async function syncToGitHub() {
+        if (!isGitHubEnabled()) {
+            return { success: false, message: 'GitHub sync not enabled' };
+        }
+
+        try {
+            const config = getGitHubConfig();
+            
+            // Prepare data to sync (exclude sensitive/local-only data)
+            const dataToSync = {
+                version: '1.0',
+                syncedAt: new Date().toISOString(),
+                settings: getSettings(),
+                textSettings: getTextSettings(),
+                templates: getTemplates().map(t => {
+                    // For default template, don't include base64 image data
+                    if (t.isDefault) {
+                        const { imageData, ...rest } = t;
+                        return rest;
+                    }
+                    return t;
+                }),
+                entries: getEntries(),
+            };
+
+            // Get existing file to get SHA
+            const existingFile = await getGitHubFile(CONFIG.GITHUB_DATA_FILE);
+            
+            // Save to GitHub
+            await saveGitHubFile(
+                CONFIG.GITHUB_DATA_FILE,
+                dataToSync,
+                `Update QMRCC data - ${new Date().toISOString()}`,
+                existingFile.sha
+            );
+
+            // Update last sync time
+            config.lastSync = new Date().toISOString();
+            saveGitHubConfig(config);
+
+            return { success: true, message: 'Data synced to GitHub successfully' };
+        } catch (error) {
+            console.error('GitHub sync error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Sync data from GitHub
+    async function syncFromGitHub() {
+        if (!isGitHubEnabled()) {
+            return { success: false, message: 'GitHub sync not enabled' };
+        }
+
+        try {
+            const file = await getGitHubFile(CONFIG.GITHUB_DATA_FILE);
+            
+            if (!file.exists || !file.content) {
+                return { success: false, message: 'No data found on GitHub' };
+            }
+
+            const data = file.content;
+
+            // Merge GitHub data with local data
+            if (data.settings) {
+                const localSettings = getSettings();
+                // Use the higher receipt counter to avoid duplicates
+                if (data.settings.receiptCounter > localSettings.receiptCounter) {
+                    localSettings.receiptCounter = data.settings.receiptCounter;
+                }
+                if (data.settings.nextTemplateSerial > localSettings.nextTemplateSerial) {
+                    localSettings.nextTemplateSerial = data.settings.nextTemplateSerial;
+                }
+                saveSettings(localSettings);
+            }
+
+            if (data.textSettings) {
+                saveTextSettings(data.textSettings);
+            }
+
+            if (data.templates && Array.isArray(data.templates)) {
+                const localTemplates = getTemplates();
+                const localIds = new Set(localTemplates.map(t => t.id));
+                
+                // Add templates that don't exist locally
+                const newTemplates = data.templates.filter(t => !localIds.has(t.id));
+                
+                // Update existing templates with higher usage counts
+                data.templates.forEach(gt => {
+                    const localIdx = localTemplates.findIndex(t => t.id === gt.id);
+                    if (localIdx !== -1 && gt.receiptCounter > localTemplates[localIdx].receiptCounter) {
+                        localTemplates[localIdx].receiptCounter = gt.receiptCounter;
+                        localTemplates[localIdx].usageCount = gt.usageCount;
+                    }
+                });
+                
+                if (newTemplates.length > 0) {
+                    saveTemplates([...localTemplates, ...newTemplates]);
+                } else {
+                    saveTemplates(localTemplates);
+                }
+            }
+
+            if (data.entries && Array.isArray(data.entries)) {
+                const localEntries = getEntries();
+                const localIds = new Set(localEntries.map(e => e.id));
+                
+                // Add entries that don't exist locally
+                const newEntries = data.entries.filter(e => !localIds.has(e.id));
+                
+                if (newEntries.length > 0) {
+                    // Sort by date, newest first
+                    const allEntries = [...newEntries, ...localEntries];
+                    allEntries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    saveEntries(allEntries);
+                }
+            }
+
+            // Update last sync time
+            const config = getGitHubConfig();
+            config.lastSync = new Date().toISOString();
+            saveGitHubConfig(config);
+
+            return { success: true, message: 'Data synced from GitHub successfully' };
+        } catch (error) {
+            console.error('GitHub sync error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Auto-sync to GitHub (debounced)
+    let syncTimeout = null;
+    function autoSyncToGitHub() {
+        if (!isGitHubEnabled()) return;
+        
+        // Debounce - wait 3 seconds before syncing
+        if (syncTimeout) {
+            clearTimeout(syncTimeout);
+        }
+        
+        syncTimeout = setTimeout(async () => {
+            const result = await syncToGitHub();
+            if (result.success) {
+                console.log('Auto-synced to GitHub');
+                updateSyncStatus('synced');
+            } else {
+                console.error('Auto-sync failed:', result.message);
+            }
+        }, 3000);
+    }
+
+    // Update sync status indicator
+    function updateSyncStatus(status) {
+        const statusEl = document.getElementById('syncStatus');
+        if (!statusEl) return;
+
+        const config = getGitHubConfig();
+        
+        if (!config.enabled) {
+            statusEl.innerHTML = '<i class="fas fa-database text-secondary"></i> Local Storage';
+            return;
+        }
+
+        switch (status) {
+            case 'syncing':
+                statusEl.innerHTML = '<i class="fas fa-sync fa-spin text-warning"></i> Syncing...';
+                break;
+            case 'synced':
+                statusEl.innerHTML = '<i class="fas fa-cloud text-success"></i> Synced to GitHub';
+                break;
+            case 'error':
+                statusEl.innerHTML = '<i class="fas fa-exclamation-triangle text-danger"></i> Sync Error';
+                break;
+            default:
+                if (config.lastSync) {
+                    const lastSync = new Date(config.lastSync);
+                    const timeAgo = getTimeAgo(lastSync);
+                    statusEl.innerHTML = `<i class="fas fa-cloud text-success"></i> Last sync: ${timeAgo}`;
+                } else {
+                    statusEl.innerHTML = '<i class="fas fa-cloud text-muted"></i> GitHub Enabled';
+                }
+        }
+    }
+
+    function getTimeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        
+        if (seconds < 60) return 'just now';
+        if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+        return `${Math.floor(seconds / 86400)}d ago`;
+    }
+
+    // Test GitHub connection
+    async function testGitHubConnection() {
+        const config = getGitHubConfig();
+        
+        if (!config.token || !config.owner || !config.repo) {
+            return { success: false, message: 'Please fill in all GitHub fields' };
+        }
+
+        try {
+            // Test by getting repo info
+            const result = await githubRequest(`/repos/${config.owner}/${config.repo}`);
+            return { 
+                success: true, 
+                message: `Connected to ${result.full_name} (${result.private ? 'private' : 'public'})` 
+            };
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    }
+
+    // ========================================
     // Settings Functions
     // ========================================
 
@@ -166,11 +476,15 @@
     }
 
     function saveTextSettings(settings) {
-        return saveToStorage(CONFIG.TEXT_SETTINGS_KEY, settings);
+        const result = saveToStorage(CONFIG.TEXT_SETTINGS_KEY, settings);
+        autoSyncToGitHub(); // Sync to GitHub
+        return result;
     }
 
     function resetTextSettings() {
-        return saveToStorage(CONFIG.TEXT_SETTINGS_KEY, { ...DEFAULT_TEXT_SETTINGS });
+        const result = saveToStorage(CONFIG.TEXT_SETTINGS_KEY, { ...DEFAULT_TEXT_SETTINGS });
+        autoSyncToGitHub(); // Sync to GitHub
+        return result;
     }
 
     // Populate text settings form
@@ -317,6 +631,7 @@
         };
         templates.push(newTemplate);
         saveTemplates(templates);
+        autoSyncToGitHub(); // Sync to GitHub
         return newTemplate;
     }
 
@@ -326,6 +641,7 @@
         if (index !== -1) {
             templates[index] = { ...templates[index], ...updates, updatedAt: new Date().toISOString() };
             saveTemplates(templates);
+            autoSyncToGitHub(); // Sync to GitHub
             return templates[index];
         }
         return null;
@@ -334,7 +650,9 @@
     function deleteTemplate(id) {
         const templates = getTemplates();
         const filtered = templates.filter(t => t.id !== id);
-        return saveTemplates(filtered);
+        const result = saveTemplates(filtered);
+        autoSyncToGitHub(); // Sync to GitHub
+        return result;
     }
 
     function incrementTemplateUsage(templateId) {
@@ -390,17 +708,23 @@
         // Increment template usage and counter
         const updatedTemplate = incrementTemplateUsage(data.templateId);
         
+        autoSyncToGitHub(); // Sync to GitHub
+        
         return { entry: newEntry, template: updatedTemplate };
     }
 
     function deleteEntry(id) {
         const entries = getEntries();
         const filtered = entries.filter(e => e.id !== id);
-        return saveEntries(filtered);
+        const result = saveEntries(filtered);
+        autoSyncToGitHub(); // Sync to GitHub
+        return result;
     }
 
     function clearAllEntries() {
-        return saveToStorage(CONFIG.ENTRIES_KEY, []);
+        const result = saveToStorage(CONFIG.ENTRIES_KEY, []);
+        autoSyncToGitHub(); // Sync to GitHub
+        return result;
     }
 
     function getEntriesStats() {
@@ -434,29 +758,17 @@
     // Receipt Generation
     // ========================================
 
+    function getNextReceiptNumber() {
+        const settings = getSettings();
+        const counter = (settings.receiptCounter || 0) + 1;
+        settings.receiptCounter = counter;
+        saveSettings(settings);
+        return `${CONFIG.ORG_PREFIX}-${padNumber(counter, 3)}`;
+    }
+
     function generateReceiptNumber(template) {
-        // Get current date and time components
-        const now = new Date();
-        const year = String(now.getFullYear()).slice(2); // Last 2 digits
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        
-        // Format: YYMMDDHHMMSS (e.g., 250316154530)
-        const dateTimeStr = `${year}${month}${day}${hours}${minutes}${seconds}`;
-        
-        if (template && template.serial) {
-            // Use template's serial + date/time + counter for uniqueness
-            const counter = (template.receiptCounter || 0) + 1;
-            // Format: QMRCC-001-250316154530-0001
-            return `${template.serial}-${dateTimeStr}-${padNumber(counter, 4)}`;
-        } else {
-            // For custom templates, use timestamp-based number
-            // Format: CUSTOM-250316154530
-            return `CUSTOM-${dateTimeStr}`;
-        }
+        // Simple sequential format: QMRCC-001, QMRCC-002, etc.
+        return getNextReceiptNumber();
     }
 
     function formatDateTimeForDisplay(isoString) {
@@ -575,12 +887,13 @@
             <div class="col-md-6 col-lg-4">
                 <div class="template-card">
                     <div class="template-serial-badge">${template.serial}</div>
-                    <img src="${template.imageData}" alt="${template.name}">
+                    <img src="${template.imageData}" alt="${template.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22150%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22>Image not found</text></svg>'">
                     <div class="template-name">${template.name}</div>
                     <div class="template-meta">
                         <span class="badge ${template.isActive ? 'bg-success' : 'bg-secondary'}">
                             ${template.isActive ? 'Active' : 'Inactive'}
                         </span>
+                        ${template.isDefault ? '<span class="badge bg-secondary">Default</span>' : ''}
                         <span class="badge bg-info">
                             <i class="fas fa-file-invoice me-1"></i>${template.receiptCounter || 0} receipts
                         </span>
@@ -591,7 +904,7 @@
                             <i class="fas fa-${template.isActive ? 'pause' : 'play'}"></i>
                             ${template.isActive ? 'Deactivate' : 'Activate'}
                         </button>
-                        <button class="btn btn-outline-danger btn-sm delete-template" data-id="${template.id}">
+                        <button class="btn btn-outline-danger btn-sm delete-template" data-id="${template.id}" ${template.isDefault ? 'title="Default template - can be deleted after adding new templates"' : ''}>
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -978,6 +1291,108 @@
     if (adminTab) {
         adminTab.addEventListener('shown.bs.tab', () => {
             loadTextSettingsForm();
+            loadGitHubSettingsForm();
+            updateSyncStatus();
+        });
+    }
+
+    // ========================================
+    // GitHub Settings Event Handlers
+    // ========================================
+
+    // Test GitHub Connection Button
+    const testGitHubBtn = document.getElementById('testGitHubConnection');
+    if (testGitHubBtn) {
+        testGitHubBtn.addEventListener('click', async () => {
+            const config = {
+                token: document.getElementById('githubToken')?.value || '',
+                owner: document.getElementById('githubOwner')?.value || '',
+                repo: document.getElementById('githubRepo')?.value || '',
+            };
+            
+            // Temporarily save to test
+            const currentConfig = getGitHubConfig();
+            saveGitHubConfig({ ...currentConfig, ...config });
+            
+            const result = await testGitHubConnection();
+            
+            if (result.success) {
+                showToast(`✅ ${result.message}`, 'success');
+            } else {
+                showToast(`❌ ${result.message}`, 'error');
+            }
+        });
+    }
+
+    // Save GitHub Settings Button
+    const saveGitHubBtn = document.getElementById('saveGitHubSettings');
+    if (saveGitHubBtn) {
+        saveGitHubBtn.addEventListener('click', async () => {
+            const config = {
+                enabled: document.getElementById('githubEnabled')?.checked || false,
+                token: document.getElementById('githubToken')?.value || '',
+                owner: document.getElementById('githubOwner')?.value || '',
+                repo: document.getElementById('githubRepo')?.value || '',
+                branch: document.getElementById('githubBranch')?.value || 'main',
+            };
+            
+            saveGitHubConfig(config);
+            updateSyncStatus();
+            
+            // If enabling, do an initial sync
+            if (config.enabled && config.token && config.owner && config.repo) {
+                showToast('Testing connection and syncing...', 'info');
+                const testResult = await testGitHubConnection();
+                
+                if (testResult.success) {
+                    // First sync from GitHub
+                    await syncFromGitHub();
+                    // Then sync to GitHub
+                    await syncToGitHub();
+                    
+                    renderTemplatesList();
+                    renderTemplateSelect();
+                    renderEntriesList();
+                    loadTextSettingsForm();
+                    
+                    showToast('✅ GitHub sync enabled and synced!', 'success');
+                } else {
+                    showToast(`❌ Connection failed: ${testResult.message}`, 'error');
+                }
+            } else {
+                showToast('GitHub settings saved', 'success');
+            }
+        });
+    }
+
+    // Manual Sync Now Button
+    const syncNowBtn = document.getElementById('syncNow');
+    if (syncNowBtn) {
+        syncNowBtn.addEventListener('click', async () => {
+            if (!isGitHubEnabled()) {
+                showToast('Please configure and enable GitHub sync first', 'error');
+                return;
+            }
+            
+            updateSyncStatus('syncing');
+            showToast('Syncing with GitHub...', 'info');
+            
+            // First pull from GitHub
+            const pullResult = await syncFromGitHub();
+            // Then push to GitHub
+            const pushResult = await syncToGitHub();
+            
+            if (pushResult.success) {
+                renderTemplatesList();
+                renderTemplateSelect();
+                renderEntriesList();
+                loadTextSettingsForm();
+                updateSyncStatus('synced');
+                showToast('✅ Synced with GitHub!', 'success');
+            } else {
+                updateSyncStatus('error');
+                showToast(`❌ Sync failed: ${pushResult.message}`, 'error');
+            }
         });
     }
 
@@ -986,10 +1401,14 @@
     // ========================================
 
     function exportAllData() {
+        const allTemplates = getTemplates();
+        // Filter out default templates (they're built-in, no need to export)
+        const customTemplates = allTemplates.filter(t => !t.isDefault);
+        
         const data = {
             version: '1.0',
             exportedAt: new Date().toISOString(),
-            templates: getTemplates(),
+            templates: customTemplates,
             textSettings: getTextSettings(),
             settings: getSettings(),
             // Note: entries and password are NOT exported for privacy/security
@@ -1089,6 +1508,45 @@
     }
 
     // ========================================
+    // Default Template Functions
+    // ========================================
+
+    async function initializeDefaultTemplate() {
+        const templates = getTemplates();
+        
+        // Only add default template if no templates exist
+        if (templates.length === 0) {
+            try {
+                // Load default template image
+                const defaultTemplate = {
+                    id: 'default-template-' + generateToken(),
+                    name: 'Default Receipt Template',
+                    serial: 'QMRCC-001',
+                    imageData: 'images/receipt.png', // Path to default template
+                    mimeType: 'image/png',
+                    isActive: true,
+                    usageCount: 0,
+                    receiptCounter: 0,
+                    createdAt: new Date().toISOString(),
+                    isDefault: true, // Flag to identify default template
+                };
+                
+                templates.push(defaultTemplate);
+                saveTemplates(templates);
+                
+                // Update settings to start template serial from 002
+                const settings = getSettings();
+                settings.nextTemplateSerial = 2;
+                saveSettings(settings);
+                
+                console.log('Default template initialized');
+            } catch (error) {
+                console.error('Failed to initialize default template:', error);
+            }
+        }
+    }
+
+    // ========================================
     // Initialization
     // ========================================
 
@@ -1101,6 +1559,17 @@
             saveTextSettings({ ...DEFAULT_TEXT_SETTINGS });
         }
 
+        // Initialize default template if no templates exist
+        await initializeDefaultTemplate();
+
+        // Sync from GitHub if enabled
+        if (isGitHubEnabled()) {
+            const result = await syncFromGitHub();
+            if (result.success) {
+                console.log('Synced from GitHub on init');
+            }
+        }
+
         // Check session
         if (verifySession()) {
             showApp();
@@ -1108,9 +1577,28 @@
             renderTemplateSelect();
             renderEntriesList();
             loadTextSettingsForm();
+            loadGitHubSettingsForm();
+            updateSyncStatus();
         } else {
             showLogin();
         }
+    }
+
+    // Load GitHub settings form
+    function loadGitHubSettingsForm() {
+        const config = getGitHubConfig();
+        
+        const enabledEl = document.getElementById('githubEnabled');
+        const tokenEl = document.getElementById('githubToken');
+        const ownerEl = document.getElementById('githubOwner');
+        const repoEl = document.getElementById('githubRepo');
+        const branchEl = document.getElementById('githubBranch');
+        
+        if (enabledEl) enabledEl.checked = config.enabled;
+        if (tokenEl) tokenEl.value = config.token;
+        if (ownerEl) ownerEl.value = config.owner;
+        if (repoEl) repoEl.value = config.repo;
+        if (branchEl) branchEl.value = config.branch;
     }
 
     // Run initialization
