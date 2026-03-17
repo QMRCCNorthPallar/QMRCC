@@ -426,16 +426,16 @@
 
                 // Draw fields at exact coordinates
                 // Ref ID: x=210, y=215
-                ctx.fillText(data.refId || data.receiptNumber, 136.16, 136.58);
+                ctx.fillText(data.refId || data.receiptNumber, 210, 215);
 
                 // Date: x=1050, y=215
-                ctx.fillText(data.date, 617.88, 136.12);
+                ctx.fillText(data.date, 1050, 215);
 
                 // Donor Name: x=450, y=365
-                ctx.fillText(data.donorName, 266.67, 219.99);
+                ctx.fillText(data.donorName, 450, 365);
 
                 // Amount in Figures: x=450, y=410
-                ctx.fillText(data.formattedAmount, 265.93, 239.63);
+                ctx.fillText(data.formattedAmount, 450, 410);
 
                 resolve();
             };
