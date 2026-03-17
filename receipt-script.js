@@ -278,7 +278,8 @@
         const newEntry = {
             id: generateToken(),
             receiptNumber: data.receiptNumber,
-            payerName: data.payerName,
+            refId: data.refId,
+            donorName: data.donorName,
             amount: data.amount,
             currency: data.currency,
             formattedAmount: data.formattedAmount,
@@ -417,33 +418,24 @@
                 // Configure text style
                 ctx.fillStyle = '#000000';
                 ctx.textBaseline = 'top';
-
-                // Calculate positions based on image size
-                const rightMargin = canvas.width * 0.08;
-                const leftMargin = canvas.width * 0.08;
-                const startY = canvas.height * 0.35;
-                const lineHeight = canvas.height * 0.05;
-
-                // Draw receipt number
-                ctx.font = `bold ${Math.max(14, canvas.width * 0.018)}px 'Rubik', sans-serif`;
-                ctx.textAlign = 'right';
-                ctx.fillText(`Receipt #: ${data.receiptNumber}`, canvas.width - rightMargin, startY);
-
-                // Draw date
-                ctx.font = `${Math.max(12, canvas.width * 0.015)}px 'Rubik', sans-serif`;
-                ctx.fillText(`Date: ${data.date}`, canvas.width - rightMargin, startY + lineHeight);
-
-                // Draw time
-                ctx.fillText(`Time: ${data.time}`, canvas.width - rightMargin, startY + lineHeight * 2);
-
-                // Draw payer name
                 ctx.textAlign = 'left';
-                ctx.font = `${Math.max(14, canvas.width * 0.017)}px 'Rubik', sans-serif`;
-                ctx.fillText(`Received from: ${data.payerName}`, leftMargin, startY + lineHeight * 3);
 
-                // Draw amount
-                ctx.font = `bold ${Math.max(18, canvas.width * 0.025)}px 'Rubik', sans-serif`;
-                ctx.fillText(`Amount: ${data.formattedAmount}`, leftMargin, startY + lineHeight * 5);
+                // Font size
+                const fontSize = 16;
+                ctx.font = `${fontSize}px 'Rubik', Arial, sans-serif`;
+
+                // Draw fields at exact coordinates
+                // Ref ID: x=210, y=215
+                ctx.fillText(data.refId || data.receiptNumber, 136.16, 136.58);
+
+                // Date: x=1050, y=215
+                ctx.fillText(data.date, 617.88, 136.12);
+
+                // Donor Name: x=450, y=365
+                ctx.fillText(data.donorName, 266.67, 219.99);
+
+                // Amount in Figures: x=450, y=410
+                ctx.fillText(data.formattedAmount, 265.93, 239.63);
 
                 resolve();
             };
@@ -613,13 +605,13 @@
                 <div class="entry-main">
                     <div class="entry-info">
                         <div class="entry-header">
-                            <span class="entry-number">${entry.receiptNumber}</span>
+                            <span class="entry-number">${entry.refId || entry.receiptNumber}</span>
                             <span class="entry-date"><i class="fas fa-calendar-alt me-1"></i>${entry.date || ''} <i class="fas fa-clock ms-2 me-1"></i>${entry.time || ''}</span>
                         </div>
                         <div class="entry-details">
                             <div class="entry-payer">
                                 <i class="fas fa-user me-2 text-muted"></i>
-                                <strong>${entry.payerName}</strong>
+                                <strong>${entry.donorName || 'N/A'}</strong>
                             </div>
                             <div class="entry-template">
                                 <i class="fas fa-image me-2 text-muted"></i>
@@ -774,9 +766,10 @@
         e.preventDefault();
         
         const templateId = document.getElementById('templateSelect').value;
-        const payerName = document.getElementById('payerName').value;
+        const donorName = document.getElementById('donorName').value;
         const amountPaid = document.getElementById('amountPaid').value;
         const currency = document.getElementById('currency').value;
+        const refId = document.getElementById('refId').value;
 
         if (!templateId && !customTemplateData) {
             showToast('Please select a template or upload a custom one', 'error');
@@ -804,9 +797,10 @@
         // Prepare receipt data
         const receiptData = {
             receiptNumber,
+            refId: refId || receiptNumber, // Use provided Ref ID or receipt number
             date: formatDate(),
             time: formatTime(),
-            payerName,
+            donorName,
             amount: amountPaid,
             currency,
             formattedAmount: formatAmount(amountPaid, currency),
